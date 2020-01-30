@@ -10,4 +10,5 @@ Kasutajaliidesed
     * Administraatoril on ligipääs Arete endpointidele
     * Kasutaja moodustada statistikat oma andmetest ja administraator saab moodustada statistikat kõikidest andmetest
     * Administraator saab vajadusel veebilehelt ssh'da Arete'sse sisse õigesse kohta ja muuta asju.
-    * SuperAdministraatori, Administraatori ja Kasutaja autentimine.
+    * Administraatori ja Kasutaja autentimine.
+    * Kasutaja ja administarator saab näha talle lubatud logisid ilusal kujul ja neid sorteerida
