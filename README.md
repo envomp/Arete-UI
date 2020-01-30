@@ -17,4 +17,4 @@ Workflow on saadav lehel: https://xd.adobe.com/view/7708ba44-696e-4617-7d76-f24f
 
 Demo on saadav lehel: https://xd.adobe.com/view/7708ba44-696e-4617-7d76-f24ff837b634-0139/?fullscreen
 
-Kahe tudengi tagasiside on saadav lehel: https://xd.adobe.com/view/7708ba44-696e-4617-7d76-f24ff837b634-0139
+Kahe tudengi tagasiside on saadav lehel: https://xd.adobe.com/view/7708ba44-696e-4617-7d76-f24ff837b634-0139/
