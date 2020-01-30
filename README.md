@@ -8,6 +8,6 @@ Kasutajaliidesed
 4. Võimaldab teenust müüa koolist välja. Müün koodi testimise teenust.
 5. Keskkond sisaldab järgmiseid funktsionaalseid nõudeid:
     * Administraatoril on ligipääs Arete endpointidele
-    * Kasutaja näeb statistikat oma andmetest ja administraator näeb statistikat kõikidest andmetest
-    * Administraator saab vajadusel veebilehelt ssh'da Arete'sse sisse ja muuta asju
+    * Kasutaja moodustada statistikat oma andmetest ja administraator saab moodustada statistikat kõikidest andmetest
+    * Administraator saab vajadusel veebilehelt ssh'da Arete'sse sisse õigesse kohta ja muuta asju.
     * SuperAdministraatori, Administraatori ja Kasutaja autentimine.
