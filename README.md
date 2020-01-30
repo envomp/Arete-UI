@@ -12,6 +12,9 @@ Kasutajaliidesed
     * Administraatori ja Kasutaja autentimine.
     * Kasutaja ja administarator saab näha talle lubatud andmeid ilusal kujul.
 
+
 Workflow on saadav lehel: https://xd.adobe.com/view/7708ba44-696e-4617-7d76-f24ff837b634-0139/?fullscreen
+
 Demo on saadav lehel: https://xd.adobe.com/view/7708ba44-696e-4617-7d76-f24ff837b634-0139/?fullscreen
+
 Kahe tudengi tagasiside on saadav lehel: https://xd.adobe.com/view/7708ba44-696e-4617-7d76-f24ff837b634-0139
