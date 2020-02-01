@@ -92,12 +92,12 @@
         // Sends action to Vuex that will log you in and redirect to the dash otherwise, error
         methods: {
             login: function () {
-                let username = this.username
-                let password = this.password
+                let username = this.username;
+                let password = this.password;
                 this.$store.dispatch('login', {username, password})
                     .then(() => this.$router.push('/dashboard'))
                     .catch(err => {
-                            console.log(err)
+                            console.log(err);
                             this.snackbar = true
                         }
                     )

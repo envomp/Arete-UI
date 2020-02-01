@@ -16,7 +16,7 @@ import modules from './modules'
 import mutations from './mutations'
 import state from './state'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 // Create a new store
 const store = new Vuex.Store({
@@ -25,6 +25,6 @@ const store = new Vuex.Store({
     modules,
     mutations,
     state
-})
+});
 
 export default store
