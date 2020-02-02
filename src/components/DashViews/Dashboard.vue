@@ -218,9 +218,8 @@
                     <td>{{ props.item.uniid }}</td>
                     <td>{{ props.item.hash }}</td>
                     <td>{{ props.item.timestamp }}</td>
-                    <td>{{ props.item.priority }}</td>
                     <td>{{ props.item.testingPlatform }}</td>
-                    <td>{{ props.item.folder }}</td>
+                    <td>{{ props.item.course }}</td>
                 </tr>
             </template>
 
@@ -242,7 +241,7 @@
                                     <v-window>
 
                                         <v-tab-item
-                                                v-for="job in fullSubmission"
+                                                v-for="(job, index) in fullSubmission"
                                         >
 
                                             <v-card
@@ -258,9 +257,15 @@
                                                         <v-icon left>mdi-account</v-icon>
                                                         Student Output
                                                     </v-tab>
+
                                                     <v-tab ripple>
                                                         <v-icon left>mdi-lock</v-icon>
                                                         Console logs
+                                                    </v-tab>
+
+                                                    <v-tab ripple>
+                                                        <v-icon left>mdi-archive</v-icon>
+                                                        Content
                                                     </v-tab>
 
                                                     <v-tab-item>
@@ -275,6 +280,14 @@
                                                                  v-html="job.consoleOutput"></div>
                                                         </v-card>
                                                     </v-tab-item>
+
+                                                    <v-tab-item>
+                                                        <v-card flat>
+                                                            <div
+                                                                    v-html="createFileView(index)"></div>
+                                                        </v-card>
+                                                    </v-tab-item>
+
                                                     <v-spacer></v-spacer>
 
                                                 </v-tabs>
@@ -295,6 +308,8 @@
 
         </v-data-table>
 
+        <!--        Footer hides otherwise-->
+        <br><br><br><br>
     </v-container>
 
 
@@ -394,9 +409,8 @@
                     {text: 'uniid', value: 'uniid'},
                     {text: 'hash', value: 'hash', sortable: false},
                     {text: 'timestamp', value: 'timestamp'},
-                    {text: 'priority', value: 'priority'},
                     {text: 'testingPlatform', value: 'testingPlatform'},
-                    {text: 'folder', value: 'folder'},
+                    {text: 'course', value: 'course'},
 
                 ],
                 editedIndex: -1,
@@ -438,6 +452,24 @@
                     this.editedIndex = -1
                 }, 300)
             },
+
+            createFileView(i) {
+                let message = "";
+
+                message += "Failed: " + this.fullSubmission[i]['failed'] + "<br><br>";
+                message += "Commit message: " + this.fullSubmission[i]['commitMessage'] + "<br><br>";
+                message += "Return url: " + this.fullSubmission[i]['returnUrl'] + "<br><br>";
+                message += "Docker extra: " + this.fullSubmission[i]['dockerExtra'] + "<br><br>";
+                message += "System extra: " + this.fullSubmission[i]['systemExtra'] + "<br><br>";
+                message += "Priority: " + this.fullSubmission[i]['priority'] + "<br><br>";
+                message += "Git student repository: " + this.fullSubmission[i]['gitStudentRepo'] + "<br><br>";
+                message += "Git test repository: " + this.fullSubmission[i]['gitTestSource'] + "<br><br>";
+                message += "Student files: " + this.fullSubmission[i]['source'] + "<br><br>";
+                message += "Test files: " + this.fullSubmission[i]['testSource'] + "<br><br>";
+
+                return message;
+            }
+
         }
     }
 </script>
