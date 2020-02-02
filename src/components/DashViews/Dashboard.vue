@@ -228,62 +228,69 @@
 
             <template v-slot:expand="props">
 
-                <div>
-                    <v-tabs
-                            color="light-blue darken-1"
-                            dark
-                            fixed-tabs
-                            slider-color="light-blue darken-4"
-                            v-model="active"
-                    >
-                        <v-tab
-                                v-for="job in fullSubmission"
-                        >
-                            {{ job.slug}}
-
-                        </v-tab>
-
-                        <v-tab-item
-                                v-for="job in fullSubmission"
-                        >
-
-                            <v-card
-                                    :elevation="24"
-                            >
-
-                                <v-tabs
-                                        color="grey darken-4"
-                                        dark
-                                        slider-color="blue lighten-4"
+                <v-container>
+                    <v-layout row wrap>
+                        <v-flex>
+                            <v-expansion-panel popout>
+                                <v-expansion-panel-content
+                                        v-for="job in fullSubmission"
                                 >
-                                    <v-tab ripple>
-                                        <v-icon left>mdi-account</v-icon>
-                                        Student Output
-                                    </v-tab>
-                                    <v-tab ripple>
-                                        <v-icon left>mdi-lock</v-icon>
-                                        Console logs
-                                    </v-tab>
+                                    <template v-slot:header>
+                                        <div>{{job.slug}}</div>
+                                    </template>
 
-                                    <v-tab-item>
-                                        <v-card flat>
-                                            <div id="output" v-html="job.output"></div>
-                                        </v-card>
-                                    </v-tab-item>
+                                    <v-window>
 
-                                    <v-tab-item>
-                                        <v-card flat>
-                                            <div id="consoleOutput"
-                                                 v-html="job.consoleOutput"></div>
-                                        </v-card>
-                                    </v-tab-item>
-                                    <v-spacer></v-spacer>
+                                        <v-tab-item
+                                                v-for="job in fullSubmission"
+                                        >
 
-                                </v-tabs>
-                            </v-card>
-                        </v-tab-item>
-                    </v-tabs>
-                </div>
+                                            <v-card
+                                                    :elevation="24"
+                                            >
+
+                                                <v-tabs
+                                                        color="grey darken-4"
+                                                        dark
+                                                        slider-color="blue lighten-4"
+                                                >
+                                                    <v-tab ripple>
+                                                        <v-icon left>mdi-account</v-icon>
+                                                        Student Output
+                                                    </v-tab>
+                                                    <v-tab ripple>
+                                                        <v-icon left>mdi-lock</v-icon>
+                                                        Console logs
+                                                    </v-tab>
+
+                                                    <v-tab-item>
+                                                        <v-card flat>
+                                                            <div id="output" v-html="job.output"></div>
+                                                        </v-card>
+                                                    </v-tab-item>
+
+                                                    <v-tab-item>
+                                                        <v-card flat>
+                                                            <div id="consoleOutput"
+                                                                 v-html="job.consoleOutput"></div>
+                                                        </v-card>
+                                                    </v-tab-item>
+                                                    <v-spacer></v-spacer>
+
+                                                </v-tabs>
+                                            </v-card>
+
+                                        </v-tab-item>
+
+                                    </v-window>
+
+                                </v-expansion-panel-content>
+                            </v-expansion-panel>
+                        </v-flex>
+
+                    </v-layout>
+                </v-container>
+
             </template>
 
         </v-data-table>
@@ -376,7 +383,6 @@
                 // Charon like
                 expand: false,
                 active: null,
-                tabs: null,
                 window: 0,
                 SubmissionList: [],
                 fullSubmission: [],
@@ -405,10 +411,7 @@
         },
         // called when page is created before dom
         created() {
-            this.getSubmissions()
-            // this.$store.dispatch('autoRefreshToken')
-            // .then(response => console.log(response))
-            // .catch(error => console.log(error))
+            this.getSubmissions();
         },
 
         methods: {
@@ -439,7 +442,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     table.v-table thead tr {
         color: red !important;
     }
@@ -459,14 +462,10 @@
 
         max-height: 50em;
         overflow: auto;
-        white-space: pre;
+        white-space: normal;
 
         /*white-space: initial;*/
 
-    }
-
-    #submissionTable {
-        overflow-x: fragments;
     }
 
 </style>
