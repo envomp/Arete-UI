@@ -48,7 +48,6 @@
                     sm12
             >
 
-
                 <material-chart-card
                         :data="emailsSubscriptionChart.data"
                         :options="emailsSubscriptionChart.options"
@@ -171,139 +170,127 @@
                 />
             </v-flex>
 
-            <!--            Charon like-->
-            <v-container
-                    fill-height
-                    fluid
-                    grid-list-xl
+        </v-layout>
+
+        <!--            Charon like-->
+
+
+        <material-card
+                color="general"
+                text="Latest submissions"
+                title="Submission Table"
+        >
+            <v-text-field
+                    append-icon="search"
+                    hide-details
+                    label="Search"
+                    single-line
+                    v-model="search"
+            ></v-text-field>
+
+        </material-card>
+        <v-data-table
+
+                :expand="expand"
+                :headers="headers"
+                :items="SubmissionList"
+                :rows-per-page-items="rowsAmount"
+                :search="search"
+                class="elevation-1"
+
+        >
+
+            <template
+                    slot="headerCell"
+                    slot-scope="{ header }"
             >
-                <v-layout
-                        justify-center
-                        wrap
-                >
-                    <v-flex
-                            md12
-                    >
-                        <div>
-                            <material-card
-                                    color="general"
-                                    text="Latest submissions"
-                                    title="Submission Table"
-                            >
-                                <v-spacer></v-spacer>
-                                <v-text-field
-                                        append-icon="search"
-                                        hide-details
-                                        label="Search"
-                                        single-line
-                                        v-model="search">
-                                </v-text-field>
-
-                                <v-data-table
-                                        :expand="expand"
-                                        :headers="headers"
-                                        :items="SubmissionList"
-                                        :rows-per-page-items="rowsAmount"
-                                        :search="search"
-                                        class="elevation-1"
-
-                                >
-
-                                    <template
-                                            slot="headerCell"
-                                            slot-scope="{ header }"
-                                    >
                 <span
                         class="subheading font-weight-light text-general text--darken-3"
                         v-text="header.text"
                 />
-                                    </template>
+            </template>
 
+            <template
+                    v-slot:items="props"
+            >
+                <tr @click="props.expanded = !props.expanded, getSubmission(props.item.hash)">
+                    <td>{{ props.item.id }}</td>
+                    <td>{{ props.item.uniid }}</td>
+                    <td>{{ props.item.hash }}</td>
+                    <td>{{ props.item.timestamp }}</td>
+                    <td>{{ props.item.priority }}</td>
+                    <td>{{ props.item.testingPlatform }}</td>
+                    <td>{{ props.item.folder }}</td>
+                </tr>
+            </template>
 
-                                    <template v-slot:items="props">
-                                        <tr @click="props.expanded = !props.expanded, getSubmission(props.item.hash)">
-                                            <td>{{ props.item.id }}</td>
-                                            <td>{{ props.item.uniid }}</td>
-                                            <td>{{ props.item.hash }}</td>
-                                            <td>{{ props.item.timestamp }}</td>
-                                            <td>{{ props.item.priority }}</td>
-                                            <td>{{ props.item.testingPlatform }}</td>
-                                            <td>{{ props.item.folder }}</td>
-                                        </tr>
-                                    </template>
+            <v-spacer></v-spacer>
 
+            <template v-slot:expand="props">
+
+                <div>
+                    <v-tabs
+                            color="light-blue darken-1"
+                            dark
+                            fixed-tabs
+                            slider-color="light-blue darken-4"
+                            v-model="active"
+                    >
+                        <v-tab
+                                v-for="job in fullSubmission"
+                        >
+                            {{ job.slug}}
+
+                        </v-tab>
+
+                        <v-tab-item
+                                v-for="job in fullSubmission"
+                        >
+
+                            <v-card
+                                    :elevation="24"
+                            >
+
+                                <v-tabs
+                                        color="grey darken-4"
+                                        dark
+                                        slider-color="blue lighten-4"
+                                >
+                                    <v-tab ripple>
+                                        <v-icon left>mdi-account</v-icon>
+                                        Student Output
+                                    </v-tab>
+                                    <v-tab ripple>
+                                        <v-icon left>mdi-lock</v-icon>
+                                        Console logs
+                                    </v-tab>
+
+                                    <v-tab-item>
+                                        <v-card flat>
+                                            <div id="output" v-html="job.output"></div>
+                                        </v-card>
+                                    </v-tab-item>
+
+                                    <v-tab-item>
+                                        <v-card flat>
+                                            <div id="consoleOutput"
+                                                 v-html="job.consoleOutput"></div>
+                                        </v-card>
+                                    </v-tab-item>
                                     <v-spacer></v-spacer>
 
-                                    <template v-slot:expand="props">
+                                </v-tabs>
+                            </v-card>
+                        </v-tab-item>
+                    </v-tabs>
+                </div>
+            </template>
 
+        </v-data-table>
 
-                                        <div>
-                                            <v-tabs
-                                                    color="light-blue darken-1"
-                                                    dark
-                                                    slider-color="light-blue darken-4"
-                                                    v-model="active"
-                                                    fixed-tabs
-                                            >
-                                                <v-tab
-                                                        v-for="job in fullSubmission"
-                                                >
-                                                    {{ job.slug}}
-
-                                                </v-tab>
-
-                                                <v-tab-item
-                                                        v-for="job in fullSubmission"
-                                                >
-
-                                                    <v-card
-                                                            :elevation="24"
-                                                    >
-
-                                                        <v-tabs
-                                                                color="grey darken-4"
-                                                                dark
-                                                                slider-color="blue lighten-4"
-                                                        >
-                                                            <v-tab ripple>
-                                                                <v-icon left>mdi-account</v-icon>
-                                                                Student Output
-                                                            </v-tab>
-                                                            <v-tab ripple>
-                                                                <v-icon left>mdi-lock</v-icon>
-                                                                Console logs
-                                                            </v-tab>
-
-                                                            <v-tab-item>
-                                                                <v-card flat>
-                                                                    <div id="output" v-html="job.output"></div>
-                                                                </v-card>
-                                                            </v-tab-item>
-
-                                                            <v-tab-item>
-                                                                <v-card flat>
-                                                                    <div id="consoleOutput"
-                                                                         v-html="job.consoleOutput"></div>
-                                                                </v-card>
-                                                            </v-tab-item>
-                                                            <v-spacer></v-spacer>
-
-                                                        </v-tabs>
-                                                    </v-card>
-                                                </v-tab-item>
-                                            </v-tabs>
-                                        </div>
-                                    </template>
-
-
-                                </v-data-table>
-                            </material-card>
-                        </div>
-                    </v-flex>
-                </v-layout>
-            </v-container>
-        </v-layout>
     </v-container>
+
+
 </template>
 
 <script>
@@ -472,7 +459,14 @@
 
         max-height: 50em;
         overflow: auto;
+        white-space: pre;
 
+        /*white-space: initial;*/
+
+    }
+
+    #submissionTable {
+        overflow-x: fragments;
     }
 
 </style>
