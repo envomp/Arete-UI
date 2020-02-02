@@ -7,8 +7,10 @@
 
             <core-toolbar/>
 
+<!--            List left-->
             <core-drawer/>
 
+<!--            Page content-->
             <v-fade-transition mode="out-in">
                 <router-view/>
             </v-fade-transition>
@@ -24,7 +26,7 @@
         name: 'DashboardView',
         metaInfo() {
             return {
-                title: 'Vuetify Admin Dashboard by ClintOxx'
+                title: 'Arete'
             }
         }
     }

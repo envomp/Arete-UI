@@ -83,12 +83,12 @@
                 {
                     to: '/dashboard/table-list',
                     icon: 'mdi-clipboard-outline',
-                    text: 'Table List'
+                    text: 'Exercise Overview'
                 },
                 {
                     to: '/dashboard/user-tables',
                     icon: 'mdi-table-edit',
-                    text: 'Users Table'
+                    text: 'Student Overview'
                 },
                 {
                     to: '/dashboard/typography',

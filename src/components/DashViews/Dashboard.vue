@@ -1,10 +1,11 @@
 <template>
     <v-container
-            fill-height
             fluid
             grid-list-xl
     >
         <v-layout wrap>
+
+            <!--            Graph 1-->
             <v-flex
                     lg4
                     md12
@@ -39,11 +40,15 @@
                     </template>
                 </material-chart-card>
             </v-flex>
+
+            <!--            Graph 2-->
             <v-flex
                     lg4
                     md12
                     sm12
             >
+
+
                 <material-chart-card
                         :data="emailsSubscriptionChart.data"
                         :options="emailsSubscriptionChart.options"
@@ -64,7 +69,11 @@
                         <span class="caption blue-grey--text font-weight-light">updated 10 minutes ago</span>
                     </template>
                 </material-chart-card>
+
+
             </v-flex>
+
+            <!--            Graph 3-->
             <v-flex
                     lg4
                     md12
@@ -90,6 +99,8 @@
                     </template>
                 </material-chart-card>
             </v-flex>
+
+            <!--            Revenue-->
             <v-flex
                     lg3
                     md6
@@ -105,6 +116,8 @@
                         value="$34,245"
                 />
             </v-flex>
+
+            <!--            Used Space-->
             <v-flex
                     lg3
                     md6
@@ -123,6 +136,8 @@
                         value="49/50"
                 />
             </v-flex>
+
+            <!--            Fixed issues-->
             <v-flex
                     lg3
                     md6
@@ -138,6 +153,8 @@
                         value="75"
                 />
             </v-flex>
+
+            <!--            Followers-->
             <v-flex
                     lg3
                     md6
@@ -153,209 +170,138 @@
                         value="+245"
                 />
             </v-flex>
-            <v-flex
-                    lg6
-                    md12
+
+            <!--            Charon like-->
+            <v-container
+                    fill-height
+                    fluid
+                    grid-list-xl
             >
-                <material-card
-                        color="orange"
-                        text="New employees on 15th September, 2016"
-                        title="Employee Stats"
+                <v-layout
+                        justify-center
+                        wrap
                 >
-                    <v-data-table
-                            :headers="headers"
-                            :items="items"
-                            hide-actions
-                    >
-                        <template
-                                slot="headerCell"
-                                slot-scope="{ header }"
-                        >
-              <span
-                      class="font-weight-light text-warning text--darken-3"
-                      v-text="header.text"
-              />
-                        </template>
-                        <template
-                                slot="items"
-                                slot-scope="{ index, item }"
-                        >
-                            <td>{{ index + 1 }}</td>
-                            <td>{{ item.name }}</td>
-                            <td class="text-xs-right">{{ item.salary }}</td>
-                            <td class="text-xs-right">{{ item.country }}</td>
-                            <td class="text-xs-right">{{ item.city }}</td>
-                        </template>
-                    </v-data-table>
-                </material-card>
-            </v-flex>
-            <v-flex
-                    lg6
-                    md12
-            >
-                <material-card
-                        class="card-tabs"
-                        color="general">
                     <v-flex
-                            slot="header"
+                            md12
                     >
-                        <v-tabs
-                                color="transparent"
-                                slider-color="white"
-                                v-model="tabs"
-                        >
-              <span
-                      class="subheading font-weight-light mr-3"
-                      style="align-self: center"
-              >Tasks:</span>
-                            <v-tab class="mr-3">
-                                <v-icon class="mr-2">mdi-bug</v-icon>
-                                Bugs
-                            </v-tab>
-                            <v-tab class="mr-3">
-                                <v-icon class="mr-2">mdi-code-tags</v-icon>
-                                Website
-                            </v-tab>
-                            <v-tab>
-                                <v-icon class="mr-2">mdi-cloud</v-icon>
-                                Server
-                            </v-tab>
-                        </v-tabs>
+                        <div>
+                            <material-card
+                                    color="general"
+                                    text="Latest submissions"
+                                    title="Submission Table"
+                            >
+                                <v-spacer></v-spacer>
+                                <v-text-field
+                                        append-icon="search"
+                                        hide-details
+                                        label="Search"
+                                        single-line
+                                        v-model="search">
+                                </v-text-field>
+
+                                <v-data-table
+                                        :expand="expand"
+                                        :headers="headers"
+                                        :items="SubmissionList"
+                                        :rows-per-page-items="rowsAmount"
+                                        :search="search"
+                                        class="elevation-1"
+
+                                >
+
+                                    <template
+                                            slot="headerCell"
+                                            slot-scope="{ header }"
+                                    >
+                <span
+                        class="subheading font-weight-light text-general text--darken-3"
+                        v-text="header.text"
+                />
+                                    </template>
+
+
+                                    <template v-slot:items="props">
+                                        <tr @click="props.expanded = !props.expanded, getSubmission(props.item.hash)">
+                                            <td>{{ props.item.id }}</td>
+                                            <td>{{ props.item.uniid }}</td>
+                                            <td>{{ props.item.hash }}</td>
+                                            <td>{{ props.item.timestamp }}</td>
+                                            <td>{{ props.item.priority }}</td>
+                                            <td>{{ props.item.testingPlatform }}</td>
+                                            <td>{{ props.item.folder }}</td>
+                                        </tr>
+                                    </template>
+
+                                    <v-spacer></v-spacer>
+
+                                    <template v-slot:expand="props">
+
+
+                                        <div>
+                                            <v-tabs
+                                                    color="light-blue darken-1"
+                                                    dark
+                                                    slider-color="light-blue darken-4"
+                                                    v-model="active"
+                                                    fixed-tabs
+                                            >
+                                                <v-tab
+                                                        v-for="job in fullSubmission"
+                                                >
+                                                    {{ job.slug}}
+
+                                                </v-tab>
+
+                                                <v-tab-item
+                                                        v-for="job in fullSubmission"
+                                                >
+
+                                                    <v-card
+                                                            :elevation="24"
+                                                    >
+
+                                                        <v-tabs
+                                                                color="grey darken-4"
+                                                                dark
+                                                                slider-color="blue lighten-4"
+                                                        >
+                                                            <v-tab ripple>
+                                                                <v-icon left>mdi-account</v-icon>
+                                                                Student Output
+                                                            </v-tab>
+                                                            <v-tab ripple>
+                                                                <v-icon left>mdi-lock</v-icon>
+                                                                Console logs
+                                                            </v-tab>
+
+                                                            <v-tab-item>
+                                                                <v-card flat>
+                                                                    <div id="output" v-html="job.output"></div>
+                                                                </v-card>
+                                                            </v-tab-item>
+
+                                                            <v-tab-item>
+                                                                <v-card flat>
+                                                                    <div id="consoleOutput"
+                                                                         v-html="job.consoleOutput"></div>
+                                                                </v-card>
+                                                            </v-tab-item>
+                                                            <v-spacer></v-spacer>
+
+                                                        </v-tabs>
+                                                    </v-card>
+                                                </v-tab-item>
+                                            </v-tabs>
+                                        </div>
+                                    </template>
+
+
+                                </v-data-table>
+                            </material-card>
+                        </div>
                     </v-flex>
-
-                    <v-tabs-items v-model="tabs">
-                        <v-tab-item
-                                :key="n"
-                                v-for="n in 3"
-                        >
-                            <v-list three-line>
-                                <v-list-tile @click="complete(0)">
-                                    <v-list-tile-action>
-                                        <v-checkbox
-                                                :value="list[0]"
-                                                color="green"
-                                        />
-                                    </v-list-tile-action>
-                                    <v-list-tile-title>
-                                        Sign contract for "What are conference organized afraid of?"
-                                    </v-list-tile-title>
-                                    <div class="d-flex">
-                                        <v-tooltip
-                                                content-class="top"
-                                                top>
-                                            <v-btn
-                                                    class="v-btn--simple"
-                                                    color="success"
-                                                    icon
-                                                    slot="activator"
-                                            >
-                                                <v-icon color="primary">mdi-pencil</v-icon>
-                                            </v-btn>
-                                            <span>Edit</span>
-                                        </v-tooltip>
-                                        <v-tooltip
-                                                content-class="top"
-                                                top>
-                                            <v-btn
-                                                    class="v-btn--simple"
-                                                    color="danger"
-                                                    icon
-                                                    slot="activator"
-                                            >
-                                                <v-icon color="error">mdi-close</v-icon>
-                                            </v-btn>
-                                            <span>Close</span>
-                                        </v-tooltip>
-
-                                    </div>
-                                </v-list-tile>
-                                <v-divider/>
-                                <v-list-tile @click="complete(1)">
-                                    <v-list-tile-action>
-                                        <v-checkbox
-                                                :value="list[1]"
-                                                color="success"
-                                        />
-                                    </v-list-tile-action>
-                                    <v-list-tile-title>
-                                        Lines From Great Russian Literature? Or E-mails From My Boss?
-                                    </v-list-tile-title>
-                                    <div class="d-flex">
-                                        <v-tooltip
-                                                content-class="top"
-                                                top>
-                                            <v-btn
-                                                    class="v-btn--simple"
-                                                    color="success"
-                                                    icon
-                                                    slot="activator"
-                                            >
-                                                <v-icon color="primary">mdi-pencil</v-icon>
-                                            </v-btn>
-                                            <span>Edit</span>
-                                        </v-tooltip>
-
-                                        <v-tooltip
-                                                content-class="top"
-                                                top>
-                                            <v-btn
-                                                    class="v-btn--simple"
-                                                    color="danger"
-                                                    icon
-                                                    slot="activator">
-                                                <v-icon color="error">mdi-close</v-icon>
-                                            </v-btn>
-                                            <span>Close</span>
-                                        </v-tooltip>
-                                    </div>
-                                </v-list-tile>
-                                <v-divider/>
-                                <v-list-tile @click="complete(2)">
-                                    <v-list-tile-action>
-                                        <v-checkbox
-                                                :value="list[2]"
-                                                color="success"
-                                        />
-                                    </v-list-tile-action>
-                                    <v-list-tile-title>
-                                        Flooded: One year later, assessing what was lost and what was found when a
-                                        ravaging rain swept through metro Detroit
-                                    </v-list-tile-title>
-                                    <div class="d-flex">
-                                        <v-tooltip
-                                                content-class="top"
-                                                top>
-                                            <v-btn
-                                                    class="v-btn--simple"
-                                                    color="success"
-                                                    icon
-                                                    slot="activator"
-                                            >
-                                                <v-icon color="primary">mdi-pencil</v-icon>
-                                            </v-btn>
-                                            <span>Edit</span>
-                                        </v-tooltip>
-                                        <v-tooltip
-                                                content-class="top"
-                                                top>
-                                            <v-btn
-                                                    class="v-btn--simple"
-                                                    color="danger"
-                                                    icon
-                                                    slot="activator"
-                                            >
-                                                <v-icon color="error">mdi-close</v-icon>
-                                            </v-btn>
-                                            <span>Close</span>
-                                        </v-tooltip>
-
-                                    </div>
-                                </v-list-tile>
-                            </v-list>
-                        </v-tab-item>
-                    </v-tabs-items>
-                </material-card>
-            </v-flex>
+                </v-layout>
+            </v-container>
         </v-layout>
     </v-container>
 </template>
@@ -439,77 +385,94 @@
                         }]
                     ]
                 },
+
+                // Charon like
+                expand: false,
+                active: null,
+                tabs: null,
+                window: 0,
+                SubmissionList: [],
+                fullSubmission: [],
+                rowsAmount: [15, 20, 25, {"text": "$vuetify.dataIterator.rowsPerPageAll", "value": -1}],
+                dialog: false,
+                search: '',
                 headers: [
-                    {
-                        sortable: false,
-                        text: 'ID',
-                        value: 'id'
-                    },
-                    {
-                        sortable: false,
-                        text: 'Name',
-                        value: 'name'
-                    },
-                    {
-                        sortable: false,
-                        text: 'Salary',
-                        value: 'salary',
-                        align: 'right'
-                    },
-                    {
-                        sortable: false,
-                        text: 'Country',
-                        value: 'country',
-                        align: 'right'
-                    },
-                    {
-                        sortable: false,
-                        text: 'City',
-                        value: 'city',
-                        align: 'right'
-                    }
+                    {text: 'id', align: 'left', value: 'id'},
+                    {text: 'uniid', value: 'uniid'},
+                    {text: 'hash', value: 'hash', sortable: false},
+                    {text: 'timestamp', value: 'timestamp'},
+                    {text: 'priority', value: 'priority'},
+                    {text: 'testingPlatform', value: 'testingPlatform'},
+                    {text: 'folder', value: 'folder'},
+
                 ],
-                items: [
-                    {
-                        name: 'Dakota Rice',
-                        country: 'Niger',
-                        city: 'Oud-Tunrhout',
-                        salary: '$35,738'
-                    },
-                    {
-                        name: 'Minerva Hooper',
-                        country: 'Curaçao',
-                        city: 'Sinaai-Waas',
-                        salary: '$23,738'
-                    }, {
-                        name: 'Sage Rodriguez',
-                        country: 'Netherlands',
-                        city: 'Overland Park',
-                        salary: '$56,142'
-                    }, {
-                        name: 'Philip Chanley',
-                        country: 'Korea, South',
-                        city: 'Gloucester',
-                        salary: '$38,735'
-                    }, {
-                        name: 'Doris Greene',
-                        country: 'Malawi',
-                        city: 'Feldkirchen in Kārnten',
-                        salary: '$63,542'
-                    }
-                ],
-                tabs: 0,
-                list: {
-                    0: false,
-                    1: false,
-                    2: false
-                }
+                editedIndex: -1,
+                defaultItem: {},
             }
         },
-        methods: {
-            complete(index) {
-                this.list[index] = !this.list[index]
+
+        watch: {
+            dialog(val) {
+                val || this.close()
             }
+        },
+        // called when page is created before dom
+        created() {
+            this.getSubmissions()
+            // this.$store.dispatch('autoRefreshToken')
+            // .then(response => console.log(response))
+            // .catch(error => console.log(error))
+        },
+
+        methods: {
+            getSubmission(hash) {
+                this.$http.get('/submission/' + hash)
+                    .then(response => {
+                        this.fullSubmission = response.data;
+                    })
+                    .catch(error => console.log(error))
+            },
+
+            getSubmissions() {
+                this.$http.get('/submissions')
+                    .then(response => {
+                        this.SubmissionList = response.data
+                    })
+                    .catch(error => console.log(error))
+            },
+
+            close() {
+                this.dialog = false;
+                setTimeout(() => {
+                    this.editedItem = Object.assign({}, this.defaultItem);
+                    this.editedIndex = -1
+                }, 300)
+            },
         }
     }
 </script>
+
+<style>
+    table.v-table thead tr {
+        color: red !important;
+    }
+
+    tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, .05);
+    }
+
+    #output {
+
+        max-height: 50em;
+        overflow: auto;
+
+    }
+
+    #consoleOutput {
+
+        max-height: 50em;
+        overflow: auto;
+
+    }
+
+</style>

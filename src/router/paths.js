@@ -65,7 +65,7 @@ export default [
             {
                 path: 'table-list',
                 meta: {
-                    name: 'Table List',
+                    name: 'Exercise Overview',
                     requiresAuth: true
                 },
                 component: () => import(`@/components/DashViews/SimpleTables.vue`)
@@ -73,7 +73,7 @@ export default [
             {
                 path: 'user-tables',
                 meta: {
-                    name: 'User Table',
+                    name: 'Student Overview',
                     requiresAuth: true
                 },
                 component: () => import(`@/components/DashViews/UsersTable.vue`)

@@ -57,14 +57,8 @@
 
     export default {
         data: () => ({
-            notifications: [
-                "Mike, Thanos is coming",
-                "5 new avengers joined the team",
-                "You're now friends with Capt",
-                "Another Notification",
-                "Another One - Dj Khalid voice"
-            ],
-            title: "I got a digital dash -Future Hendrixx",
+            notifications: [],
+            title: "Automated testing service",
             responsive: false,
             responsiveInput: false
         }),
