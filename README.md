@@ -5,7 +5,10 @@ Kasutajaliidesed
 1. Teenuse eesmärk on visuaalne liides Aretele, millega saab Aretet hallata ja kasutada visuaalselt Arete endpointe. Lisaks saab seal näha logisi.
 2. Teenus on mõeldud Arete haldajatele ja Arete teenuse kasutajale (Igaüks ei saa registreerida. Piiratud õigusega saab ainult ligi).
 3. Näiteks mina, et näha viimaseid failinud teste, et alamtestereid parandada ja teha andmeanalüüsi tudengite andmetega.
-4. Võimaldab teenust müüa koolist välja. Müün koodi testimise teenust, kus raha läheb küll koolile..
+4. Võimaldab teenust müüa koolist välja. Müün koodi testimise teenust, kus raha läheb küll koolile... Reaalselt pole plaanis.
+
+Defineeritud on järgmised kasutajad: Kasutaja, Administraator
+
 5. Keskkond sisaldab järgmiseid funktsionaalseid nõudeid:
     * Administraatoril on ligipääs Arete endpointidele ja saab requeste nupuvajutusega tekitada.
     * Kasutaja saab moodustada statistikat talle lubatud andmetest ja administraator saab moodustada statistikat kõikidest andmetest.
