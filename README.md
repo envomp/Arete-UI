@@ -13,8 +13,8 @@ Kasutajaliidesed
     * Kasutaja ja administarator saab näha talle lubatud andmeid ilusal kujul.
 
 
-Workflow on saadav lehel: https://xd.adobe.com/view/e9f19aac-b44f-4a2b-6444-cd167366b51c-9fc0/
+Workflow on saadav lehel (viimane element): https://xd.adobe.com/view/e9f19aac-b44f-4a2b-6444-cd167366b51c-9fc0/grid/
 
 Demo on saadav lehel: https://xd.adobe.com/view/e9f19aac-b44f-4a2b-6444-cd167366b51c-9fc0/?fullscreen
 
-Kahe tudengi tagasiside on saadav lehel: https://xd.adobe.com/view/7708ba44-696e-4617-7d76-f24ff837b634-0139/
+Kahe tudengi tagasiside on saadav lehel, kus on ka vana wireframe, kus uus tehti antud soovituste põhjal: https://xd.adobe.com/view/7708ba44-696e-4617-7d76-f24ff837b634-0139/
