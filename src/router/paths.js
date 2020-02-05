@@ -51,72 +51,35 @@ export default [
         children: [
             {
                 path: '',
-                name: 'Dashboard',
+                meta: {
+                    name: 'Automated testing Service',
+                    requiresAuth: true
+                },
                 component: () => import(`@/components/DashViews/Dashboard.vue`)
             },
             {
-                path: 'user-profile',
+                path: 'submissions',
                 meta: {
-                    name: 'User Profile',
+                    name: 'Submission Overview',
                     requiresAuth: true
                 },
-                component: () => import(`@/components/DashViews/UserProfile.vue`)
+                component: () => import(`@/components/DashViews/SubmissionTable.vue`)
             },
             {
-                path: 'table-list',
+                path: 'exercises',
                 meta: {
                     name: 'Exercise Overview',
                     requiresAuth: true
                 },
-                component: () => import(`@/components/DashViews/SimpleTables.vue`)
+                component: () => import(`@/components/DashViews/ExerciseTable.vue`)
             },
             {
-                path: 'user-tables',
+                path: 'students',
                 meta: {
                     name: 'Student Overview',
                     requiresAuth: true
                 },
-                component: () => import(`@/components/DashViews/UsersTable.vue`)
-            },
-            {
-                path: 'tablestest',
-                meta: {
-                    name: 'Complex Tables test',
-                    requiresAuth: true
-                },
-                component: () => import(`@/components/DashViews/TableList.vue`)
-            },
-            {
-                path: 'typography',
-                meta: {
-                    name: 'Typography',
-                    requiresAuth: true
-                },
-                component: () => import(`@/components/DashViews/Typography.vue`)
-            },
-            {
-                path: 'icons',
-                meta: {
-                    name: 'Icons',
-                    requiresAuth: true
-                },
-                component: () => import(`@/components/DashViews/Icons.vue`)
-            },
-            {
-                path: 'maps',
-                meta: {
-                    name: 'Maps',
-                    requiresAuth: true
-                },
-                component: () => import(`@/components/DashViews/Maps.vue`)
-            },
-            {
-                path: 'notifications',
-                meta: {
-                    name: 'Notifications',
-                    requiresAuth: true
-                },
-                component: () => import(`@/components/DashViews/Notifications.vue`)
+                component: () => import(`@/components/DashViews/StudentTable.vue`)
             }
         ]
     }

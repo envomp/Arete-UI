@@ -11,7 +11,8 @@
       >
         <a
                 :href="link.Link"
-                class="tertiary--text footer-links">{{ link.name }}</a>
+                class="tertiary--text footer-links">{{ link.name }}
+        </a>
       </span>
         </div>
 
@@ -23,8 +24,7 @@
         data: () => ({
             links: [
                 {name: 'Home', Link: '/dashboard'},
-                {name: 'Demo', Link: 'https://clintoxx.github.io/vuetify-admin-dashboard/'},
-                {name: 'GitHub', Link: 'https://github.com/ClintOxx'},
+                {name: 'GitHub', Link: 'https://github.com/envomp'},
             ]
         })
     }
@@ -34,4 +34,5 @@
     #core-footer {
         z-index: 0;
     }
+
 </style>

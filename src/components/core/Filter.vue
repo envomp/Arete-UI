@@ -39,64 +39,6 @@
                         </v-layout>
                         <v-divider class="mt-3"/>
                     </v-flex>
-                    <v-flex
-                            xs12
-                    >
-                        <div class="text-xs-center body-2 text-uppercase ">Images</div>
-                    </v-flex>
-                    <v-flex
-                            :key="img"
-                            v-for="img in images"
-                            xs3
-                    >
-                        <v-img
-                                :class="[image === img ? 'image-active' : '']"
-                                :src="img"
-                                @click.native="setImage(img)"
-                                height="120"
-                        />
-                    </v-flex>
-                    <v-flex xs12>
-                        <v-btn
-                                block
-                                color="success"
-                                href="https://github.com/ClintOxx/vuetify-admin-dashboard"
-                                target="_blank"
-                        >
-                            Free Download
-                        </v-btn>
-                    </v-flex>
-                    <v-flex xs12>
-                        <v-btn
-                                block
-                                class="white--text"
-                                color="primary"
-                                href="https://github.com/ClintOxx/vuetify-admin-dashboard"
-                                target="_blank"
-                        >
-                            Documentation
-                        </v-btn>
-                    </v-flex>
-                    <v-flex xs12>
-                        <div class="text-xs-center body-2 text-uppercase">
-                            <div class=" ">
-                                Thank You for Sharing!
-                            </div>
-
-                            <div>
-                                <v-btn
-                                        class="v-btn-twitter"
-                                        color="cyan"
-                                        fab
-                                        icon
-                                        round
-                                        small
-                                >
-                                    <v-icon>mdi-twitter</v-icon>
-                                </v-btn>
-                            </div>
-                        </div>
-                    </v-flex>
                 </v-layout>
             </v-container>
         </v-card>
@@ -116,26 +58,28 @@
                 'warning',
                 'danger',
                 'general'
-            ],
-            images: [
-                'https://demos.creative-tim.com/vue-material-dashboard/img/sidebar-1.23832d31.jpg',
-                'https://demos.creative-tim.com/vue-material-dashboard/img/sidebar-2.32103624.jpg',
-                'https://demos.creative-tim.com/vue-material-dashboard/img/sidebar-3.3a54f533.jpg',
-                'https://demos.creative-tim.com/vue-material-dashboard/img/sidebar-4.3b7e38ed.jpg'
             ]
         }),
 
         computed: {
-            ...mapState('app', ['image', 'color']),
+            ...mapState('app', ['color']),
             color() {
-                return this.$store.state.app.color
+                this.$store.state.app.color = localStorage.color; // Keep stuff in localStorage, so no need for request every refrest
+                return this.$store.state.app.color;
             }
         },
 
         methods: {
             ...mapMutations('app', ['setImage']),
             setColor(color) {
-                this.$store.state.app.color = color
+                localStorage.color = color;
+                this.$store.state.app.color = color;
+                let username = localStorage.username;
+                let token = localStorage.token;
+                this.$http.put('/user', {username, token, color})
+                    .then(() => {
+                    })
+                    .catch(error => console.log(error))
             }
         }
     }

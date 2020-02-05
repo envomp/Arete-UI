@@ -95,7 +95,12 @@
                 let username = this.username;
                 let password = this.password;
                 this.$store.dispatch('login', {username, password})
-                    .then(() => this.$router.push('/dashboard'))
+                    .then(response => {
+                        console.log(response.data.color);
+                        localStorage.color = response.data.color;
+                        localStorage.username = response.data.username;
+                        this.$router.push('/dashboard')
+                    })
                     .catch(err => {
                             console.log(err);
                             this.snackbar = true

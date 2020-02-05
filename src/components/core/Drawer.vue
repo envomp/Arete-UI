@@ -9,64 +9,56 @@
             v-model="inputValue"
             width="260"
     >
-        <v-img
-                :src="image"
-                height="100%"
+
+        <v-layout
+                class="fill-height"
+                column
+                tag="v-list"
         >
-            <v-layout
-                    class="fill-height"
-                    column
-                    tag="v-list"
+            <v-list-tile avatar>
+                <v-list-tile-avatar
+                        color="grey"
+                >
+                    <v-img
+                            :src="logo"
+                            contain
+                            height="64"
+                    />
+                </v-list-tile-avatar>
+                <v-list-tile-title class="title">
+                    Arete
+                </v-list-tile-title>
+            </v-list-tile>
+            <v-divider/>
+            <v-list-tile
+                    v-if="responsive"
             >
-                <v-list-tile avatar>
-                    <v-list-tile-avatar
-                            color="grey"
-                    >
-                        <v-img
-                                :src="logo"
-                                contain
-                                height="64"
-                        />
-                    </v-list-tile-avatar>
-                    <v-list-tile-title class="title">
-                        Vuetify Admin Dash
-                    </v-list-tile-title>
-                </v-list-tile>
-                <v-divider/>
-                <v-list-tile
-                        v-if="responsive"
-                >
-                    <v-text-field
-                            class="purple-input search-input"
-                            color="purple"
-                            label="Search..."
-                    />
-                </v-list-tile>
-                <v-list-tile
-                        :active-class="color"
-                        :key="i"
-                        :to="link.to"
-                        avatar
-                        class="v-list-item"
-                        v-for="(link, i) in links"
-                >
-                    <v-list-tile-action>
-                        <v-icon>{{ link.icon }}</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-title
-                            v-text="link.text"
-                    />
-                </v-list-tile>
-            </v-layout>
-        </v-img>
+            </v-list-tile>
+            <v-list-tile
+                    :active-class="color"
+                    :key="i"
+                    :to="link.to"
+                    avatar
+                    class="v-list-item"
+                    v-for="(link, i) in links"
+            >
+                <v-list-tile-action>
+                    <v-icon>{{ link.icon }}</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-title
+                        v-text="link.text"
+                />
+            </v-list-tile>
+        </v-layout>
+
     </v-navigation-drawer>
 </template>
 
 <script>
-  // Utilities
-  import {mapMutations, mapState} from 'vuex'
+    // Utilities
+    import {mapMutations, mapState} from 'vuex'
 
-  export default {
+    export default {
         data: () => ({
             logo: require('@/assets/img/redditicon.png'),
             links: [
@@ -76,45 +68,26 @@
                     text: 'Dashboard'
                 },
                 {
-                    to: '/dashboard/user-profile',
-                    icon: 'mdi-account',
-                    text: 'User Profile'
+                    to: '/dashboard/submissions',
+                    icon: 'mdi-calendar-today',
+                    text: 'Submissions'
                 },
                 {
-                    to: '/dashboard/table-list',
-                    icon: 'mdi-clipboard-outline',
-                    text: 'Exercise Overview'
+                    to: '/dashboard/exercises',
+                    icon: 'mdi-cloud-outline',
+                    text: 'Exercises'
                 },
                 {
-                    to: '/dashboard/user-tables',
-                    icon: 'mdi-table-edit',
-                    text: 'Student Overview'
-                },
-                {
-                    to: '/dashboard/typography',
-                    icon: 'mdi-format-font',
-                    text: 'Typography'
-                },
-                {
-                    to: '/dashboard/icons',
-                    icon: 'mdi-chart-bubble',
-                    text: 'Icons'
-                },
-                {
-                    to: '/dashboard/maps',
-                    icon: 'mdi-map-marker',
-                    text: 'Maps'
-                },
-                {
-                    to: '/dashboard/notifications',
-                    icon: 'mdi-bell',
-                    text: 'Notifications'
-                },
+                    to: '/dashboard/students',
+                    icon: 'mdi-code-braces',
+                    text: 'Students'
+                }
             ],
             responsive: false
         }),
+
         computed: {
-            ...mapState('app', ['image', 'color']),
+            ...mapState('app', ['color']),
             inputValue: {
                 get() {
                     return this.$store.state.app.drawer
@@ -128,7 +101,7 @@
             }
         },
         mounted() {
-            this.onResponsiveInverted()
+            this.onResponsiveInverted();
             window.addEventListener('resize', this.onResponsiveInverted)
         },
         beforeDestroy() {
@@ -137,11 +110,7 @@
         methods: {
             ...mapMutations('app', ['setDrawer', 'toggleDrawer']),
             onResponsiveInverted() {
-                if (window.innerWidth < 991) {
-                    this.responsive = true
-                } else {
-                    this.responsive = false
-                }
+                this.responsive = window.innerWidth < 991;
             }
         }
     }
