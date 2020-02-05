@@ -24,7 +24,7 @@
 </template>
 
 <script>
-    import {mapGetters, mapMutations} from "vuex";
+    import {mapGetters, mapMutations, mapState} from "vuex";
 
     export default {
         data: () => ({
@@ -35,6 +35,7 @@
         }),
 
         computed: {
+            ...mapState('app', ['color']),
             ...mapGetters(["authorized"])
         },
 

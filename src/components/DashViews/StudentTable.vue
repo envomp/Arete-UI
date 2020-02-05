@@ -22,7 +22,7 @@
 
                 :expand="expand"
                 :headers="headers"
-                :items="SubmissionList"
+                :items="studentsList"
                 :rows-per-page-items="rowsAmount"
                 :search="search"
                 class="elevation-1"
@@ -42,13 +42,10 @@
             <template
                     v-slot:items="props"
             >
-                <tr @click="props.expanded = !props.expanded, getSubmission(props.item.hash)">
+                <tr @click="props.expanded = !props.expanded, getStudent(props.item.uniid)">
                     <td>{{ props.item.id }}</td>
                     <td>{{ props.item.uniid }}</td>
-                    <td>{{ props.item.hash }}</td>
-                    <td>{{ props.item.timestamp }}</td>
-                    <td>{{ props.item.testingPlatform }}</td>
-                    <td>{{ props.item.course }}</td>
+                    <td>{{ props.item.gitRepo }}</td>
                 </tr>
             </template>
 
@@ -61,7 +58,7 @@
                         <v-flex>
                             <v-expansion-panel popout>
                                 <v-expansion-panel-content
-                                        v-for="job in fullSubmission"
+                                        v-for="job in fullStudent"
                                 >
                                     <template v-slot:header>
                                         <div>{{job.slug}}</div>
@@ -70,7 +67,7 @@
                                     <v-window>
 
                                         <v-tab-item
-                                                v-for="(job, index) in fullSubmission"
+                                                v-for="(job, index) in fullStudent"
                                         >
 
                                             <v-card
@@ -155,19 +152,16 @@
             expand: false,
             active: null,
             window: 0,
-            SubmissionList: [],
-            fullSubmission: [],
+            studentsList: [],
+            fullStudent: [],
             rowsAmount: [15, 20, 25, {"text": "$vuetify.dataIterator.rowsPerPageAll", "value": -1}],
             dialog: false,
             search: '',
             headers: [
                 {text: 'id', align: 'left', value: 'id'},
                 {text: 'uniid', value: 'uniid'},
-                {text: 'hash', value: 'hash', sortable: false},
-                {text: 'timestamp', value: 'timestamp'},
-                {text: 'testingPlatform', value: 'testingPlatform'},
-                {text: 'course', value: 'course'},
-
+                {text: 'gitRepo', value: 'gitRepo', sortable: false},
+                {text: 'firstTested', value: 'firstTested'},
             ],
             editedIndex: -1,
             defaultItem: {},
@@ -184,22 +178,22 @@
         },
         // called when page is created before dom
         created() {
-            this.getSubmissions();
+            this.getStudents();
         },
 
         methods: {
-            getSubmission(hash) {
-                this.$http.get('/submission/' + hash)
+            getStudent(uniid) {
+                this.$http.get('/student/' + uniid)
                     .then(response => {
-                        this.fullSubmission = response.data;
+                        this.fullStudent = response.data;
                     })
                     .catch(error => console.log(error))
             },
 
-            getSubmissions() {
-                this.$http.get('/submissions')
+            getStudents() {
+                this.$http.get('/students')
                     .then(response => {
-                        this.SubmissionList = response.data
+                        this.studentsList = response.data
                     })
                     .catch(error => console.log(error))
             },
@@ -215,16 +209,16 @@
             createFileView(i) {
                 let message = "";
 
-                message += "Failed: " + this.fullSubmission[i]['failed'] + "<br><br>";
-                message += "Commit message: " + this.fullSubmission[i]['commitMessage'] + "<br><br>";
-                message += "Return url: " + this.fullSubmission[i]['returnUrl'] + "<br><br>";
-                message += "Docker extra: " + this.fullSubmission[i]['dockerExtra'] + "<br><br>";
-                message += "System extra: " + this.fullSubmission[i]['systemExtra'] + "<br><br>";
-                message += "Priority: " + this.fullSubmission[i]['priority'] + "<br><br>";
-                message += "Git student repository: " + this.fullSubmission[i]['gitStudentRepo'] + "<br><br>";
-                message += "Git test repository: " + this.fullSubmission[i]['gitTestSource'] + "<br><br>";
-                message += "Student files: " + this.fullSubmission[i]['source'] + "<br><br>";
-                message += "Test files: " + this.fullSubmission[i]['testSource'] + "<br><br>";
+                message += "Failed: " + this.fullStudent[i]['failed'] + "<br><br>";
+                message += "Commit message: " + this.fullStudent[i]['commitMessage'] + "<br><br>";
+                message += "Return url: " + this.fullStudent[i]['returnUrl'] + "<br><br>";
+                message += "Docker extra: " + this.fullStudent[i]['dockerExtra'] + "<br><br>";
+                message += "System extra: " + this.fullStudent[i]['systemExtra'] + "<br><br>";
+                message += "Priority: " + this.fullStudent[i]['priority'] + "<br><br>";
+                message += "Git student repository: " + this.fullStudent[i]['gitStudentRepo'] + "<br><br>";
+                message += "Git test repository: " + this.fullStudent[i]['gitTestSource'] + "<br><br>";
+                message += "Student files: " + this.fullStudent[i]['source'] + "<br><br>";
+                message += "Test files: " + this.fullStudent[i]['testSource'] + "<br><br>";
 
                 return message;
             }

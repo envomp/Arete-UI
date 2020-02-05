@@ -96,7 +96,6 @@
                 let password = this.password;
                 this.$store.dispatch('login', {username, password})
                     .then(response => {
-                        console.log(response.data.color);
                         localStorage.color = response.data.color;
                         localStorage.username = response.data.username;
                         this.$router.push('/dashboard')

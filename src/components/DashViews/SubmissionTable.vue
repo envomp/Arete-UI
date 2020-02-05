@@ -20,6 +20,7 @@
         </material-card>
         <v-data-table
 
+                id="submissionDataTable"
                 :expand="expand"
                 :headers="headers"
                 :items="SubmissionList"
@@ -48,7 +49,7 @@
                     <td>{{ props.item.hash }}</td>
                     <td>{{ props.item.timestamp }}</td>
                     <td>{{ props.item.testingPlatform }}</td>
-                    <td>{{ props.item.course }}</td>
+                    <td>{{ props.item.root }}</td>
                 </tr>
             </template>
 
@@ -78,6 +79,7 @@
                                             >
 
                                                 <v-tabs
+                                                        :id="'submissionTab' + index"
                                                         color="grey darken-4"
                                                         dark
                                                         slider-color="blue lighten-4"
@@ -137,7 +139,6 @@
 
         </v-data-table>
 
-        <!--        Footer hides otherwise-->
         <br><br><br><br>
     </v-container>
 
@@ -168,7 +169,7 @@
                 {text: 'hash', value: 'hash', sortable: false},
                 {text: 'timestamp', value: 'timestamp'},
                 {text: 'testingPlatform', value: 'testingPlatform'},
-                {text: 'course', value: 'course'},
+                {text: 'root', value: 'root'},
 
             ],
             editedIndex: -1,
@@ -220,14 +221,12 @@
 
                 message += "Failed: " + this.fullSubmission[i]['failed'] + "<br><br>";
                 message += "Commit message: " + this.fullSubmission[i]['commitMessage'] + "<br><br>";
-                message += "Return url: " + this.fullSubmission[i]['returnUrl'] + "<br><br>";
                 message += "Docker extra: " + this.fullSubmission[i]['dockerExtra'] + "<br><br>";
                 message += "System extra: " + this.fullSubmission[i]['systemExtra'] + "<br><br>";
                 message += "Priority: " + this.fullSubmission[i]['priority'] + "<br><br>";
                 message += "Git student repository: " + this.fullSubmission[i]['gitStudentRepo'] + "<br><br>";
-                message += "Git test repository: " + this.fullSubmission[i]['gitTestSource'] + "<br><br>";
+                message += "Git test repository: " + this.fullSubmission[i]['gitTestRepo'] + "<br><br>";
                 message += "Student files: " + this.fullSubmission[i]['source'] + "<br><br>";
-                message += "Test files: " + this.fullSubmission[i]['testSource'] + "<br><br>";
 
                 return message;
             }
