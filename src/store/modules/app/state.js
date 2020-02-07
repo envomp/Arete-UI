@@ -1,4 +1,4 @@
 export default {
     drawer: null,
-    color: ''
+    color: localStorage.color
 }

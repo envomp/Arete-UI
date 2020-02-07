@@ -20,13 +20,12 @@
         </material-card>
         <v-data-table
 
-                id="submissionDataTable"
-                :expand="expand"
                 :headers="headers"
                 :items="SubmissionList"
                 :rows-per-page-items="rowsAmount"
                 :search="search"
                 class="elevation-1"
+                id="submissionDataTable"
 
         >
 
@@ -36,6 +35,7 @@
             >
                 <span
                         v-bind:class="'subheading font-weight-light text-' + color"
+                        v-bind:style="{ 'color': color }"
                         v-text="header.text"
                 />
             </template>
@@ -80,9 +80,9 @@
 
                                                 <v-tabs
                                                         :id="'submissionTab' + index"
+                                                        :slider-color="color"
                                                         color="grey darken-4"
                                                         dark
-                                                        slider-color="blue lighten-4"
                                                 >
                                                     <v-tab ripple>
                                                         <v-icon left>mdi-account</v-icon>
@@ -148,20 +148,16 @@
 <script>
 
     // Utilities
-    import {mapMutations, mapState} from 'vuex'
+    import {mapState} from 'vuex'
 
     export default {
         name: 'Dashboard',
         data: () => ({
 
             // Charon like
-            expand: false,
-            active: null,
-            window: 0,
             SubmissionList: [],
             fullSubmission: [],
             rowsAmount: [15, 20, 25, {"text": "$vuetify.dataIterator.rowsPerPageAll", "value": -1}],
-            dialog: false,
             search: '',
             headers: [
                 {text: 'id', align: 'left', value: 'id'},
@@ -172,20 +168,12 @@
                 {text: 'root', value: 'root'},
 
             ],
-            editedIndex: -1,
-            defaultItem: {},
-
         }),
 
         computed: {
             ...mapState('app', ['color']),
         },
 
-        watch: {
-            dialog(val) {
-                val || this.close()
-            }
-        },
         // called when page is created before dom
         created() {
             this.getSubmissions();
@@ -206,14 +194,6 @@
                         this.SubmissionList = response.data
                     })
                     .catch(error => console.log(error))
-            },
-
-            close() {
-                this.dialog = false;
-                setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem);
-                    this.editedIndex = -1
-                }, 300)
             },
 
             createFileView(i) {

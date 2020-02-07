@@ -6,8 +6,8 @@
 
         <material-card
                 :color="color"
-                text="Latest submissions"
-                title="Submission Table"
+                text="Student overview"
+                title="Student Table"
         >
             <v-text-field
                     append-icon="search"
@@ -20,7 +20,6 @@
         </material-card>
         <v-data-table
 
-                :expand="expand"
                 :headers="headers"
                 :items="studentsList"
                 :rows-per-page-items="rowsAmount"
@@ -42,10 +41,16 @@
             <template
                     v-slot:items="props"
             >
-                <tr @click="props.expanded = !props.expanded, getStudent(props.item.uniid)">
+                <tr @click="props.expanded = !props.expanded, getStudent(props.item.id)">
                     <td>{{ props.item.id }}</td>
                     <td>{{ props.item.uniid }}</td>
-                    <td>{{ props.item.gitRepo }}</td>
+                    <td>{{ props.item.firstTested }}</td>
+                    <td>{{ props.item.totalCommits }}</td>
+                    <td>{{ props.item.totalTestsRan }}</td>
+                    <td>{{ props.item.totalTestsPassed }}</td>
+                    <td>{{ props.item.totalDiagnosticErrors }}</td>
+                    <td>{{ props.item.failedCommits }}</td>
+                    <td>{{ props.item.commitsStyleOK }}</td>
                 </tr>
             </template>
 
@@ -58,68 +63,42 @@
                         <v-flex>
                             <v-expansion-panel popout>
                                 <v-expansion-panel-content
-                                        v-for="job in fullStudent"
+                                        v-for="course in fullStudent.courses"
                                 >
                                     <template v-slot:header>
-                                        <div>{{job.slug}}</div>
+                                        <div>{{course.name}}</div>
                                     </template>
 
                                     <v-window>
 
-                                        <v-tab-item
-                                                v-for="(job, index) in fullStudent"
+                                        <v-tabs
+                                                :color="color"
+                                                color="grey darken-4"
+                                                dark
+                                                :slider-color="color"
+                                                show-arrows
                                         >
 
-                                            <v-card
-                                                    :elevation="24"
+                                            <v-tabs-slider color="yellow"></v-tabs-slider>
+
+                                            <v-tab
+                                                    v-for="slug in course.slugs"
                                             >
+                                                {{ slug.slug }}
+                                            </v-tab>
 
-                                                <v-tabs
-                                                        color="grey darken-4"
-                                                        dark
-                                                        slider-color="blue lighten-4"
+                                            <v-tabs-items>
+                                                <v-tab-item
+                                                        v-for="slug in course.slugs"
                                                 >
-                                                    <v-tab ripple>
-                                                        <v-icon left>mdi-account</v-icon>
-                                                        Student Output
-                                                    </v-tab>
+                                                    <v-card flat>
 
-                                                    <v-tab ripple>
-                                                        <v-icon left>mdi-lock</v-icon>
-                                                        Console logs
-                                                    </v-tab>
+                                                        {{slug}}
 
-                                                    <v-tab ripple>
-                                                        <v-icon left>mdi-archive</v-icon>
-                                                        Content
-                                                    </v-tab>
-
-                                                    <v-tab-item>
-                                                        <v-card flat>
-                                                            <div id="output" v-html="job.output"></div>
-                                                        </v-card>
-                                                    </v-tab-item>
-
-                                                    <v-tab-item>
-                                                        <v-card flat>
-                                                            <div id="consoleOutput"
-                                                                 v-html="job.consoleOutput"></div>
-                                                        </v-card>
-                                                    </v-tab-item>
-
-                                                    <v-tab-item>
-                                                        <v-card flat>
-                                                            <div
-                                                                    v-html="createFileView(index)"></div>
-                                                        </v-card>
-                                                    </v-tab-item>
-
-                                                    <v-spacer></v-spacer>
-
-                                                </v-tabs>
-                                            </v-card>
-
-                                        </v-tab-item>
+                                                    </v-card>
+                                                </v-tab-item>
+                                            </v-tabs-items>
+                                        </v-tabs>
 
                                     </v-window>
 
@@ -145,45 +124,37 @@
     import {mapState} from "vuex";
 
     export default {
-        name: 'Dashboard',
         data: () => ({
 
-            // Charon like
-            expand: false,
-            active: null,
-            window: 0,
             studentsList: [],
             fullStudent: [],
             rowsAmount: [15, 20, 25, {"text": "$vuetify.dataIterator.rowsPerPageAll", "value": -1}],
-            dialog: false,
             search: '',
             headers: [
                 {text: 'id', align: 'left', value: 'id'},
                 {text: 'uniid', value: 'uniid'},
-                {text: 'gitRepo', value: 'gitRepo', sortable: false},
                 {text: 'firstTested', value: 'firstTested'},
+                {text: 'totalCommits', value: 'totalCommits'},
+                {text: 'totalTestsRan', value: 'totalTestsRan'},
+                {text: 'totalTestsPassed', value: 'totalDiagnosticErrors'},
+                {text: 'totalDiagnosticErrors', value: 'totalDiagnosticErrors'},
+                {text: 'failedCommits', value: 'failedCommits'},
+                {text: 'commitsStyleOK', value: 'commitsStyleOK'},
             ],
-            editedIndex: -1,
-            defaultItem: {},
         }),
 
         computed: {
             ...mapState('app', ['color']),
         },
 
-        watch: {
-            dialog(val) {
-                val || this.close()
-            }
-        },
         // called when page is created before dom
         created() {
             this.getStudents();
         },
 
         methods: {
-            getStudent(uniid) {
-                this.$http.get('/student/' + uniid)
+            getStudent(id) {
+                this.$http.get('/student/' + id)
                     .then(response => {
                         this.fullStudent = response.data;
                     })
@@ -198,52 +169,11 @@
                     .catch(error => console.log(error))
             },
 
-            close() {
-                this.dialog = false;
-                setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem);
-                    this.editedIndex = -1
-                }, 300)
-            },
-
-            createFileView(i) {
-                let message = "";
-
-                message += "Failed: " + this.fullStudent[i]['failed'] + "<br><br>";
-                message += "Commit message: " + this.fullStudent[i]['commitMessage'] + "<br><br>";
-                message += "Return url: " + this.fullStudent[i]['returnUrl'] + "<br><br>";
-                message += "Docker extra: " + this.fullStudent[i]['dockerExtra'] + "<br><br>";
-                message += "System extra: " + this.fullStudent[i]['systemExtra'] + "<br><br>";
-                message += "Priority: " + this.fullStudent[i]['priority'] + "<br><br>";
-                message += "Git student repository: " + this.fullStudent[i]['gitStudentRepo'] + "<br><br>";
-                message += "Git test repository: " + this.fullStudent[i]['gitTestSource'] + "<br><br>";
-                message += "Student files: " + this.fullStudent[i]['source'] + "<br><br>";
-                message += "Test files: " + this.fullStudent[i]['testSource'] + "<br><br>";
-
-                return message;
-            }
-
         }
     }
 </script>
 
 <style scoped>
 
-    #output {
-
-        max-height: 50em;
-        overflow: auto;
-
-    }
-
-    #consoleOutput {
-
-        max-height: 50em;
-        overflow: auto;
-        white-space: normal;
-
-        /*white-space: initial;*/
-
-    }
 
 </style>

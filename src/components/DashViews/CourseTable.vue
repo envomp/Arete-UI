@@ -6,8 +6,8 @@
 
         <material-card
                 :color="color"
-                text="Exercise overview"
-                title="Exercise Table"
+                text="Course overview"
+                title="Course Table"
         >
             <v-text-field
                     append-icon="search"
@@ -21,7 +21,7 @@
         <v-data-table
 
                 :headers="headers"
-                :items="exerciseList"
+                :items="courseList"
                 :rows-per-page-items="rowsAmount"
                 :search="search"
                 class="elevation-1"
@@ -41,10 +41,9 @@
             <template
                     v-slot:items="props"
             >
-                <tr @click="props.expanded = !props.expanded, getExercise(props.item.id)">
+                <tr @click="props.expanded = !props.expanded, getCourse(props.item.id)">
                     <td>{{ props.item.id }}</td>
                     <td>{{ props.item.name }}</td>
-                    <td>{{ props.item.courseUrl }}</td>
                     <td>{{ props.item.totalCommits }}</td>
                     <td>{{ props.item.totalTestsRan }}</td>
                     <td>{{ props.item.totalTestsPassed }}</td>
@@ -67,8 +66,8 @@
                             >
                                 <v-window-item>
 
-                                    <v-card flat id="fullExercise" >
-                                        <div v-html="fullExercise"></div>
+                                    <v-card flat id="fullCourse" >
+                                        <div v-html="fullCourse"></div>
                                     </v-card>
 
                                 </v-window-item>
@@ -95,15 +94,13 @@
     export default {
         data: () => ({
 
-            // Charon like
-            exerciseList: [],
-            fullExercise: [],
+            courseList: [],
+            fullCourse: [],
             rowsAmount: [15, 20, 25, {"text": "$vuetify.dataIterator.rowsPerPageAll", "value": -1}],
             search: '',
             headers: [
                 {text: 'id', align: 'left', value: 'id'},
                 {text: 'name', value: 'name'},
-                {text: 'courseUrl', value: 'courseUrl'},
                 {text: 'totalCommits', value: 'totalCommits'},
                 {text: 'totalTestsRan', value: 'totalTestsRan'},
                 {text: 'totalTestsPassed', value: 'totalDiagnosticErrors'},
@@ -119,25 +116,25 @@
 
         // called when page is created before dom
         created() {
-            this.getExercises();
+            this.getCourses();
         },
 
         methods: {
-            getExercise(id) {
-                this.$http.get('/slug/' + id)
+            getCourse(id) {
+                this.$http.get('/course/' + id)
                     .then(response => {
-                        this.fullExercise = response.data;
+                        this.fullCourse = response.data;
                     })
                     .catch(error => console.log(error))
             },
 
-            getExercises() {
-                this.$http.get('/slugs')
+            getCourses() {
+                this.$http.get('/courses')
                     .then(response => {
-                        this.exerciseList = response.data
+                        this.courseList = response.data
                     })
                     .catch(error => console.log(error))
-            }
+            },
 
         }
     }
@@ -145,7 +142,7 @@
 
 <style scoped>
 
-    #fullExercise {
+    #fullCourse {
 
         max-height: 50em;
         overflow: auto;

@@ -66,6 +66,14 @@ export default [
                 component: () => import(`@/components/DashViews/SubmissionTable.vue`)
             },
             {
+                path: 'courses',
+                meta: {
+                    name: 'Course Overview',
+                    requiresAuth: true
+                },
+                component: () => import(`@/components/DashViews/CourseTable.vue`)
+            },
+            {
                 path: 'exercises',
                 meta: {
                     name: 'Exercise Overview',

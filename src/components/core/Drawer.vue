@@ -73,8 +73,13 @@
                     text: 'Submissions'
                 },
                 {
+                    to: '/dashboard/courses',
+                    icon: 'mdi-source-fork',
+                    text: 'Courses'
+                },
+                {
                     to: '/dashboard/exercises',
-                    icon: 'mdi-cloud-outline',
+                    icon: 'mdi-source-pull',
                     text: 'Exercises'
                 },
                 {

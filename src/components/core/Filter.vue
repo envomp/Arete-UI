@@ -25,11 +25,11 @@
             <v-container grid-list-xl>
                 <v-layout wrap>
                     <v-flex xs12>
-                        <div class="text-xs-center body-2 text-uppercase ">Sidebar Filters</div>
+                        <div class="text-xs-center body-2 text-uppercase ">Theme</div>
 
                         <v-layout justify-center>
                             <v-avatar
-                                    :class="[c === color ? 'color-active color-' + c: 'color-' + c]"
+                                    :color="c"
                                     :key="c"
                                     @click="setColor(c)"
                                     size="23"
@@ -52,19 +52,21 @@
     export default {
         data: () => ({
             colors: [
-                'primary',
-                'info',
-                'success',
-                'warning',
                 'danger',
-                'general'
+                'warning',
+                'primary',
+                'success',
+                'info',
+                'general',
+                'accent',
+                'tertiary',
+                'error'
             ]
         }),
 
         computed: {
             ...mapState('app', ['color']),
             color() {
-                this.$store.state.app.color = localStorage.color; // Keep stuff in localStorage, so no need for request every refrest
                 return this.$store.state.app.color;
             }
         },
