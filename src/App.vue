@@ -17,6 +17,7 @@
 <script>
     // checks to see if auth jwt token is valid or has expired, if it gets back 401 error log out
     export default {
+        name: 'App',
         created: function () {
             this.$http.interceptors.response.use((response) => {
                 return response;

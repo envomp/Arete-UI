@@ -13,7 +13,6 @@
         <v-layout
                 class="fill-height"
                 column
-                tag="v-list"
         >
             <v-list-tile avatar>
                 <v-list-tile-avatar
@@ -59,6 +58,7 @@
     import {mapMutations, mapState} from 'vuex'
 
     export default {
+        name: 'Drawer',
         data: () => ({
             logo: require('@/assets/img/redditicon.png'),
             links: [

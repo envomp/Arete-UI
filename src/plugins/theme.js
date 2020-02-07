@@ -8,5 +8,4 @@ export default {
     accent: '#7C4DFF',
     tertiary: '#9E9E9E',
     error: '#212121',
-
 }
