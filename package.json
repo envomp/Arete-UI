@@ -1,5 +1,5 @@
 {
-  "name": "vuetify-admin-dashboard",
+  "name": "arete-ui",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,9 @@
     "dev": "npm run serve"
   },
   "dependencies": {
+    "bootstrap": "^4.4.1",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.16.1",
     "babel-eslint": "^10.0.3",
     "chartist": "0.11.4",
     "eslint": "^4.10.0",
@@ -28,8 +31,6 @@
     "@vue/eslint-config-standard": "^5.1.1",
     "axios": "^0.19.2",
     "material-design-icons-iconfont": "^5.0.1",
-    "node-sass": "^4.13.1",
-    "sass-loader": "^8.0.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "vue-analytics": "^5.8.0",
