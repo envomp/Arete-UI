@@ -49,7 +49,7 @@
                     <td>{{ props.item.totalTestsRan }}</td>
                     <td>{{ props.item.totalTestsPassed }}</td>
                     <td>{{ props.item.totalDiagnosticErrors }}</td>
-                    <td>{{ props.item.failedCommits }}</td>
+                    <td>{{ props.item.differentSlugs }}</td>
                     <td>{{ props.item.commitsStyleOK }}</td>
                 </tr>
             </template>
@@ -138,7 +138,7 @@
                 {text: 'totalTestsRan', value: 'totalTestsRan'},
                 {text: 'totalTestsPassed', value: 'totalDiagnosticErrors'},
                 {text: 'totalDiagnosticErrors', value: 'totalDiagnosticErrors'},
-                {text: 'failedCommits', value: 'failedCommits'},
+                {text: 'differentSlugs', value: 'differentSlugs'},
                 {text: 'commitsStyleOK', value: 'commitsStyleOK'},
             ],
         }),
