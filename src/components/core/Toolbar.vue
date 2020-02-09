@@ -30,8 +30,7 @@
         data: () => ({
             notifications: [],
             title: "Automated testing service",
-            responsive: false,
-            responsiveInput: false
+            hide: false,
         }),
 
         computed: {
@@ -57,13 +56,7 @@
             ...mapMutations("app", ["setDrawer", "toggleDrawer"]),
 
             onResponsiveInverted() {
-                if (window.innerWidth < 991) {
-                    this.responsive = true;
-                    this.responsiveInput = false;
-                } else {
-                    this.responsive = false;
-                    this.responsiveInput = true;
-                }
+                this.hide = window.innerWidth < 991;
             },
             logout: function () {
                 this.$store.dispatch("logout").then(() => {

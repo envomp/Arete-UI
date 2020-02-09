@@ -22,7 +22,7 @@
                                 <v-text-field
                                         :rules="[() => !!username || 'This field is required']"
                                         label="Login"
-                                        placeholder="TotallyNotThanos"
+                                        placeholder="admin"
                                         prepend-icon="mdi-account"
                                         ref="username"
                                         required
@@ -109,7 +109,7 @@
         },
         metaInfo() {
             return {
-                title: 'Super Secret | Login'
+                title: 'Login'
             }
         }
     }

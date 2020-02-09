@@ -15,7 +15,7 @@ import Meta from 'vue-meta'
 // Routes
 import paths from './paths'
 
-Vue.use(Router)
+Vue.use(Router);
 
 // Create a new router
 const router = new Router({
@@ -32,23 +32,23 @@ const router = new Router({
         }
         return {x: 0, y: 0}
     }
-})
+});
 
 // Route guard checks to see if you are logged in, if not reroutes to login
 // to is where you are going, matched.some is to find which routes have requiresAuth
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (store.getters.authorized) {
-            next()
+            next();
             return
         }
         next('/')
     } else {
         next()
     }
-})
+});
 
-Vue.use(Meta)
+Vue.use(Meta);
 
 // Bootstrap Analytics
 // Set in .env

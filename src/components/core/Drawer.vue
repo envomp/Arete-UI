@@ -15,23 +15,21 @@
                 column
         >
             <v-list-tile avatar>
-                <v-list-tile-avatar
-                        color="grey"
-                >
+                <v-avatar>
+
                     <v-img
                             :src="logo"
                             contain
-                            height="64"
                     />
-                </v-list-tile-avatar>
-                <v-list-tile-title class="title">
-                    Arete
-                </v-list-tile-title>
+                </v-avatar>
             </v-list-tile>
             <v-divider/>
             <v-list-tile
-                    v-if="responsive"
+                    v-if="hide"
             >
+                <v-list-tile-action>
+                    <v-icon>{{ link.icon }}</v-icon>
+                </v-list-tile-action>
             </v-list-tile>
             <v-list-tile
                     :active-class="color"
@@ -40,6 +38,7 @@
                     avatar
                     class="v-list-item"
                     v-for="(link, i) in links"
+                    v-if="!hide"
             >
                 <v-list-tile-action>
                     <v-icon>{{ link.icon }}</v-icon>
@@ -60,7 +59,7 @@
     export default {
         name: 'Drawer',
         data: () => ({
-            logo: require('@/assets/img/redditicon.png'),
+            logo: require('@/assets/img/logo.png'),
             links: [
                 {
                     to: '/',
@@ -88,7 +87,7 @@
                     text: 'Students'
                 }
             ],
-            responsive: false
+            hide: false
         }),
 
         computed: {
@@ -115,7 +114,7 @@
         methods: {
             ...mapMutations('app', ['setDrawer', 'toggleDrawer']),
             onResponsiveInverted() {
-                this.responsive = window.innerWidth < 991;
+                this.hide = window.innerWidth < 991;
             }
         }
     }

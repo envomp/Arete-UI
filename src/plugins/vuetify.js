@@ -10,3 +10,5 @@ const vuetifyOptions = {
 };
 
 Vue.use(Vuetify, vuetifyOptions);
+
+export default {}
