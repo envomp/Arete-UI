@@ -11,6 +11,10 @@ table.v-table thead tr {
   background: $table-hover-color !important;
 }
 
+.v-datatable__expand-content {
+  background: #5a5a5a;
+}
+
 table.v-table tbody td {
   font-size: $font-size-general;
   font-weight: $font-weight-lighter;
