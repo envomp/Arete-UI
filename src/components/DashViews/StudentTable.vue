@@ -61,56 +61,18 @@
                 <v-container>
                     <v-layout row wrap>
                         <v-flex>
-                            <v-expansion-panel popout>
-                                <v-expansion-panel-content
-                                        v-for="course in fullStudent.courses"
-                                >
-                                    <template v-slot:header>
-                                        <div>{{course.name}}</div>
-                                    </template>
+                            <v-window>
 
-                                    <v-window>
+                                <v-card flat id="fullStudentCourse">
+                                    <div v-html="fullStudent"></div>
+                                </v-card>
 
-                                        <v-tabs
-                                                :color="color"
-                                                color="grey darken-4"
-                                                dark
-                                                :slider-color="color"
-                                                show-arrows
-                                        >
-
-                                            <v-tabs-slider color="yellow"></v-tabs-slider>
-
-                                            <v-tab
-                                                    v-for="slug in course.slugs"
-                                            >
-                                                {{ slug.slug }}
-                                            </v-tab>
-
-                                            <v-tabs-items>
-                                                <v-tab-item
-                                                        v-for="slug in course.slugs"
-                                                >
-                                                    <v-card flat>
-
-                                                        {{slug}}
-
-                                                    </v-card>
-                                                </v-tab-item>
-                                            </v-tabs-items>
-                                        </v-tabs>
-
-                                    </v-window>
-
-                                </v-expansion-panel-content>
-                            </v-expansion-panel>
+                            </v-window>
                         </v-flex>
-
                     </v-layout>
                 </v-container>
 
             </template>
-
         </v-data-table>
 
         <!--        Footer hides otherwise-->

@@ -103,9 +103,9 @@
                                             <template
                                                     v-slot:items="props"
                                             >
-                                                <tr @click="props.expanded = !props.expanded">
+                                                <tr @click="props.expanded = !props.expanded, getStudent(props.item.id)">
                                                     <td>{{ props.item.id }}</td>
-                                                    <td>{{ props.item.student.uniid }}</td>
+                                                    <td>{{ props.item.uniid }}</td>
                                                     <td>{{ props.item.latestSubmission }}</td>
                                                     <td>{{ props.item.totalCommits }}</td>
                                                     <td>{{ props.item.totalTestsRan }}</td>
@@ -130,7 +130,7 @@
                                                                 <v-window-item>
 
                                                                     <v-card flat id="fullStudentCourse">
-                                                                        <div v-html="props.item.student"></div>
+                                                                        <div v-html="student"></div>
                                                                     </v-card>
 
                                                                 </v-window-item>
@@ -170,6 +170,7 @@
 
             courseList: [],
             fullCourse: [],
+            student: [],
             rowsAmount: [15, 20, 25, {"text": "$vuetify.dataIterator.rowsPerPageAll", "value": -1}],
             search: '',
             subSearch: '',
@@ -206,6 +207,14 @@
         },
 
         methods: {
+            getStudent(id) {
+                this.$http.get('/student/' + id)
+                    .then(response => {
+                        this.student = response.data;
+                    })
+                    .catch(error => console.log(error))
+            },
+
             getCourse(id) {
                 this.$http.get('/course/' + id)
                     .then(response => {
