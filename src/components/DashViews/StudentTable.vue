@@ -44,7 +44,7 @@
                 <tr @click="props.expanded = !props.expanded, getStudent(props.item.id)">
                     <td>{{ props.item.id }}</td>
                     <td>{{ props.item.uniid }}</td>
-                    <td>{{ props.item.firstTested }}</td>
+                    <td>{{ props.item.lastTested }}</td>
                     <td>{{ props.item.totalCommits }}</td>
                     <td>{{ props.item.totalTestsRan }}</td>
                     <td>{{ props.item.totalTestsPassed }}</td>
@@ -133,7 +133,7 @@
             headers: [
                 {text: 'id', align: 'left', value: 'id'},
                 {text: 'uniid', value: 'uniid'},
-                {text: 'firstTested', value: 'firstTested'},
+                {text: 'lastTested', value: 'lastTested'},
                 {text: 'totalCommits', value: 'totalCommits'},
                 {text: 'totalTestsRan', value: 'totalTestsRan'},
                 {text: 'totalTestsPassed', value: 'totalDiagnosticErrors'},
