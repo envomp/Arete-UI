@@ -1,36 +1,41 @@
 <template>
+
     <v-navigation-drawer
+            :mini-variant="!userOverride && hide"
             app
             dark
-            floating
             id="app-drawer"
-            mobile-break-point="991"
-            persistent
             v-model="inputValue"
             width="260"
+            mobile-break-point="0"
     >
 
         <v-layout
                 class="fill-height"
                 column
         >
-            <v-list-tile avatar>
-                <v-avatar>
 
-                    <v-img
-                            :src="logo"
-                            contain
-                    />
-                </v-avatar>
-            </v-list-tile>
-            <v-divider/>
             <v-list-tile
-                    v-if="hide"
+                    @click="userOverride = !userOverride"
+                    avatar
+                    class="v-list-item"
+                    id="logo"
             >
                 <v-list-tile-action>
-                    <v-icon>{{ link.icon }}</v-icon>
+                    <v-avatar
+                    >
+                        <v-img
+                                :src="logo"
+                                contain
+                        />
+                    </v-avatar>
                 </v-list-tile-action>
+
+                <v-card-title class="headline">Arete</v-card-title>
             </v-list-tile>
+
+            <v-divider/>
+
             <v-list-tile
                     :active-class="color"
                     :key="i"
@@ -38,7 +43,6 @@
                     avatar
                     class="v-list-item"
                     v-for="(link, i) in links"
-                    v-if="!hide"
             >
                 <v-list-tile-action>
                     <v-icon>{{ link.icon }}</v-icon>
@@ -87,7 +91,8 @@
                     text: 'Students'
                 }
             ],
-            hide: false
+            hide: false,
+            userOverride: false
         }),
 
         computed: {
@@ -115,6 +120,9 @@
             ...mapMutations('app', ['setDrawer', 'toggleDrawer']),
             onResponsiveInverted() {
                 this.hide = window.innerWidth < 991;
+                if (!this.hide) {
+                    this.userOverride = false;
+                }
             }
         }
     }
@@ -141,5 +149,9 @@
             padding-left: 15px;
             padding-right: 15px;
         }
+    }
+
+    #logo {
+        height: 70px;
     }
 </style>

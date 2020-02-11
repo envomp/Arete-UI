@@ -58,7 +58,6 @@
                 'success',
                 'info',
                 'general',
-                'accent',
                 'tertiary',
                 'error'
             ]

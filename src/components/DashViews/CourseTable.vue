@@ -89,15 +89,14 @@
                                                 class="elevation-1"
 
                                         >
-
                                             <template
                                                     slot="headerCell"
                                                     slot-scope="{ header }"
                                             >
-                <span
-                        v-bind:class="'subheading font-weight-light text-' + color"
-                        v-text="header.text"
-                />
+                                                <span
+                                                        v-bind:class="'subheading font-weight-light text-' + color"
+                                                        v-text="header.text"
+                                                />
                                             </template>
 
                                             <template
@@ -145,6 +144,7 @@
                                         </v-data-table>
 
                                     </material-card>
+
                                 </v-window-item>
                             </v-window>
                         </v-flex>

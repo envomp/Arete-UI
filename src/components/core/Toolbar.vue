@@ -44,20 +44,9 @@
             }
         },
 
-        mounted() {
-            this.onResponsiveInverted();
-            window.addEventListener("resize", this.onResponsiveInverted);
-        },
-        beforeDestroy() {
-            window.removeEventListener("resize", this.onResponsiveInverted);
-        },
-
         methods: {
             ...mapMutations("app", ["setDrawer", "toggleDrawer"]),
 
-            onResponsiveInverted() {
-                this.hide = window.innerWidth < 991;
-            },
             logout: function () {
                 this.$store.dispatch("logout").then(() => {
                     location.reload();

@@ -77,12 +77,13 @@
   margin: $card-margin 0 !important;
 }
 
-@include card-header-color('info', $brand-info, $cyan-400, $cyan-600);
-@include card-header-color('general', $brand-general, $blue-400, $blue-600);
-@include card-header-color('red', $brand-danger, $red-400, $red-600);
-@include card-header-color('green', $brand-success, $green-400, $green-600);
-@include card-header-color('orange', $brand-warning, $orange-400, $orange-600);
-@include card-header-color('purple', $brand-primary, $purple-400, $purple-600);
+@include card-header-color('info', $brand-info, $cyan-600, $cyan-400);
+@include card-header-color('general', $brand-general, $blue-600, $blue-400);
+@include card-header-color('danger', $brand-danger, $red-600, $red-400);
+@include card-header-color('primary', $brand-primary, $green-600, $green-400);
+@include card-header-color('warning', $brand-warning, $orange-600, $orange-400);
+@include card-header-color('success', $brand-success, #df3ff9, $purple-A100);
+
 
 .v-card--material-stats.v-card {
   .v-offset {
