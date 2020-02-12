@@ -211,7 +211,7 @@
                 {text: 'latestSubmission', value: 'latestSubmission'},
                 {text: 'totalCommits', value: 'totalCommits'},
                 {text: 'totalTestsRan', value: 'totalTestsRan'},
-                {text: 'totalTestsPassed', value: 'totalDiagnosticErrors'},
+                {text: 'totalTestsPassed', value: 'totalTestsPassed'},
                 {text: 'totalDiagnosticErrors', value: 'totalDiagnosticErrors'},
                 {text: 'highestPercent (%)', value: 'highestPercent'},
                 {text: 'commitsStyleOK', value: 'commitsStyleOK'},
