@@ -57,82 +57,79 @@
 
             <template v-slot:expand="props">
 
-                <v-container>
-                    <v-layout row wrap>
-                        <v-flex>
-                            <v-expansion-panel popout>
-                                <v-expansion-panel-content
-                                        v-for="job in fullSubmission"
+                <v-container fluid ma-0 pa-4 >
+
+                    <v-expansion-panel popout>
+                        <v-expansion-panel-content
+                                v-for="job in fullSubmission"
+                        >
+                            <template v-slot:header>
+                                <div>{{job.slug}}</div>
+                            </template>
+
+                            <v-window>
+
+                                <v-tab-item
+                                        v-for="(job, index) in fullSubmission"
                                 >
-                                    <template v-slot:header>
-                                        <div>{{job.slug}}</div>
-                                    </template>
 
-                                    <v-window>
+                                    <v-card
+                                            :elevation="24"
+                                    >
 
-                                        <v-tab-item
-                                                v-for="(job, index) in fullSubmission"
+                                        <v-tabs
+                                                :id="'submissionTab' + index"
+                                                :slider-color="color"
+                                                color="grey darken-4"
+                                                dark
                                         >
+                                            <v-tab ripple>
+                                                <v-icon left>mdi-account</v-icon>
+                                                Student Output
+                                            </v-tab>
 
-                                            <v-card
-                                                    :elevation="24"
-                                            >
+                                            <v-tab ripple>
+                                                <v-icon left>mdi-lock</v-icon>
+                                                Console logs
+                                            </v-tab>
 
-                                                <v-tabs
-                                                        :id="'submissionTab' + index"
-                                                        :slider-color="color"
-                                                        color="grey darken-4"
-                                                        dark
-                                                >
-                                                    <v-tab ripple>
-                                                        <v-icon left>mdi-account</v-icon>
-                                                        Student Output
-                                                    </v-tab>
+                                            <v-tab ripple>
+                                                <v-icon left>mdi-archive</v-icon>
+                                                Content
+                                            </v-tab>
 
-                                                    <v-tab ripple>
-                                                        <v-icon left>mdi-lock</v-icon>
-                                                        Console logs
-                                                    </v-tab>
+                                            <v-tab-item>
+                                                <v-card flat>
+                                                    <div id="output" v-html="job.output"></div>
+                                                </v-card>
+                                            </v-tab-item>
 
-                                                    <v-tab ripple>
-                                                        <v-icon left>mdi-archive</v-icon>
-                                                        Content
-                                                    </v-tab>
+                                            <v-tab-item>
+                                                <v-card flat>
+                                                    <div class="consoleOutput"
+                                                         v-html="job.consoleOutput"></div>
+                                                </v-card>
+                                            </v-tab-item>
 
-                                                    <v-tab-item>
-                                                        <v-card flat>
-                                                            <div id="output" v-html="job.output"></div>
-                                                        </v-card>
-                                                    </v-tab-item>
+                                            <v-tab-item>
+                                                <v-card flat>
+                                                    <div class="consoleOutput"
+                                                         v-html="createFileView(index)"></div>
+                                                </v-card>
+                                            </v-tab-item>
 
-                                                    <v-tab-item>
-                                                        <v-card flat>
-                                                            <div id="consoleOutput"
-                                                                 v-html="job.consoleOutput"></div>
-                                                        </v-card>
-                                                    </v-tab-item>
+                                            <v-spacer></v-spacer>
 
-                                                    <v-tab-item>
-                                                        <v-card flat>
-                                                            <div
-                                                                    v-html="createFileView(index)"></div>
-                                                        </v-card>
-                                                    </v-tab-item>
+                                        </v-tabs>
+                                    </v-card>
 
-                                                    <v-spacer></v-spacer>
+                                </v-tab-item>
 
-                                                </v-tabs>
-                                            </v-card>
+                            </v-window>
 
-                                        </v-tab-item>
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
 
-                                    </v-window>
-
-                                </v-expansion-panel-content>
-                            </v-expansion-panel>
-                        </v-flex>
-
-                    </v-layout>
                 </v-container>
 
             </template>
@@ -221,16 +218,6 @@
 
         max-height: 50em;
         overflow: auto;
-
-    }
-
-    #consoleOutput {
-
-        max-height: 50em;
-        overflow: auto;
-        white-space: normal;
-
-        /*white-space: initial;*/
 
     }
 

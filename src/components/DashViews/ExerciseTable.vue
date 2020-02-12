@@ -58,93 +58,115 @@
 
             <template v-slot:expand="props">
 
-                <v-container>
-                    <v-layout row wrap>
-                        <v-flex>
+                <v-container fluid ma-0 pa-4>
 
-                            <v-window
-                                    class="elevation-1"
+                    <v-window
+                            class="elevation-1 "
+                    >
+                        <v-window-item>
+
+                            <material-card
+                                    :color="color"
+                                    text="Student data regarding the course only"
+                                    title="Students taking the course"
                             >
-                                <v-window-item>
+                                <v-text-field
+                                        append-icon="search"
+                                        hide-details
+                                        label="Search"
+                                        single-line
+                                        v-model="subSearch"
+                                ></v-text-field>
+                                <v-data-table
 
-                                    <material-card
-                                            :color="color"
-                                            text="Student data regarding the course only"
-                                            title="Students taking the course"
+                                        :headers="subHeaders"
+                                        :items="fullExercise.students"
+                                        :rows-per-page-items="rowsAmount"
+                                        :search="subSearch"
+                                        class="elevation-1"
+
+                                >
+
+                                    <template
+                                            slot="headerCell"
+                                            slot-scope="{ header }"
                                     >
-                                        <v-text-field
-                                                append-icon="search"
-                                                hide-details
-                                                label="Search"
-                                                single-line
-                                                v-model="subSearch"
-                                        ></v-text-field>
-                                        <v-data-table
-
-                                                :headers="subHeaders"
-                                                :items="fullExercise.students"
-                                                :rows-per-page-items="rowsAmount"
-                                                :search="subSearch"
-                                                class="elevation-1"
-
-                                        >
-
-                                            <template
-                                                    slot="headerCell"
-                                                    slot-scope="{ header }"
-                                            >
                                             <span
                                                     v-bind:class="'subheading font-weight-light text-' + color"
                                                     v-text="header.text"
                                             />
-                                            </template>
+                                    </template>
 
-                                            <template
-                                                    v-slot:items="props"
-                                            >
-                                                <tr @click="props.expanded = !props.expanded, getStudent(props.item.id)">
-                                                    <td>{{ props.item.id }}</td>
-                                                    <td>{{ props.item.uniid }}</td>
-                                                    <td>{{ props.item.latestSubmission }}</td>
-                                                    <td>{{ props.item.totalCommits }}</td>
-                                                    <td>{{ props.item.totalTestsRan }}</td>
-                                                    <td>{{ props.item.totalTestsPassed }}</td>
-                                                    <td>{{ props.item.totalDiagnosticErrors }}</td>
-                                                    <td>{{ props.item.highestPercent }}</td>
-                                                    <td>{{ props.item.commitsStyleOK }}</td>
-                                                </tr>
-                                            </template>
+                                    <template
+                                            v-slot:items="props"
+                                    >
+                                        <tr @click="props.expanded = !props.expanded, getStudent(props.item)">
+                                            <td>{{ props.item.id }}</td>
+                                            <td>{{ props.item.uniid }}</td>
+                                            <td>{{ props.item.latestSubmission }}</td>
+                                            <td>{{ props.item.totalCommits }}</td>
+                                            <td>{{ props.item.totalTestsRan }}</td>
+                                            <td>{{ props.item.totalTestsPassed }}</td>
+                                            <td>{{ props.item.totalDiagnosticErrors }}</td>
+                                            <td>{{ props.item.highestPercent }}</td>
+                                            <td>{{ props.item.commitsStyleOK }}</td>
+                                        </tr>
+                                    </template>
 
-                                            <v-spacer></v-spacer>
+                                    <v-spacer></v-spacer>
 
-                                            <template v-slot:expand="props">
+                                    <template v-scroll v-slot:expand="props">
 
-                                                <v-container>
-                                                    <v-layout row wrap>
-                                                        <v-flex>
+                                        <v-container fluid ma-0 pa-4>
 
-                                                            <v-window
-                                                                    class="elevation-1"
-                                                            >
-                                                                <v-window-item>
+                                            <v-window class="elevation-1">
+                                                <v-window-item>
 
-                                                                    <v-card flat id="fullStudentCourse">
-                                                                        <div v-html="student"></div>
-                                                                    </v-card>
+                                                    <v-data-table
 
-                                                                </v-window-item>
-                                                            </v-window>
-                                                        </v-flex>
-                                                    </v-layout>
-                                                </v-container>
-                                            </template>
-                                        </v-data-table>
-                                    </material-card>
-                                </v-window-item>
-                            </v-window>
+                                                            :headers="comparableHeaders"
+                                                            :hide-actions="true"
+                                                            :items="[studentData, averageData, medianData, overallStudentData]"
+                                                            class="elevation-1"
 
-                        </v-flex>
-                    </v-layout>
+                                                    >
+                                                        <template
+                                                                slot="headerCell"
+                                                                slot-scope="{ header }"
+                                                        >
+                                                                            <span
+                                                                                    v-bind:class="'subheading font-weight-light text-' + color"
+                                                                                    v-text="header.text"
+                                                                            />
+                                                        </template>
+
+                                                        <template
+                                                                v-slot:items="props"
+                                                        >
+                                                            <tr>
+                                                                <td>{{ props.item[0] }}</td>
+                                                                <td>{{ props.item[1] }}</td>
+                                                                <td>{{ props.item[2] }}</td>
+                                                                <td>{{ props.item[3] }}</td>
+                                                                <td>{{ props.item[4] }}</td>
+                                                                <td>{{ props.item[5] }}</td>
+                                                                <td>{{ props.item[6] }}</td>
+                                                                <td>{{ props.item[7] }}</td>
+                                                                <td>{{ props.item[8] }}</td>
+                                                            </tr>
+                                                        </template>
+                                                    </v-data-table>
+
+                                                </v-window-item>
+                                            </v-window>
+
+                                        </v-container>
+                                    </template>
+                                </v-data-table>
+                            </material-card>
+                        </v-window-item>
+                    </v-window>
+
                 </v-container>
 
             </template>
@@ -160,6 +182,7 @@
 
 <script>
     import {mapState} from "vuex";
+    import {GChart} from "vue-google-charts";
 
     export default {
         data: () => ({
@@ -190,10 +213,33 @@
                 {text: 'totalTestsRan', value: 'totalTestsRan'},
                 {text: 'totalTestsPassed', value: 'totalDiagnosticErrors'},
                 {text: 'totalDiagnosticErrors', value: 'totalDiagnosticErrors'},
-                {text: 'highestPercent', value: 'highestPercent'},
+                {text: 'highestPercent (%)', value: 'highestPercent'},
                 {text: 'commitsStyleOK', value: 'commitsStyleOK'},
-            ]
+            ],
+
+            comparableHeaders: [
+                {text: 'student', align: 'left', value: 'student', sortable: false},
+                {text: 'totalCommits', value: 'totalCommits', sortable: false},
+                {text: 'totalTestsRan', value: 'totalTestsRan', sortable: false},
+                {text: 'totalTestsPassed', value: 'totalTestsPassed', sortable: false},
+                {text: 'totalDiagnosticErrors', value: 'totalDiagnosticErrors', sortable: false},
+                {text: 'highestPercent (%)', value: 'highestPercent', sortable: false},
+                {text: 'styleOkPerCommit (%)', value: 'commitsStyleOK', sortable: false},
+            ],
+
+            studentData: [],
+
+            averageData: [],
+
+            medianData: [],
+
+            overallStudentData: [],
+
         }),
+
+        components: {
+            GChart
+        },
 
         computed: {
             ...mapState('app', ['color']),
@@ -205,10 +251,29 @@
         },
 
         methods: {
-            getStudent(id) {
-                this.$http.get('/student/' + id)
+            getStudent(student) {
+                this.$http.get('/slug/student/' + student.id)
                     .then(response => {
                         this.student = response.data;
+                        this.studentData = [
+                            "Selected",
+                            student.totalCommits,
+                            student.totalTestsRan,
+                            student.totalTestsPassed,
+                            student.totalDiagnosticErrors,
+                            student.highestPercent,
+                            (student.commitsStyleOK / student.totalCommits) * 100
+                        ];
+
+                        this.overallStudentData = [
+                            "Selected Overall",
+                            this.student.totalCommits,
+                            this.student.totalTestsRan,
+                            this.student.totalTestsPassed,
+                            this.student.totalDiagnosticErrors,
+                            "...",
+                            (this.student.commitsStyleOK / this.student.totalCommits) * 100
+                        ]
                     })
                     .catch(error => console.log(error))
             },
@@ -217,6 +282,8 @@
                 this.$http.get('/slug/' + id)
                     .then(response => {
                         this.fullExercise = response.data;
+                        this.calculateAverage();
+                        this.calculateMedian();
                     })
                     .catch(error => console.log(error))
             },
@@ -227,6 +294,80 @@
                         this.exerciseList = response.data
                     })
                     .catch(error => console.log(error))
+            },
+
+            calculateAverage() {
+                let avgCommits = 0;
+                let avgTestsRan = 0;
+                let avgTestsPassed = 0;
+                let avgDiagnosticErrors = 0;
+                let avgPercent = 0;
+                let avgStyleOK = 0;
+                let count = 0;
+
+                for (var student in this.fullExercise.students) {
+                    avgCommits += this.fullExercise.students[student].totalCommits;
+                    avgTestsRan += this.fullExercise.students[student].totalTestsRan;
+                    avgTestsPassed += this.fullExercise.students[student].totalTestsPassed;
+                    avgDiagnosticErrors += this.fullExercise.students[student].totalDiagnosticErrors;
+                    avgPercent += this.fullExercise.students[student].highestPercent;
+                    avgStyleOK += this.fullExercise.students[student].commitsStyleOK / this.fullExercise.students[student].totalCommits;
+                    count++;
+                }
+                this.averageData = [
+                    "Average",
+                    avgCommits / count,
+                    avgTestsRan / count,
+                    avgTestsPassed / count,
+                    avgDiagnosticErrors / count,
+                    avgPercent / count,
+                    (avgStyleOK / count) * 100
+                ];
+
+            },
+
+            median(values) {
+                if (values.length === 0) return 0;
+
+                values.sort(function (a, b) {
+                    return a - b;
+                });
+
+                var half = Math.floor(values.length / 2);
+
+                if (values.length % 2)
+                    return values[half];
+
+                return (values[half - 1] + values[half]) / 2.0;
+            },
+
+            calculateMedian() {
+                let avgCommits = [];
+                let avgTestsRan = [];
+                let avgTestsPassed = [];
+                let avgDiagnosticErrors = [];
+                let avgSlugs = [];
+                let avgStyleOK = [];
+
+                for (var student in this.fullExercise.students) {
+                    avgCommits.push(this.fullExercise.students[student].totalCommits);
+                    avgTestsRan.push(this.fullExercise.students[student].totalTestsRan);
+                    avgTestsPassed.push(this.fullExercise.students[student].totalTestsPassed);
+                    avgDiagnosticErrors.push(this.fullExercise.students[student].totalDiagnosticErrors);
+                    avgSlugs.push(this.fullExercise.students[student].highestPercent);
+                    avgStyleOK.push(this.fullExercise.students[student].commitsStyleOK / this.fullExercise.students[student].totalCommits);
+                }
+
+                this.medianData = [
+                    "Median",
+                    this.median(avgCommits),
+                    this.median(avgTestsRan),
+                    this.median(avgTestsPassed),
+                    this.median(avgDiagnosticErrors),
+                    this.median(avgSlugs),
+                    this.median(avgStyleOK) * 100
+                ];
+
             }
 
         }
@@ -234,13 +375,5 @@
 </script>
 
 <style scoped>
-
-    #fullExercise {
-
-        max-height: 50em;
-        overflow: auto;
-        white-space: normal;
-
-    }
 
 </style>

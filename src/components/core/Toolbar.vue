@@ -1,5 +1,11 @@
 <template>
     <v-toolbar dark flat id="core-toolbar">
+
+        <div v-if="!hide">
+            <v-icon @click="toggleUserOverride" class="toolbar-items" color v-if="userOverride">mdi-chevron-double-left</v-icon>
+            <v-icon @click="toggleUserOverride" class="toolbar-items" color v-else>mdi-chevron-double-right</v-icon>
+        </div>
+
         <v-toolbar-title>
             {{ title }}
         </v-toolbar-title>
@@ -30,12 +36,22 @@
         data: () => ({
             notifications: [],
             title: "Automated testing service",
-            hide: false,
         }),
 
         computed: {
-            ...mapState('app', ['color']),
-            ...mapGetters(["authorized"])
+            ...mapState('app', ['color', 'userOverride', 'hide']),
+            ...mapGetters(["authorized"]),
+            userOverride() {
+                return this.$store.state.app.userOverride;
+            },
+
+            hide() {
+                return this.$store.state.app.hide;
+            },
+
+            color() {
+                return this.$store.state.app.color;
+            }
         },
 
         watch: {
@@ -43,15 +59,34 @@
                 this.title = val.meta.name;
             }
         },
+        mounted() {
+            this.onResponsiveInverted();
+            window.addEventListener('resize', this.onResponsiveInverted)
+        },
+        beforeDestroy() {
+            window.removeEventListener('resize', this.onResponsiveInverted)
+        },
 
         methods: {
-            ...mapMutations("app", ["setDrawer", "toggleDrawer"]),
+            ...mapMutations("app", ["toggleUserOverride", "setHide"]),
+
+            onResponsiveInverted() {
+                this.setHide(window.innerWidth === screen.width);
+            },
+
+            setHide(hide) {
+                this.$store.state.app.hide = hide;
+            },
 
             logout: function () {
                 this.$store.dispatch("logout").then(() => {
                     location.reload();
                 });
-            }
+            },
+
+            toggleUserOverride() {
+                this.$store.state.app.userOverride = !this.$store.state.app.userOverride;
+            },
         }
     };
 </script>

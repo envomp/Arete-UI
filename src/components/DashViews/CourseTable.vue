@@ -58,97 +58,120 @@
 
             <template v-slot:expand="props">
 
-                <v-container>
-                    <v-layout row wrap>
-                        <v-flex>
+                <v-container fluid ma-0 pa-4>
 
-                            <v-window
-                                    class="elevation-1"
+                    <v-window
+                            class="elevation-1"
+                    >
+                        <v-window-item>
+
+                            <material-card
+                                    :color="color"
+                                    text="Student data regarding the course only"
+                                    title="Students taking the course"
                             >
-                                <v-window-item>
+                                <v-text-field
+                                        append-icon="search"
+                                        hide-details
+                                        label="Search"
+                                        single-line
+                                        v-model="subSearch"
+                                ></v-text-field>
 
-                                    <material-card
-                                            :color="color"
-                                            text="Student data regarding the course only"
-                                            title="Students taking the course"
+                                <v-data-table
+
+                                        :headers="subHeaders"
+                                        :items="fullCourse.students"
+                                        :rows-per-page-items="rowsAmount"
+                                        :search="subSearch"
+                                        class="elevation-1"
+
+                                >
+                                    <template
+                                            slot="headerCell"
+                                            slot-scope="{ header }"
                                     >
-                                        <v-text-field
-                                                append-icon="search"
-                                                hide-details
-                                                label="Search"
-                                                single-line
-                                                v-model="subSearch"
-                                        ></v-text-field>
-
-                                        <v-data-table
-
-                                                :headers="subHeaders"
-                                                :items="fullCourse.students"
-                                                :rows-per-page-items="rowsAmount"
-                                                :search="subSearch"
-                                                class="elevation-1"
-
-                                        >
-                                            <template
-                                                    slot="headerCell"
-                                                    slot-scope="{ header }"
-                                            >
                                                 <span
                                                         v-bind:class="'subheading font-weight-light text-' + color"
                                                         v-text="header.text"
                                                 />
-                                            </template>
+                                    </template>
 
-                                            <template
-                                                    v-slot:items="props"
+                                    <template
+                                            v-slot:items="props"
+                                    >
+                                        <tr @click="props.expanded = !props.expanded, getStudent(props.item)">
+                                            <td>{{ props.item.id }}</td>
+                                            <td>{{ props.item.uniid }}</td>
+                                            <td>{{ props.item.latestSubmission }}</td>
+                                            <td>{{ props.item.totalCommits }}</td>
+                                            <td>{{ props.item.totalTestsRan }}</td>
+                                            <td>{{ props.item.totalTestsPassed }}</td>
+                                            <td>{{ props.item.totalDiagnosticErrors }}</td>
+                                            <td>{{ props.item.differentSlugs }}</td>
+                                            <td>{{ props.item.commitsStyleOK }}</td>
+                                        </tr>
+                                    </template>
+
+                                    <template v-slot:expand="props">
+
+                                        <v-container fluid ma-0 pa-4>
+
+                                            <v-window
+                                                    class="elevation-1"
                                             >
-                                                <tr @click="props.expanded = !props.expanded, getStudent(props.item.id)">
-                                                    <td>{{ props.item.id }}</td>
-                                                    <td>{{ props.item.uniid }}</td>
-                                                    <td>{{ props.item.latestSubmission }}</td>
-                                                    <td>{{ props.item.totalCommits }}</td>
-                                                    <td>{{ props.item.totalTestsRan }}</td>
-                                                    <td>{{ props.item.totalTestsPassed }}</td>
-                                                    <td>{{ props.item.totalDiagnosticErrors }}</td>
-                                                    <td>{{ props.item.differentSlugs }}</td>
-                                                    <td>{{ props.item.commitsStyleOK }}</td>
-                                                </tr>
-                                            </template>
+                                                <v-window-item>
 
-                                            <v-spacer></v-spacer>
+                                                    <v-data-table
 
-                                            <template v-slot:expand="props">
+                                                            :headers="comparableHeaders"
+                                                            :hide-actions="true"
+                                                            :items="[studentData, averageData, medianData, overallStudentData]"
+                                                            class="elevation-1"
 
-                                                <v-container>
-                                                    <v-layout row wrap>
-                                                        <v-flex>
+                                                    >
+                                                        <template
+                                                                slot="headerCell"
+                                                                slot-scope="{ header }"
+                                                        >
+                                                                            <span
+                                                                                    v-bind:class="'subheading font-weight-light text-' + color"
+                                                                                    v-text="header.text"
+                                                                            />
+                                                        </template>
 
-                                                            <v-window
-                                                                    class="elevation-1"
-                                                            >
-                                                                <v-window-item>
+                                                        <template
+                                                                v-slot:items="props"
+                                                        >
+                                                            <tr>
+                                                                <td>{{ props.item[0] }}</td>
+                                                                <td>{{ props.item[1] }}</td>
+                                                                <td>{{ props.item[2] }}</td>
+                                                                <td>{{ props.item[3] }}</td>
+                                                                <td>{{ props.item[4] }}</td>
+                                                                <td>{{ props.item[5] }}</td>
+                                                                <td>{{ props.item[6] }}</td>
+                                                                <td>{{ props.item[7] }}</td>
+                                                                <td>{{ props.item[8] }}</td>
+                                                            </tr>
+                                                        </template>
 
-                                                                    <v-card flat id="fullStudentCourse">
-                                                                        <div v-html="student"></div>
-                                                                    </v-card>
+                                                    </v-data-table>
 
-                                                                </v-window-item>
-                                                            </v-window>
+                                                </v-window-item>
+                                            </v-window>
 
-                                                        </v-flex>
-                                                    </v-layout>
-                                                </v-container>
+                                        </v-container>
 
-                                            </template>
+                                    </template>
 
-                                        </v-data-table>
+                                </v-data-table>
 
-                                    </material-card>
+                            </material-card>
 
-                                </v-window-item>
-                            </v-window>
-                        </v-flex>
-                    </v-layout>
+                        </v-window-item>
+                    </v-window>
+
                 </v-container>
 
             </template>
@@ -164,6 +187,7 @@
 
 <script>
     import {mapState} from "vuex";
+    import {GChart} from 'vue-google-charts'
 
     export default {
         data: () => ({
@@ -194,8 +218,31 @@
                 {text: 'totalDiagnosticErrors', value: 'totalDiagnosticErrors'},
                 {text: 'differentSlugs', value: 'differentSlugs'},
                 {text: 'commitsStyleOK', value: 'commitsStyleOK'},
-            ]
+            ],
+
+            comparableHeaders: [
+                {text: 'student', align: 'left', value: 'student', sortable: false},
+                {text: 'totalCommits', value: 'totalCommits', sortable: false},
+                {text: 'totalTestsRan', value: 'totalTestsRan', sortable: false},
+                {text: 'totalTestsPassed', value: 'totalTestsPassed', sortable: false},
+                {text: 'totalDiagnosticErrors', value: 'totalDiagnosticErrors', sortable: false},
+                {text: 'differentSlugs', value: 'differentSlugs', sortable: false},
+                {text: 'styleOkPerCommit (%)', value: 'commitsStyleOK', sortable: false},
+            ],
+
+            studentData: [],
+
+            averageData: [],
+
+            medianData: [],
+
+            overallStudentData: [],
+
         }),
+
+        components: {
+            GChart
+        },
 
         computed: {
             ...mapState('app', ['color']),
@@ -207,20 +254,41 @@
         },
 
         methods: {
-            getStudent(id) {
-                this.$http.get('/student/' + id)
+            getStudent(student) {
+                this.$http.get('/course/student/' + student.id)
                     .then(response => {
                         this.student = response.data;
+                        this.studentData = [
+                            "Selected",
+                            student.totalCommits,
+                            student.totalTestsRan,
+                            student.totalTestsPassed,
+                            student.totalDiagnosticErrors,
+                            student.differentSlugs,
+                            (student.commitsStyleOK / student.totalCommits) * 100
+                        ],
+
+                            this.overallStudentData = [
+                                "Selected Overall",
+                                this.student.totalCommits,
+                                this.student.totalTestsRan,
+                                this.student.totalTestsPassed,
+                                this.student.totalDiagnosticErrors,
+                                this.student.differentSlugs,
+                                (this.student.commitsStyleOK / this.student.totalCommits) * 100
+                            ]
                     })
-                    .catch(error => console.log(error))
+                    .catch(error => console.log(error));
             },
 
             getCourse(id) {
                 this.$http.get('/course/' + id)
                     .then(response => {
                         this.fullCourse = response.data;
+                        this.calculateAverage();
+                        this.calculateMedian();
                     })
-                    .catch(error => console.log(error))
+                    .catch(error => console.log(error));
             },
 
             getCourses() {
@@ -231,6 +299,79 @@
                     .catch(error => console.log(error))
             },
 
+            calculateAverage() {
+                let avgCommits = 0;
+                let avgTestsRan = 0;
+                let avgTestsPassed = 0;
+                let avgDiagnosticErrors = 0;
+                let avgSlugs = 0;
+                let avgStyleOK = 0;
+                let count = 0;
+
+                for (var student in this.fullCourse.students) {
+                    avgCommits += this.fullCourse.students[student].totalCommits;
+                    avgTestsRan += this.fullCourse.students[student].totalTestsRan;
+                    avgTestsPassed += this.fullCourse.students[student].totalTestsPassed;
+                    avgDiagnosticErrors += this.fullCourse.students[student].totalDiagnosticErrors;
+                    avgSlugs += this.fullCourse.students[student].slugs.length;
+                    avgStyleOK += this.fullCourse.students[student].commitsStyleOK / this.fullCourse.students[student].totalCommits;
+                    count++;
+                }
+                this.averageData = [
+                    "Average",
+                    avgCommits / count,
+                    avgTestsRan / count,
+                    avgTestsPassed / count,
+                    avgDiagnosticErrors / count,
+                    avgSlugs / count,
+                    (avgStyleOK / count) * 100
+                ];
+
+            },
+
+            median(values) {
+                if (values.length === 0) return 0;
+
+                values.sort(function (a, b) {
+                    return a - b;
+                });
+
+                var half = Math.floor(values.length / 2);
+
+                if (values.length % 2)
+                    return values[half];
+
+                return (values[half - 1] + values[half]) / 2.0;
+            },
+
+            calculateMedian() {
+                let avgCommits = [];
+                let avgTestsRan = [];
+                let avgTestsPassed = [];
+                let avgDiagnosticErrors = [];
+                let avgSlugs = [];
+                let avgStyleOK = [];
+
+                for (var student in this.fullCourse.students) {
+                    avgCommits.push(this.fullCourse.students[student].totalCommits);
+                    avgTestsRan.push(this.fullCourse.students[student].totalTestsRan);
+                    avgTestsPassed.push(this.fullCourse.students[student].totalTestsPassed);
+                    avgDiagnosticErrors.push(this.fullCourse.students[student].totalDiagnosticErrors);
+                    avgSlugs.push(this.fullCourse.students[student].slugs.length);
+                    avgStyleOK.push(this.fullCourse.students[student].commitsStyleOK / this.fullCourse.students[student].totalCommits);
+                }
+
+                this.medianData = [
+                    "Median",
+                    this.median(avgCommits),
+                    this.median(avgTestsRan),
+                    this.median(avgTestsPassed),
+                    this.median(avgDiagnosticErrors),
+                    this.median(avgSlugs),
+                    this.median(avgStyleOK) * 100
+                ];
+
+            }
         }
     }
 </script>

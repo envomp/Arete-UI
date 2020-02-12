@@ -1,13 +1,13 @@
 <template>
 
     <v-navigation-drawer
-            :mini-variant="!userOverride && hide"
+            :mini-variant="!userOverride && small"
             app
             dark
             id="app-drawer"
             v-model="inputValue"
             width="260"
-            mobile-break-point="0"
+            mobile-break-point="-1"
     >
 
         <v-layout
@@ -16,7 +16,7 @@
         >
 
             <v-list-tile
-                    @click="userOverride = !userOverride"
+                    @click="toggleUserOverride()"
                     avatar
                     class="v-list-item"
                     id="logo"
@@ -91,12 +91,11 @@
                     text: 'Students'
                 }
             ],
-            hide: false,
-            userOverride: false
+            small: false,
         }),
 
         computed: {
-            ...mapState('app', ['color']),
+            ...mapState('app', ['color', 'userOverride']),
             inputValue: {
                 get() {
                     return this.$store.state.app.drawer
@@ -107,7 +106,8 @@
             },
             items() {
                 return this.$t('Layout.View.items')
-            }
+            },
+
         },
         mounted() {
             this.onResponsiveInverted();
@@ -117,12 +117,17 @@
             window.removeEventListener('resize', this.onResponsiveInverted)
         },
         methods: {
-            ...mapMutations('app', ['setDrawer', 'toggleDrawer']),
+            ...mapMutations('app', ['setDrawer', 'toggleDrawer', 'toggleUserOverride']),
+
             onResponsiveInverted() {
-                this.hide = window.innerWidth < 991;
-                if (!this.hide) {
-                    this.userOverride = false;
+                this.small = window.innerWidth < screen.width || screen.width < 981;
+                if (!this.small) {
+                    this.$store.state.app.userOverride = false;
                 }
+            },
+
+            toggleUserOverride() {
+                this.$store.state.app.userOverride = !this.$store.state.app.userOverride;
             }
         }
     }

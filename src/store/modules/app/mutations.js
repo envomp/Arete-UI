@@ -5,5 +5,7 @@ export default {
     setDrawer: set('drawer'),
     setImage: set('image'),
     setColor: set('color'),
-    toggleDrawer: toggle('drawer')
+    setHide: set('hide'),
+    toggleUserOverride: set('userOverride'),
+    toggleDrawer: set('drawer')
 }
