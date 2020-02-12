@@ -130,7 +130,7 @@
                 {text: 'lastTested', value: 'lastTested'},
                 {text: 'totalCommits', value: 'totalCommits'},
                 {text: 'totalTestsRan', value: 'totalTestsRan'},
-                {text: 'totalTestsPassed', value: 'totalDiagnosticErrors'},
+                {text: 'totalTestsPassed', value: 'totalTestsPassed'},
                 {text: 'totalDiagnosticErrors', value: 'totalDiagnosticErrors'},
                 {text: 'differentSlugs', value: 'differentSlugs'},
                 {text: 'differentCourses', value: 'differentCourses'},
