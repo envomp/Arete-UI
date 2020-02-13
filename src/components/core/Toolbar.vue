@@ -1,7 +1,7 @@
 <template>
     <v-toolbar dark flat id="core-toolbar">
 
-        <div v-if="!hide">
+        <div v-if="hide">
             <v-icon @click="toggleUserOverride" class="toolbar-items" color v-if="userOverride">mdi-chevron-double-left</v-icon>
             <v-icon @click="toggleUserOverride" class="toolbar-items" color v-else>mdi-chevron-double-right</v-icon>
         </div>
@@ -71,7 +71,7 @@
             ...mapMutations("app", ["toggleUserOverride", "setHide"]),
 
             onResponsiveInverted() {
-                this.setHide(window.innerWidth === screen.width);
+                this.setHide(window.outerWidth <= 959);
             },
 
             setHide(hide) {
