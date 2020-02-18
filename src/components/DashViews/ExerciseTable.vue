@@ -67,8 +67,8 @@
 
                             <material-card
                                     :color="color"
-                                    text="Student data regarding the course only"
-                                    title="Students taking the course"
+                                    text="Student data regarding the exercise only"
+                                    title="Students who attempted the exercise"
                             >
                                 <v-text-field
                                         append-icon="search"
