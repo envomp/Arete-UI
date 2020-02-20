@@ -80,6 +80,10 @@
     @include button-color($brand-danger);
   }
 
+  &.error {
+    @include button-color($brand-error);
+  }
+
   .v-icon {
     font-size: $btn-font-size-icon;
   }

@@ -42,5 +42,6 @@
     @include fixed-plugin-colors('danger', $brand-danger);
     @include fixed-plugin-colors('warning', $brand-warning);
     @include fixed-plugin-colors('success', $brand-success);
+    @include fixed-plugin-colors('error', $brand-error);
   }
 }

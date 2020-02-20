@@ -2,9 +2,10 @@
 @import "./colors";
 
 //  Brand Colors
-$brand-success: $purple-A100 !default;
+$brand-success: #ffa1f0 !default;
 $brand-primary: $green !default;
-$brand-danger: $red !default;
+$brand-danger: $black !default;
+$brand-error: $red !default;
 $brand-warning: $orange !default;
 $brand-info: $cyan !default;
 $brand-general: $blue !default;

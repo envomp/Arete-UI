@@ -120,12 +120,6 @@
             ...mapMutations('app', ['setDrawer', 'toggleDrawer', 'toggleUserOverride']),
 
             onResponsiveInverted() {
-                console.log(window.innerWidth);
-                console.log(window.outerWidth);
-                console.log(screen.availWidth);
-                console.log(screen.width);
-                console.log(screen.outerWidth);
-                console.log('');
                 this.small = window.outerWidth <= 959;
                 if (!this.small) {
                     this.$store.state.app.userOverride = false;

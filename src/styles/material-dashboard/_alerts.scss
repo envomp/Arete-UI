@@ -34,15 +34,17 @@
 .v-alert {
   @include alert-shadow('info', lighten($brand-info, 5%));
   @include alert-shadow('success', $brand-success);
-  @include alert-shadow('error', $brand-danger);
+  @include alert-shadow('danger', $brand-danger);
   @include alert-shadow('warning', $brand-warning);
-  @include alert-shadow('purple', $brand-primary);
+  @include alert-shadow('primary', $brand-primary);
+  @include fixed-plugin-colors('error', $brand-error);
 }
 
 .v-snack {
   @include notifications-color('info', lighten($brand-info, 5%));
   @include notifications-color('success', $brand-success);
-  @include notifications-color('error', $brand-danger);
+  @include notifications-color('danger', $brand-danger);
   @include notifications-color('warning', $brand-warning);
   @include notifications-color('purple', $brand-primary);
+  @include fixed-plugin-colors('error', $brand-error);
 }

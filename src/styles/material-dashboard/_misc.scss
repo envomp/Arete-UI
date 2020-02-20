@@ -52,3 +52,4 @@ strong {
 @include drawer-active-colors('danger', $brand-danger);
 @include drawer-active-colors('info', $brand-info);
 @include drawer-active-colors('warning', $brand-warning);
+@include drawer-active-colors('error', $brand-error);

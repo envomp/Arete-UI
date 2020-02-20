@@ -53,14 +53,14 @@
     export default {
         data: () => ({
             colors: [
-                'danger',
+                'error',
                 'warning',
                 'primary',
                 'success',
                 'info',
                 'general',
                 'tertiary',
-                'error'
+                'danger',
             ]
         }),
 
