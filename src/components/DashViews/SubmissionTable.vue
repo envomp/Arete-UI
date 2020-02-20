@@ -52,7 +52,7 @@
                                     dark
                                     data-vv-name="name"
                                     hint="Make sure git repository is provided"
-                                    label="Tester name"
+                                    label="Tester repository"
                                     primary
                                     v-model="tester_name"
 
@@ -66,12 +66,18 @@
 
                         </form>
 
-                        <v-container grid-list-xl v-if="i===2">
+                        <v-container fluid grid-list-md v-if="i===2">
                             <v-layout
                                     wrap
+                                    :column="hide"
+                                    :row="hide"
                             >
                                 <v-flex
+                                        d-flex
+                                        fluid
                                         md6
+                                        xs12
+                                        sm6
                                 >
                                     <form ref="form">
 
@@ -159,7 +165,11 @@
                                 </v-flex>
 
                                 <v-flex
+                                        d-flex
+                                        fluid
                                         md6
+                                        xs12
+                                        sm6
                                 >
                                     <form>
 
@@ -256,7 +266,6 @@
                         </form>
 
                     </v-card-text>
-
                     <v-snackbar
                             :timeout="timeout"
                             top
@@ -271,146 +280,157 @@
                             Close
                         </v-btn>
                     </v-snackbar>
+
                 </v-card>
             </v-timeline-item>
         </v-timeline>
 
-        <material-card
+        <v-card
                 :color="color"
-                text="Latest submissions"
-                title="Submission Table"
+                dark
         >
-            <v-text-field
-                    append-icon="search"
-                    hide-details
-                    label="Search"
-                    single-line
-                    v-model="search"
-            ></v-text-field>
-
-        </material-card>
-
-        <v-data-table
-
-                :headers="headers"
-                :items="SubmissionList"
-                :rows-per-page-items="rowsAmount"
-                :search="search"
-                class="elevation-1"
-                id="submissionDataTable"
-
-        >
-
-            <template
-                    slot="headerCell"
-                    slot-scope="{ header }"
+            <material-card
+                    :color="color"
+                    text="Latest submissions"
+                    title="Submission Table"
             >
+                <v-text-field
+                        append-icon="search"
+                        hide-details
+                        label="Search"
+                        single-line
+                        v-model="search"
+                ></v-text-field>
+
+            </material-card>
+        </v-card>
+
+        <v-card
+                :color="color"
+                dark
+        >
+            <v-data-table
+
+                    :headers="headers"
+                    :items="SubmissionList"
+                    v-bind:pagination.sync="pagination"
+                    :rows-per-page-items="rowsAmount"
+                    :search="search"
+                    class="elevation-1"
+                    id="submissionDataTable"
+
+            >
+
+                <template
+                        slot="headerCell"
+                        slot-scope="{ header }"
+                >
                 <span
                         v-bind:class="'subheading font-weight-light text-' + color"
                         v-bind:style="{ 'color': color }"
                         v-text="header.text"
                 />
-            </template>
+                </template>
 
-            <template
-                    v-slot:items="props"
-            >
-                <tr @click="props.expanded = !props.expanded, getSubmission(props.item.hash)">
-                    <td>{{ props.item.id }}</td>
-                    <td>{{ props.item.uniid }}</td>
-                    <td>{{ props.item.hash }}</td>
-                    <td>{{ props.item.timestamp }}</td>
-                    <td>{{ props.item.testingPlatform }}</td>
-                    <td>{{ props.item.root }}</td>
-                </tr>
-            </template>
+                <template
+                        v-slot:items="props"
+                >
+                    <tr @click="props.expanded = !props.expanded, getSubmission(props.item.hash)">
+                        <td>{{ props.item.id }}</td>
+                        <td>{{ props.item.uniid }}</td>
+                        <td>{{ props.item.hash }}</td>
+                        <td>{{ props.item.timestamp }}</td>
+                        <td>{{ props.item.testingPlatform }}</td>
+                        <td>{{ props.item.root }}</td>
+                    </tr>
+                </template>
 
-            <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
 
-            <template v-slot:expand="props">
+                <template v-slot:expand="props">
 
-                <v-container fluid ma-0 pa-4>
+                    <v-container fluid ma-0 pa-4>
 
-                    <v-expansion-panel popout>
-                        <v-expansion-panel-content
-                                v-for="job in fullSubmission"
-                        >
-                            <template v-slot:header>
-                                <div>{{job.slug}}</div>
-                            </template>
+                        <v-expansion-panel popout>
+                            <v-expansion-panel-content
+                                    v-for="job in fullSubmission"
+                            >
+                                <template v-slot:header>
+                                    <div>{{job.slug}}</div>
+                                </template>
 
-                            <v-window>
+                                <v-window>
 
-                                <v-tab-item
-                                        v-for="(job, index) in fullSubmission"
-                                >
-
-                                    <v-card
-                                            :elevation="24"
+                                    <v-tab-item
+                                            v-for="(job, index) in fullSubmission"
                                     >
 
-                                        <v-tabs
-                                                :id="'submissionTab' + index"
-                                                :slider-color="color"
-                                                color="grey darken-4"
-                                                dark
+                                        <v-card
+                                                :elevation="24"
                                         >
-                                            <v-tab ripple>
-                                                <v-icon left>mdi-account</v-icon>
-                                                Student Output
-                                            </v-tab>
 
-                                            <v-tab ripple>
-                                                <v-icon left>mdi-lock</v-icon>
-                                                Console logs
-                                            </v-tab>
+                                            <v-tabs
+                                                    :id="'submissionTab' + index"
+                                                    :slider-color="color"
+                                                    color="grey darken-4"
+                                                    dark
+                                            >
+                                                <v-tab ripple>
+                                                    <v-icon left>mdi-account</v-icon>
+                                                    Student Output
+                                                </v-tab>
 
-                                            <v-tab ripple>
-                                                <v-icon left>mdi-archive</v-icon>
-                                                Content
-                                            </v-tab>
+                                                <v-tab ripple>
+                                                    <v-icon left>mdi-lock</v-icon>
+                                                    Console logs
+                                                </v-tab>
 
-                                            <v-tab-item>
-                                                <v-card flat>
-                                                    <div id="output" v-html="job.output"></div>
-                                                </v-card>
-                                            </v-tab-item>
+                                                <v-tab ripple>
+                                                    <v-icon left>mdi-archive</v-icon>
+                                                    Content
+                                                </v-tab>
 
-                                            <v-tab-item>
-                                                <v-card flat>
-                                                    <div class="consoleOutput"
-                                                         v-html="job.consoleOutput"></div>
-                                                </v-card>
-                                            </v-tab-item>
+                                                <v-tab-item>
+                                                    <v-card flat>
+                                                        <div id="output" v-html="job.output"></div>
+                                                    </v-card>
+                                                </v-tab-item>
 
-                                            <v-tab-item>
-                                                <v-card flat>
-                                                    <div class="consoleOutput"
-                                                         v-html="createFileView(index)"></div>
-                                                </v-card>
-                                            </v-tab-item>
+                                                <v-tab-item>
+                                                    <v-card flat>
+                                                        <div class="consoleOutput"
+                                                             v-html="job.consoleOutput"></div>
+                                                    </v-card>
+                                                </v-tab-item>
 
-                                            <v-spacer></v-spacer>
+                                                <v-tab-item>
+                                                    <v-card flat>
+                                                        <div class="consoleOutput"
+                                                             v-html="createFileView(index)"></div>
+                                                    </v-card>
+                                                </v-tab-item>
 
-                                        </v-tabs>
-                                    </v-card>
+                                                <v-spacer></v-spacer>
 
-                                </v-tab-item>
+                                            </v-tabs>
+                                        </v-card>
 
-                            </v-window>
+                                    </v-tab-item>
 
-                        </v-expansion-panel-content>
-                    </v-expansion-panel>
+                                </v-window>
 
-                </v-container>
+                            </v-expansion-panel-content>
+                        </v-expansion-panel>
 
-            </template>
+                    </v-container>
 
-        </v-data-table>
+                </template>
+
+            </v-data-table>
+        </v-card>
 
         <br><br><br><br>
     </v-container>
-
 
 </template>
 
@@ -478,6 +498,7 @@
 
             rowsAmount: [15, 20, 25, {"text": "$vuetify.dataIterator.rowsPerPageAll", "value": -1}],
             search: '',
+            pagination: {'sortBy': 'id', 'descending': true, 'rowsPerPage': 15},
             headers: [
                 {text: 'id', align: 'left', value: 'id'},
                 {text: 'uniid', value: 'uniid'},
@@ -489,7 +510,7 @@
         }),
 
         computed: {
-            ...mapState('app', ['color']),
+            ...mapState('app', ['color', 'hide']),
 
             rules() {
                 const rules = [];
@@ -535,18 +556,83 @@
             },
 
             updateImage() {
-                if (!this.image_name.endsWith("-tester")) {
-                    this.snackbar_text = "Testing language should end with '-tester'";
+                if (this.image_name === '') {
+                    this.snackbar_text = "Image name is needed";
                     this.snackbar = true;
                     return;
                 }
+
+                if (!this.image_name.endsWith("-tester")) {
+                    this.snackbar_text = "Image name needs to end with '-tester'";
+                    this.snackbar = true;
+                    return;
+                }
+
+                this.snackbar_text = "Updating image";
+                this.snackbar = true;
+
+                this.$http.put('/image:update/' + this.image_name)
+                    .then(response => {
+                        this.snackbar_text = "New image has been pulled";
+                        this.snackbar = true;
+                    })
+                    .catch(error => {
+                            this.snackbar_text = error;
+                            this.snackbar = true;
+                        }
+                    )
             },
 
             updateTester() {
+                if (this.tester_name === '') {
+                    this.snackbar_text = "Tester repo is needed";
+                    this.snackbar = true;
+                    return;
+                }
+
+
+                this.snackbar_text = "Updating tests";
+                this.snackbar = true;
+
+                const regex = /\.[a-zA-Z]+\//gm;
+                const namespace = this.tester_name.replace(".git", "").split(regex);
+                this.$http.put('/test:update', {
+                    "project": {
+                        "url": this.tester_name,
+                        "path_with_namespace": namespace[namespace.length - 1]
+                    }
+                })
+                    .then(response => {
+                        this.snackbar_text = "Updated tests successfully";
+                        this.snackbar = true;
+                    })
+                    .catch(error => {
+                            this.snackbar_text = error;
+                            this.snackbar = true;
+                        }
+                    )
 
             },
 
             submitSubmission() {
+
+                if (this.programming_language === '') {
+                    this.snackbar_text = "Programming language is needed";
+                    this.snackbar = true;
+                    return;
+                }
+
+                if (this.gitStudentRepo === '') {
+                    this.snackbar_text = "Student repository is needed";
+                    this.snackbar = true;
+                    return;
+                }
+
+                if (this.tester_repository === '') {
+                    this.snackbar_text = "Tester repository is needed";
+                    this.snackbar = true;
+                    return;
+                }
 
                 const jsonData = {};
                 if (this.programming_language !== '') {
@@ -577,12 +663,13 @@
 
                 jsonData['systemExtra'] = this.system_extra;
 
-
                 if (this.testing_mode === "Async") {
+                    this.snackbar_text = 'Submission successful';
+                    this.snackbar = true;
 
                     this.$http.post('/:testAsync', jsonData)
                         .then(response => {
-                            this.snackbar_text = response.data;
+                            this.snackbar_text = 'Submission successful';
                             this.snackbar = true;
                         })
                         .catch(error => {
@@ -592,11 +679,15 @@
                         )
 
                 } else if (this.testing_mode === "Sync") {
+                    this.snackbar_text = 'Submission sent';
+                    this.snackbar = true;
 
                     this.$http.post('/:testSync', jsonData)
                         .then(response => {
-                            this.snackbar_text = response.data;
+                            this.snackbar_text = 'Check submissions table';
                             this.snackbar = true;
+                            this.getSubmissions();
+                            this.$forceUpdate();
                         })
                         .catch(error => {
                                 this.snackbar_text = error;
@@ -625,7 +716,13 @@
             getSubmissions() {
                 this.$http.get('/submissions')
                     .then(response => {
-                        this.SubmissionList = response.data
+                        response.data.reverse();
+                        this.SubmissionList = response.data.filter((thing, index, self) =>
+                            index === self.findIndex((t) => (
+                                t.hash === thing.hash && t.name === thing.name
+                            ))
+                        );
+
                     })
                     .catch(error => console.log(error))
             },

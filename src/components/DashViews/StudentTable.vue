@@ -4,108 +4,117 @@
             grid-list-xl
     >
 
-        <material-card
+        <v-card
                 :color="color"
-                text="Student overview"
-                title="Student Table"
+                dark
         >
-            <v-text-field
-                    append-icon="search"
-                    hide-details
-                    label="Search"
-                    single-line
-                    v-model="search"
-            ></v-text-field>
-
-        </material-card>
-        <v-data-table
-
-                :headers="headers"
-                :items="studentsList"
-                :rows-per-page-items="rowsAmount"
-                :search="search"
-                class="elevation-1"
-
-        >
-
-            <template
-                    slot="headerCell"
-                    slot-scope="{ header }"
+            <material-card
+                    :color="color"
+                    text="Student overview"
+                    title="Student Table"
             >
+                <v-text-field
+                        append-icon="search"
+                        hide-details
+                        label="Search"
+                        single-line
+                        v-model="search"
+                ></v-text-field>
+
+            </material-card>
+        </v-card>
+        <v-card
+                :color="color"
+                dark
+        >
+            <v-data-table
+
+                    :headers="headers"
+                    :items="studentsList"
+                    :rows-per-page-items="rowsAmount"
+                    :search="search"
+                    class="elevation-1"
+
+            >
+
+                <template
+                        slot="headerCell"
+                        slot-scope="{ header }"
+                >
                 <span
                         v-bind:class="'subheading font-weight-light text-' + color"
                         v-text="header.text"
                 />
-            </template>
+                </template>
 
-            <template
-                    v-slot:items="props"
-            >
-                <tr @click="props.expanded = !props.expanded, getStudent(props.item)">
-                    <td>{{ props.item.id }}</td>
-                    <td>{{ props.item.uniid }}</td>
-                    <td>{{ props.item.lastTested }}</td>
-                    <td>{{ props.item.totalCommits }}</td>
-                    <td>{{ props.item.totalTestsRan }}</td>
-                    <td>{{ props.item.totalTestsPassed }}</td>
-                    <td>{{ props.item.totalDiagnosticErrors }}</td>
-                    <td>{{ props.item.differentSlugs }}</td>
-                    <td>{{ props.item.differentCourses }}</td>
-                    <td>{{ props.item.commitsStyleOK }}</td>
-                </tr>
-            </template>
+                <template
+                        v-slot:items="props"
+                >
+                    <tr @click="props.expanded = !props.expanded, getStudent(props.item)">
+                        <td>{{ props.item.id }}</td>
+                        <td>{{ props.item.uniid }}</td>
+                        <td>{{ props.item.lastTested }}</td>
+                        <td>{{ props.item.totalCommits }}</td>
+                        <td>{{ props.item.totalTestsRan }}</td>
+                        <td>{{ props.item.totalTestsPassed }}</td>
+                        <td>{{ props.item.totalDiagnosticErrors }}</td>
+                        <td>{{ props.item.differentSlugs }}</td>
+                        <td>{{ props.item.differentCourses }}</td>
+                        <td>{{ props.item.commitsStyleOK }}</td>
+                    </tr>
+                </template>
 
-            <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
 
-            <template v-slot:expand="props">
+                <template v-slot:expand="props">
 
-                <v-container fluid ma-0 pa-4>
+                    <v-container fluid ma-0 pa-4>
 
-                    <v-window>
+                        <v-window>
 
-                        <v-data-table
+                            <v-data-table
 
-                                :headers="comparableHeaders"
-                                :hide-actions="true"
-                                :items="[studentData, averageData, medianData]"
-                                class="elevation-1"
+                                    :headers="comparableHeaders"
+                                    :hide-actions="true"
+                                    :items="[studentData, averageData, medianData]"
+                                    class="elevation-1"
 
-                        >
-                            <template
-                                    slot="headerCell"
-                                    slot-scope="{ header }"
                             >
+                                <template
+                                        slot="headerCell"
+                                        slot-scope="{ header }"
+                                >
                                                                             <span
                                                                                     v-bind:class="'subheading font-weight-light text-' + color"
                                                                                     v-text="header.text"
                                                                             />
-                            </template>
+                                </template>
 
-                            <template
-                                    v-slot:items="props"
-                            >
-                                <tr>
-                                    <td>{{ props.item[0] }}</td>
-                                    <td>{{ props.item[1] }}</td>
-                                    <td>{{ props.item[2] }}</td>
-                                    <td>{{ props.item[3] }}</td>
-                                    <td>{{ props.item[4] }}</td>
-                                    <td>{{ props.item[5] }}</td>
-                                    <td>{{ props.item[6] }}</td>
-                                    <td>{{ props.item[7] }}</td>
-                                    <td>{{ props.item[8] }}</td>
-                                </tr>
-                            </template>
+                                <template
+                                        v-slot:items="props"
+                                >
+                                    <tr>
+                                        <td>{{ props.item[0] }}</td>
+                                        <td>{{ props.item[1] }}</td>
+                                        <td>{{ props.item[2] }}</td>
+                                        <td>{{ props.item[3] }}</td>
+                                        <td>{{ props.item[4] }}</td>
+                                        <td>{{ props.item[5] }}</td>
+                                        <td>{{ props.item[6] }}</td>
+                                        <td>{{ props.item[7] }}</td>
+                                        <td>{{ props.item[8] }}</td>
+                                    </tr>
+                                </template>
 
-                        </v-data-table>
+                            </v-data-table>
 
-                    </v-window>
+                        </v-window>
 
-                </v-container>
+                    </v-container>
 
-            </template>
-        </v-data-table>
-
+                </template>
+            </v-data-table>
+        </v-card>
         <!--        Footer hides otherwise-->
         <br><br><br><br>
     </v-container>
