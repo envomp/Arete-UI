@@ -82,8 +82,8 @@
 @include card-header-color('danger', $brand-danger, $black, $black);
 @include card-header-color('primary', $brand-primary, $green-600, $green-400);
 @include card-header-color('warning', $brand-warning, $orange-600, $orange-400);
-@include card-header-color('success', $brand-success, $purple-A100,  #ffa1f0);
-@include card-header-color('error', $brand-error, $red-600,  $red-400);
+@include card-header-color('success', $brand-success, $purple-A100, #ffa1f0);
+@include card-header-color('error', $brand-error, $red-600, $red-400);
 
 
 .v-card--material-stats.v-card {

@@ -5,12 +5,9 @@
             :mini-variant="small"
             :persistent="!isMobile"
             :temporary="isMobile"
-
             app
-            dark
-            enable-resize-watcher
             id="app-drawer"
-            mobile-break-point="959"
+            mobile-break-point="1263"
             v-model="drawer"
             width="260"
     >

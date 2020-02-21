@@ -3,7 +3,6 @@
             fluid
             grid-list-xl
     >
-
         <v-card
                 :color="color"
                 dark

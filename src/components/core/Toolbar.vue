@@ -1,5 +1,11 @@
 <template>
-    <v-toolbar dark flat id="core-toolbar">
+    <v-toolbar
+            :app="isMobile"
+            :fixed="isMobile"
+            dark
+            dense
+            flat
+            id="core-toolbar">
 
         <div v-if="!isMobile">
             <v-icon @click.stop="toggleSmall" class="toolbar-items" color v-if="!small">mdi-chevron-double-left</v-icon>
@@ -17,6 +23,8 @@
 
         <v-spacer/>
         <v-toolbar-items>
+
+
             <v-flex align-center layout py-2 v-ripple="{ class: `${color}--text` }">
 
                 <router-link
@@ -58,6 +66,8 @@
             }
         },
         mounted() {
+            this.$store.state.app.isMobile = window.innerWidth <= 1263;
+            console.log(window.innerWidth);
             window.addEventListener('resize', this.onResponsiveInverted)
         },
         beforeDestroy() {
@@ -68,7 +78,12 @@
             ...mapMutations("app", ['toggleDrawer', 'toggleSmall']),
 
             onResponsiveInverted() {
-                this.$store.state.app.isMobile = window.innerWidth <= 959;
+                let last = this.$store.state.app.isMobile;
+                this.$store.state.app.isMobile = window.innerWidth <= 1263;
+                if (!last && this.$store.state.app.isMobile) {
+                    this.$store.state.app.drawer = false;
+                }
+
             },
 
             toggleSmall() {
@@ -92,4 +107,5 @@
     #core-toolbar a {
         text-decoration: none;
     }
+
 </style>
