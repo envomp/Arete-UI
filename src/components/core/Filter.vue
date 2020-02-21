@@ -10,7 +10,6 @@
             transition="slide-y-transition"
     >
         <v-btn
-                @click="toggleUserOverride()"
                 class="elevation-0"
                 color="grey"
                 dark
@@ -72,7 +71,7 @@
         },
 
         methods: {
-            ...mapMutations('app', ['setImage', 'toggleUserOverride']),
+            ...mapMutations('app', ['setImage']),
 
             setColor(color) {
                 localStorage.color = color;
@@ -85,13 +84,6 @@
                     .catch(error => console.log(error))
             },
 
-            toggleUserOverride() {
-                this.$store.state.app.userOverride = !this.$store.state.app.userOverride;
-            },
-
-            buttonAction() {
-                this.$store.state.app.userOverride = true;
-            }
         }
     }
 </script>

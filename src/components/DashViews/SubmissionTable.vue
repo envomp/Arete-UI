@@ -68,16 +68,16 @@
 
                         <v-container fluid grid-list-md v-if="i===2">
                             <v-layout
-                                    wrap
                                     :column="hide"
                                     :row="hide"
+                                    wrap
                             >
                                 <v-flex
                                         d-flex
                                         fluid
                                         md6
-                                        xs12
                                         sm6
+                                        xs12
                                 >
                                     <form ref="form">
 
@@ -85,7 +85,6 @@
 
                                                 :color="color"
                                                 :rules="rules"
-                                                autofocus
                                                 clearable
                                                 dark
                                                 hint="java, python, prolog..."
@@ -99,7 +98,6 @@
 
                                                 :color="color"
                                                 :rules="rules"
-                                                autofocus
                                                 clearable
                                                 dark
                                                 hint="gitlab or github url"
@@ -113,7 +111,6 @@
 
                                                 :color="color"
                                                 :rules="rules"
-                                                autofocus
                                                 clearable
                                                 dark
                                                 hint="gitlab or github url"
@@ -126,7 +123,6 @@
                                         <v-text-field
 
                                                 :color="color"
-                                                autofocus
                                                 clearable
                                                 dark
                                                 hint="You can predefine target exercise. EX01_IdCode for example"
@@ -139,7 +135,6 @@
                                         <v-text-field
 
                                                 :color="color"
-                                                autofocus
                                                 clearable
                                                 dark
                                                 hint="You can predefine target git hash."
@@ -152,7 +147,6 @@
                                         <v-text-field
 
                                                 :color="color"
-                                                autofocus
                                                 clearable
                                                 dark
                                                 hint="You can prefine target uniid. envomp for example"
@@ -168,8 +162,8 @@
                                         d-flex
                                         fluid
                                         md6
-                                        xs12
                                         sm6
+                                        xs12
                                 >
                                     <form>
 
@@ -177,7 +171,6 @@
                                         <v-text-field
 
                                                 :color="color"
-                                                autofocus
                                                 clearable
                                                 dark
                                                 hint="You can predefine docker timeout in seconds."
@@ -190,7 +183,6 @@
                                         <v-text-field
 
                                                 :color="color"
-                                                autofocus
                                                 clearable
                                                 dark
                                                 hint="You can predefine target priority (1 - 10)."
@@ -313,11 +305,11 @@
 
                     :headers="headers"
                     :items="SubmissionList"
-                    v-bind:pagination.sync="pagination"
                     :rows-per-page-items="rowsAmount"
                     :search="search"
                     class="elevation-1"
                     id="submissionDataTable"
+                    v-bind:pagination.sync="pagination"
 
             >
 
@@ -536,17 +528,7 @@
             this.getSubmissions();
         },
 
-        watch: {
-            tester_repository: 'validateField',
-            student_repository: 'validateField',
-            programming_language: 'validateField',
-        },
-
         methods: {
-            validateField() {
-
-            },
-
             getActiveSubmissions() {
                 this.$http.get('/submissions/active')
                     .then(response => {
@@ -702,7 +684,16 @@
             },
 
             clearSubmission() {
-
+                this.testing_mode = null;
+                this.programming_language = '';
+                this.student_repository = '';
+                this.tester_repository = '';
+                this.slug = '';
+                this.git_hash = '';
+                this.uniid = '';
+                this.docker_timeout = '';
+                this.priority = '';
+                this.system_extra = ['noFiles'];
             },
 
             getSubmission(hash) {

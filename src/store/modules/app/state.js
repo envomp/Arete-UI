@@ -1,6 +1,6 @@
 export default {
     drawer: null,
     color: localStorage.color,
-    userOverride: false,
-    hide: false
+    small: false,
+    isMobile: null,
 }

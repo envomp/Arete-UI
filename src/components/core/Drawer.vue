@@ -1,13 +1,18 @@
 <template>
 
     <v-navigation-drawer
-            :mini-variant="!userOverride && small"
+            :clipped="!isMobile"
+            :mini-variant="small"
+            :persistent="!isMobile"
+            :temporary="isMobile"
+
             app
             dark
+            enable-resize-watcher
             id="app-drawer"
-            v-model="inputValue"
+            mobile-break-point="959"
+            v-model="drawer"
             width="260"
-            mobile-break-point="-1"
     >
 
         <v-layout
@@ -16,7 +21,7 @@
         >
 
             <v-list-tile
-                    @click="toggleUserOverride()"
+                    @click.stop="toggleSmall()"
                     avatar
                     class="v-list-item"
                     id="logo"
@@ -91,12 +96,12 @@
                     text: 'Students'
                 }
             ],
-            small: false,
         }),
 
         computed: {
-            ...mapState('app', ['color', 'userOverride']),
-            inputValue: {
+            ...mapState('app', ['color', 'drawer', 'small', 'isMobile']),
+
+            drawer: {
                 get() {
                     return this.$store.state.app.drawer
                 },
@@ -104,30 +109,25 @@
                     this.setDrawer(val)
                 }
             },
+
             items() {
                 return this.$t('Layout.View.items')
             },
 
         },
-        mounted() {
-            this.onResponsiveInverted();
-            window.addEventListener('resize', this.onResponsiveInverted)
-        },
-        beforeDestroy() {
-            window.removeEventListener('resize', this.onResponsiveInverted)
-        },
         methods: {
-            ...mapMutations('app', ['setDrawer', 'toggleDrawer', 'toggleUserOverride']),
+            ...mapMutations('app', ['setDrawer', 'toggleDrawer']),
 
-            onResponsiveInverted() {
-                this.small = window.outerWidth <= 959;
-                if (!this.small) {
-                    this.$store.state.app.userOverride = false;
-                }
+            toggleSmall() {
+                this.$store.state.app.small = !this.$store.state.app.small;
             },
 
-            toggleUserOverride() {
-                this.$store.state.app.userOverride = !this.$store.state.app.userOverride;
+            setDrawer(val) {
+                this.$store.state.app.drawer = val;
+            },
+
+            toggleDrawer() {
+                this.$store.state.app.drawer = !this.$store.state.app.drawer;
             }
         }
     }

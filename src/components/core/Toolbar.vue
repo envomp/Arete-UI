@@ -1,10 +1,15 @@
 <template>
     <v-toolbar dark flat id="core-toolbar">
 
-        <div v-if="hide">
-            <v-icon @click="toggleUserOverride" class="toolbar-items" color v-if="userOverride">mdi-chevron-double-left</v-icon>
-            <v-icon @click="toggleUserOverride" class="toolbar-items" color v-else>mdi-chevron-double-right</v-icon>
+        <div v-if="!isMobile">
+            <v-icon @click.stop="toggleSmall" class="toolbar-items" color v-if="!small">mdi-chevron-double-left</v-icon>
+            <v-icon @click.stop="toggleSmall" class="toolbar-items" color v-else>mdi-chevron-double-right</v-icon>
+
         </div>
+        <div v-else>
+            <v-icon @click.stop="toggleDrawer" class="toolbar-items" color>mdi-chevron-double-right</v-icon>
+        </div>
+
 
         <v-toolbar-title>
             {{ title }}
@@ -35,19 +40,12 @@
     export default {
         data: () => ({
             notifications: [],
-            title: "Automated testing service",
+            title: "Automated testing service"
         }),
 
         computed: {
-            ...mapState('app', ['color', 'userOverride', 'hide']),
+            ...mapState('app', ['color', 'drawer', 'small', 'isMobile']),
             ...mapGetters(["authorized"]),
-            userOverride() {
-                return this.$store.state.app.userOverride;
-            },
-
-            hide() {
-                return this.$store.state.app.hide;
-            },
 
             color() {
                 return this.$store.state.app.color;
@@ -60,7 +58,6 @@
             }
         },
         mounted() {
-            this.onResponsiveInverted();
             window.addEventListener('resize', this.onResponsiveInverted)
         },
         beforeDestroy() {
@@ -68,14 +65,14 @@
         },
 
         methods: {
-            ...mapMutations("app", ["toggleUserOverride", "setHide"]),
+            ...mapMutations("app", ['toggleDrawer', 'toggleSmall']),
 
             onResponsiveInverted() {
-                this.setHide(window.outerWidth <= 959);
+                this.$store.state.app.isMobile = window.innerWidth <= 959;
             },
 
-            setHide(hide) {
-                this.$store.state.app.hide = hide;
+            toggleSmall() {
+                this.$store.state.app.small = !this.$store.state.app.small;
             },
 
             logout: function () {
@@ -84,9 +81,9 @@
                 });
             },
 
-            toggleUserOverride() {
-                this.$store.state.app.userOverride = !this.$store.state.app.userOverride;
-            },
+            toggleDrawer() {
+                this.$store.state.app.drawer = !this.$store.state.app.drawer;
+            }
         }
     };
 </script>
