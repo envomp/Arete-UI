@@ -3,11 +3,13 @@
             :close-on-content-click="false"
             bottom
             left
+            app
             max-width="300"
             min-width="300"
             nudge-left="12"
             offset-x
             transition="slide-y-transition"
+            v-if="isMobile"
     >
         <v-btn
                 class="elevation-0"
@@ -21,6 +23,7 @@
         >
             <v-icon>mdi-settings</v-icon>
         </v-btn>
+
         <v-card>
             <v-container grid-list-xl>
                 <v-layout wrap>
@@ -43,6 +46,8 @@
             </v-container>
         </v-card>
     </v-menu>
+
+
 </template>
 
 <script>
@@ -64,7 +69,7 @@
         }),
 
         computed: {
-            ...mapState('app', ['color']),
+            ...mapState('app', ['color', 'isMobile']),
             color() {
                 return this.$store.state.app.color;
             }
@@ -89,8 +94,5 @@
 </script>
 
 <style lang="scss">
-    .v-avatar,
-    .v-responsive {
-        cursor: pointer;
-    }
+
 </style>

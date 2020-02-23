@@ -7,10 +7,10 @@
 
             <core-toolbar/>
 
-<!--            List left-->
+            <!--            List left-->
             <core-drawer/>
 
-<!--            Page content-->
+            <!--            Page content-->
             <v-fade-transition mode="out-in">
                 <router-view/>
             </v-fade-transition>

@@ -21,8 +21,8 @@ table.v-table tbody td {
 }
 
 .consoleOutput {
-  max-height: 50em;
-  min-width: 100em;
+  table-layout:fixed;
+  width: 100% !important;
   overflow: auto;
   white-space: normal;
 }

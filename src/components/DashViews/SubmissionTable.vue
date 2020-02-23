@@ -302,15 +302,14 @@
                 dark
         >
             <v-data-table
-
-                    :headers="headers"
+                    :headers="computedHeaders"
                     :items="SubmissionList"
                     :rows-per-page-items="rowsAmount"
                     :search="search"
                     class="elevation-1"
                     id="submissionDataTable"
+                    style="table-layout:fixed; width: 100% !important;"
                     v-bind:pagination.sync="pagination"
-
             >
 
                 <template
@@ -328,12 +327,12 @@
                         v-slot:items="props"
                 >
                     <tr @click="props.expanded = !props.expanded, getSubmission(props.item.hash)">
-                        <td>{{ props.item.id }}</td>
-                        <td>{{ props.item.uniid }}</td>
+                        <td v-if="!isMobile && !isVerySmall">{{ props.item.id }}</td>
+                        <td v-if="!isMobile">{{ props.item.uniid }}</td>
                         <td>{{ props.item.hash }}</td>
-                        <td>{{ props.item.timestamp }}</td>
-                        <td>{{ props.item.testingPlatform }}</td>
-                        <td>{{ props.item.root }}</td>
+                        <td v-if="!isMobile && !isVerySmall && !isSmall">{{ props.item.timestamp }}</td>
+                        <td v-if="!isMobile && !isVerySmall">{{ props.item.testingPlatform }}</td>
+                        <td v-if="!isMobile && !isVerySmall && !isSmall">{{ props.item.root }}</td>
                     </tr>
                 </template>
 
@@ -366,6 +365,7 @@
                                                     :slider-color="color"
                                                     color="grey darken-4"
                                                     dark
+                                                    vertical
                                             >
                                                 <v-tab ripple>
                                                     <v-icon left>mdi-account</v-icon>
@@ -377,28 +377,28 @@
                                                     Console logs
                                                 </v-tab>
 
-                                                <v-tab ripple>
+                                                <v-tab ripple v-if="!isMobile">
                                                     <v-icon left>mdi-archive</v-icon>
                                                     Content
                                                 </v-tab>
 
                                                 <v-tab-item>
                                                     <v-card flat>
-                                                        <div id="output" v-html="job.output"></div>
-                                                    </v-card>
-                                                </v-tab-item>
-
-                                                <v-tab-item>
-                                                    <v-card flat>
-                                                        <div class="consoleOutput"
+                                                        <div class="consoleOutput scale-down"
                                                              v-html="job.consoleOutput"></div>
                                                     </v-card>
                                                 </v-tab-item>
 
                                                 <v-tab-item>
                                                     <v-card flat>
-                                                        <div class="consoleOutput"
+                                                        <div class="consoleOutput scale-down"
                                                              v-html="createFileView(index)"></div>
+                                                    </v-card>
+                                                </v-tab-item>
+
+                                                <v-tab-item>
+                                                    <v-card flat>
+                                                        <div class="consoleOutput scale-down" v-html="job.output"></div>
                                                     </v-card>
                                                 </v-tab-item>
 
@@ -491,6 +491,7 @@
             rowsAmount: [15, 20, 25, {"text": "$vuetify.dataIterator.rowsPerPageAll", "value": -1}],
             search: '',
             pagination: {'sortBy': 'id', 'descending': true, 'rowsPerPage': 15},
+
             headers: [
                 {text: 'id', align: 'left', value: 'id'},
                 {text: 'uniid', value: 'uniid'},
@@ -499,10 +500,27 @@
                 {text: 'testingPlatform', value: 'testingPlatform'},
                 {text: 'root', value: 'root'},
             ],
+
+            headersSmall: [
+                {text: 'id', align: 'left', value: 'id'},
+                {text: 'uniid', value: 'uniid'},
+                {text: 'hash', value: 'hash', sortable: false},
+                {text: 'testingPlatform', value: 'testingPlatform'},
+            ],
+
+            headersVerySmall: [
+                {text: 'uniid', value: 'uniid'},
+                {text: 'hash', value: 'hash', sortable: false},
+            ],
+
+            headersMobile: [
+                {text: 'hash', value: 'hash', sortable: false},
+            ],
+
         }),
 
         computed: {
-            ...mapState('app', ['color', 'hide']),
+            ...mapState('app', ['color', 'hide', 'isMobile', 'small', 'isSmall', 'isVerySmall']),
 
             rules() {
                 const rules = [];
@@ -520,6 +538,23 @@
                 rules.push(rule2);
 
                 return rules;
+            },
+
+            computedHeaders() {
+
+                if (this.isMobile) {
+                    console.log("mobile");
+                    return this.headersMobile;
+                } else if (this.isVerySmall) {
+                    console.log("very small");
+                    return this.headersVerySmall;
+                } else if (this.isSmall) {
+                    console.log("small");
+                    return this.headersSmall;
+                } else {
+                    console.log("normal");
+                    return this.headers;
+                }
             },
         },
 
@@ -593,7 +628,6 @@
                             this.snackbar = true;
                         }
                     )
-
             },
 
             submitSubmission() {
@@ -738,12 +772,5 @@
 </script>
 
 <style scoped>
-
-    #output {
-
-        max-height: 50em;
-        overflow: auto;
-
-    }
 
 </style>

@@ -7,7 +7,7 @@
             :temporary="isMobile"
             app
             id="app-drawer"
-            mobile-break-point="1263"
+            mobile-break-point="600"
             v-model="drawer"
             width="260"
     >
@@ -46,13 +46,40 @@
                     class="v-list-item"
                     v-for="(link, i) in links"
             >
+
                 <v-list-tile-action>
                     <v-icon>{{ link.icon }}</v-icon>
                 </v-list-tile-action>
                 <v-list-tile-title
                         v-text="link.text"
-                />
+                >
+                </v-list-tile-title>
+
             </v-list-tile>
+
+            <v-spacer></v-spacer>
+
+            <v-container grid-list-xl v-if="!small && !($route.path === '/dashboard')">
+                <v-layout wrap>
+                    <v-flex xs12>
+                        <div class="text-xs-center body-2 text-uppercase ">Theme</div>
+
+                        <v-layout justify-center>
+                            <v-avatar
+                                    :color="c"
+                                    :key="c"
+                                    @click="setColor(c)"
+                                    pa-1
+                                    size="23"
+                                    tile
+                                    v-for="c in colors"
+                            />
+                        </v-layout>
+                        <v-divider class="mt-3"/>
+                    </v-flex>
+                </v-layout>
+            </v-container>
+
         </v-layout>
 
     </v-navigation-drawer>
@@ -66,6 +93,18 @@
         name: 'Drawer',
         data: () => ({
             logo: require('@/assets/img/logo.png'),
+
+            colors: [
+                'error',
+                'warning',
+                'primary',
+                'success',
+                'info',
+                'general',
+                'tertiary',
+                'danger',
+            ],
+
             links: [
                 {
                     to: '/',
@@ -75,7 +114,7 @@
                 {
                     to: '/dashboard/submissions',
                     icon: 'mdi-calendar-today',
-                    text: 'Submissions'
+                    text: 'Submissions',
                 },
                 {
                     to: '/dashboard/courses',
@@ -96,7 +135,7 @@
         }),
 
         computed: {
-            ...mapState('app', ['color', 'drawer', 'small', 'isMobile']),
+            ...mapState('app', ['color', 'drawer', 'small', 'isMobile', 'color']),
 
             drawer: {
                 get() {
@@ -113,7 +152,18 @@
 
         },
         methods: {
-            ...mapMutations('app', ['setDrawer', 'toggleDrawer']),
+            ...mapMutations('app', ['setDrawer', 'toggleDrawer', 'setColor']),
+
+            setColor(color) {
+                localStorage.color = color;
+                this.$store.state.app.color = color;
+                let username = localStorage.username;
+                let token = localStorage.token;
+                this.$http.put('/user', {username, token, color})
+                    .then(() => {
+                    })
+                    .catch(error => console.log(error))
+            },
 
             toggleSmall() {
                 this.$store.state.app.small = !this.$store.state.app.small;

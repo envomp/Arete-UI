@@ -25,7 +25,7 @@
         <v-toolbar-items>
 
 
-            <v-flex align-center layout py-2 v-ripple="{ class: `${color}--text` }">
+            <v-flex xs12 sm4 align-center layout py-2 v-ripple="{ class: `${color}--text` }">
 
                 <router-link
                         :key="color"
@@ -65,26 +65,9 @@
                 this.title = val.meta.name;
             }
         },
-        mounted() {
-            this.$store.state.app.isMobile = window.innerWidth <= 1263;
-            console.log(window.innerWidth);
-            window.addEventListener('resize', this.onResponsiveInverted)
-        },
-        beforeDestroy() {
-            window.removeEventListener('resize', this.onResponsiveInverted)
-        },
 
         methods: {
             ...mapMutations("app", ['toggleDrawer', 'toggleSmall']),
-
-            onResponsiveInverted() {
-                let last = this.$store.state.app.isMobile;
-                this.$store.state.app.isMobile = window.innerWidth <= 1263;
-                if (!last && this.$store.state.app.isMobile) {
-                    this.$store.state.app.drawer = false;
-                }
-
-            },
 
             toggleSmall() {
                 this.$store.state.app.small = !this.$store.state.app.small;
