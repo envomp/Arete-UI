@@ -21,7 +21,6 @@
 
 
         <v-data-table
-
                 :headers="headers"
                 :items="exerciseList"
                 :rows-per-page-items="rowsAmount"
@@ -68,19 +67,19 @@
 
                                 <v-tab :key="'timestampChartTab' + props2.item.id"
                                        ripple>
-                                    <v-icon left>mdi-archive</v-icon>
+                                    <v-icon left>mdi-chart-line</v-icon>
                                     Timestamps chart
                                 </v-tab>
 
                                 <v-tab :key="'testErrorsChartTab' + props2.item.id"
                                        ripple>
-                                    <v-icon left>mdi-account</v-icon>
+                                    <v-icon left>mdi-chart-bar</v-icon>
                                     Test errors chart
                                 </v-tab>
 
                                 <v-tab :key="'diagnosticErrorsChartTab' + props2.item.id"
                                        ripple>
-                                    <v-icon left>mdi-lock</v-icon>
+                                    <v-icon left>mdi-chart-histogram</v-icon>
                                     Diagnostic errors chart
                                 </v-tab>
 
@@ -161,7 +160,7 @@
                                             label="Search"
                                             single-line
                                             v-model="subSearch"
-                                    ></v-text-field>
+                                    ></v-text-field> </material-card>
                                     <v-data-table
 
                                             :headers="subHeaders"
@@ -335,8 +334,6 @@
                                         </template>
 
                                     </v-data-table>
-
-                                </material-card>
 
                             </v-window>
 
