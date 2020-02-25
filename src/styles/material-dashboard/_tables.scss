@@ -21,10 +21,11 @@ table.v-table tbody td {
 }
 
 .consoleOutput {
+  max-height: 500px;
   table-layout:fixed;
   width: 100% !important;
   overflow: auto;
-  white-space: normal;
+  white-space: inherit;
 }
 
 table.v-table tbody td:first-child, table.v-table tbody td:not(:first-child),

@@ -47,7 +47,7 @@
             onResponsiveInverted() {
                 let lastMobile = this.$store.state.app.isMobile;
                 let lastSmall = this.$store.state.app.isSmall;
-                console.log( window.innerWidth);
+
                 this.$store.state.app.isMobile = window.innerWidth < 600;
                 this.$store.state.app.isVerySmall = window.innerWidth < 930;
                 this.$store.state.app.isSmall = window.innerWidth < 1260;

@@ -27,8 +27,6 @@ export let blueChartOptions = {
                 zeroLineColor: "transparent",
             },
             ticks: {
-                suggestedMin: 60,
-                suggestedMax: 125,
                 padding: 20,
                 fontColor: "#2380f7"
             }
@@ -70,8 +68,6 @@ export let purpleChartOptions = {
                 zeroLineColor: "transparent",
             },
             ticks: {
-                suggestedMin: 60,
-                suggestedMax: 125,
                 padding: 20,
                 fontColor: "#9a9a9a"
             }
@@ -113,8 +109,6 @@ export let orangeChartOptions = {
                 zeroLineColor: "transparent",
             },
             ticks: {
-                suggestedMin: 50,
-                suggestedMax: 110,
                 padding: 20,
                 fontColor: "#ff8a76"
             }
@@ -134,7 +128,8 @@ export let orangeChartOptions = {
         }]
     }
 
-}
+};
+
 export let greenChartOptions = {
     ...basicOptions,
     tooltips: {
@@ -156,8 +151,6 @@ export let greenChartOptions = {
                 zeroLineColor: "transparent",
             },
             ticks: {
-                suggestedMin: 50,
-                suggestedMax: 125,
                 padding: 20,
                 fontColor: "#9e9e9e"
             }
@@ -176,7 +169,7 @@ export let greenChartOptions = {
             }
         }]
     }
-}
+};
 
 export let barChartOptions = {
     ...basicOptions,
@@ -192,15 +185,12 @@ export let barChartOptions = {
     },
     scales: {
         yAxes: [{
-
             gridLines: {
                 drawBorder: false,
                 color: 'rgba(29,140,248,0.1)',
                 zeroLineColor: "transparent",
             },
             ticks: {
-                suggestedMin: 60,
-                suggestedMax: 120,
                 padding: 20,
                 fontColor: "#9e9e9e"
             }
@@ -219,4 +209,4 @@ export let barChartOptions = {
         }]
     }
 
-}
+};

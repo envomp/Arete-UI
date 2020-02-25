@@ -10,7 +10,6 @@ export default {
                 .then(response => {
                     const token = response.data.token;
                     const user = response.data.username;
-                    console.log(response);
                     // storing jwt in localStorage. https cookie is safer place to store
                     localStorage.setItem('token', token);
                     localStorage.setItem('user', user);
@@ -20,7 +19,6 @@ export default {
                     resolve(response)
                 })
                 .catch(err => {
-                    console.log('login error');
                     commit('auth_error');
                     localStorage.removeItem('token');
                     reject(err)
@@ -44,7 +42,6 @@ export default {
                 commit('auth_success', {token})
             })
             .catch(error => {
-                console.log('refresh token error');
                 commit('logout');
                 localStorage.removeItem('token');
                 console.log(error)

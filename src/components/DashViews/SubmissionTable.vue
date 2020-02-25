@@ -3,28 +3,41 @@
             fluid
             grid-list-xl
     >
-
-        <v-timeline align-top dense>
-            <v-timeline-item
+        <v-snackbar
+                :timeout="timeout"
+                top
+                v-model="snackbar"
+        >
+            {{ snackbar_text }}
+            <v-btn
                     :color="color"
-                    :icon="item.icon"
-                    :key="i"
-                    fill-dot
-                    v-for="(item, i) in items"
+                    @click="snackbar = false"
+                    flat
             >
-                <v-card
+                Close
+            </v-btn>
+        </v-snackbar>
+
+        <v-layout wrap>
+
+            <v-flex
+                    lg6
+                    md6
+                    sm12
+                    xs12
+                    :color="color"
+                    style="padding-right: 8px"
+            >
+                <material-card
                         :color="color"
-                        dark
+                        :title="items[0].title"
                 >
-                    <v-card-title class="title">{{item.title}}</v-card-title>
+
                     <v-card-text class="grey darken-3 text--primary">
-
-                        <form v-if="i===0">
-
+                        <form>
                             <v-text-field
 
                                     :color="color"
-                                    autofocus
                                     clearable
                                     dark
                                     hint="Make sure it ends with '-tester'"
@@ -39,15 +52,32 @@
                                    class="mx-0"
                                    outline>Submit
                             </v-btn>
-
                         </form>
+                    </v-card-text>
 
-                        <form v-if="i===1">
+                </material-card>
+            </v-flex>
+
+            <v-flex
+                    lg6
+                    md6
+                    sm12
+                    xs12
+                    :color="color"
+                    style="padding-left: 8px"
+
+            >
+                <material-card
+                        :color="color"
+                        :title="items[1].title"
+                >
+
+                    <v-card-text class="grey darken-3 text--primary">
+                        <form>
 
                             <v-text-field
 
                                     :color="color"
-                                    autofocus
                                     clearable
                                     dark
                                     data-vv-name="name"
@@ -65,361 +95,355 @@
                             </v-btn>
 
                         </form>
+                    </v-card-text>
+                </material-card>
+            </v-flex>
 
-                        <v-container fluid grid-list-md v-if="i===2">
+        </v-layout>
+
+
+        <material-card
+                :color="color"
+                :title="items[2].title"
+        >
+
+            <v-container fluid grid-list-md>
+                <v-layout
+                        wrap
+                >
+                    <v-flex
+                            d-flex
+                            fluid
+                            md6
+                            sm6
+                            style="padding-right: 8px"
+                            xs12
+                    >
+                        <form ref="form">
+
+                            <v-text-field
+
+                                    :color="color"
+                                    :rules="rules"
+                                    clearable
+                                    dark
+                                    hint="java, python, prolog..."
+                                    label="Testing language"
+                                    primary
+                                    v-model="programming_language"
+
+                            ></v-text-field>
+
+                            <v-text-field
+
+                                    :color="color"
+                                    :rules="rules"
+                                    clearable
+                                    dark
+                                    hint="gitlab or github url"
+                                    label="Student repository"
+                                    primary
+                                    v-model="student_repository"
+
+                            ></v-text-field>
+
+                            <v-text-field
+
+                                    :color="color"
+                                    :rules="rules"
+                                    clearable
+                                    dark
+                                    hint="gitlab or github url"
+                                    label="Tester repository"
+                                    primary
+                                    v-model="tester_repository"
+
+                            ></v-text-field>
+
+                            <v-text-field
+
+                                    :color="color"
+                                    clearable
+                                    dark
+                                    hint="You can predefine target exercise. EX01_IdCode for example"
+                                    label="Exercise"
+                                    primary
+                                    v-model="slug"
+
+                            ></v-text-field>
+
+                            <v-text-field
+
+                                    :color="color"
+                                    clearable
+                                    dark
+                                    hint="You can predefine target git hash."
+                                    label="Hash"
+                                    primary
+                                    v-model="git_hash"
+
+                            ></v-text-field>
+
+                            <v-text-field
+
+                                    :color="color"
+                                    clearable
+                                    dark
+                                    hint="You can prefine target uniid. envomp for example"
+                                    label="UNI-ID"
+                                    primary
+                                    v-model="uniid"
+
+                            ></v-text-field>
+                        </form>
+                    </v-flex>
+
+                    <v-flex
+                            d-flex
+                            fluid
+                            md6
+                            sm6
+                            style="padding-left: 8px"
+                            xs12
+                    >
+                        <form>
+
+
+                            <v-text-field
+
+                                    :color="color"
+                                    clearable
+                                    dark
+                                    hint="You can predefine docker timeout in seconds."
+                                    label="Docker Timeout"
+                                    primary
+                                    v-model="docker_timeout"
+
+                            ></v-text-field>
+
+                            <v-text-field
+
+                                    :color="color"
+                                    clearable
+                                    dark
+                                    hint="You can predefine target priority (1 - 10)."
+                                    label="Priority"
+                                    primary
+                                    v-model="priority"
+
+                            ></v-text-field>
+
+                            <v-select
+                                    :color="color"
+                                    :items="testing_modes"
+                                    dark
+                                    label="Testing mode"
+                                    outline
+                                    v-model="testing_mode"
+                            ></v-select>
+
                             <v-layout
-                                    :column="hide"
-                                    :row="hide"
+                                    pa-5
                                     wrap
                             >
-                                <v-flex
-                                        d-flex
-                                        fluid
-                                        md6
-                                        sm6
-                                        xs12
-                                >
-                                    <form ref="form">
 
-                                        <v-text-field
-
-                                                :color="color"
-                                                :rules="rules"
-                                                clearable
-                                                dark
-                                                hint="java, python, prolog..."
-                                                label="Testing language"
-                                                primary
-                                                v-model="programming_language"
-
-                                        ></v-text-field>
-
-                                        <v-text-field
-
-                                                :color="color"
-                                                :rules="rules"
-                                                clearable
-                                                dark
-                                                hint="gitlab or github url"
-                                                label="Student repository"
-                                                primary
-                                                v-model="student_repository"
-
-                                        ></v-text-field>
-
-                                        <v-text-field
-
-                                                :color="color"
-                                                :rules="rules"
-                                                clearable
-                                                dark
-                                                hint="gitlab or github url"
-                                                label="Tester repository"
-                                                primary
-                                                v-model="tester_repository"
-
-                                        ></v-text-field>
-
-                                        <v-text-field
-
-                                                :color="color"
-                                                clearable
-                                                dark
-                                                hint="You can predefine target exercise. EX01_IdCode for example"
-                                                label="Exercise"
-                                                primary
-                                                v-model="slug"
-
-                                        ></v-text-field>
-
-                                        <v-text-field
-
-                                                :color="color"
-                                                clearable
-                                                dark
-                                                hint="You can predefine target git hash."
-                                                label="Hash"
-                                                primary
-                                                v-model="git_hash"
-
-                                        ></v-text-field>
-
-                                        <v-text-field
-
-                                                :color="color"
-                                                clearable
-                                                dark
-                                                hint="You can prefine target uniid. envomp for example"
-                                                label="UNI-ID"
-                                                primary
-                                                v-model="uniid"
-
-                                        ></v-text-field>
-                                    </form>
-                                </v-flex>
-
-                                <v-flex
-                                        d-flex
-                                        fluid
-                                        md6
-                                        sm6
-                                        xs12
-                                >
-                                    <form>
-
-
-                                        <v-text-field
-
-                                                :color="color"
-                                                clearable
-                                                dark
-                                                hint="You can predefine docker timeout in seconds."
-                                                label="Docker Timeout"
-                                                primary
-                                                v-model="docker_timeout"
-
-                                        ></v-text-field>
-
-                                        <v-text-field
-
-                                                :color="color"
-                                                clearable
-                                                dark
-                                                hint="You can predefine target priority (1 - 10)."
-                                                label="Priority"
-                                                primary
-                                                v-model="priority"
-
-                                        ></v-text-field>
-
-                                        <v-select
-                                                :color="color"
-                                                :items="testing_modes"
-                                                dark
-                                                label="Testing mode"
-                                                outline
-                                                v-model="testing_mode"
-                                        ></v-select>
-
-                                        <v-layout
-                                                pa-5
-                                                wrap
-                                        >
-
-                                            <v-checkbox :color="color" dark label="anonymous" v-model="system_extra"
-                                                        value="anonymous"></v-checkbox>
-                                            <v-checkbox :color="color" dark label="noOverride" v-model="system_extra"
-                                                        value="noOverride"></v-checkbox>
-                                            <v-checkbox :color="color" dark label="noMail" v-model="system_extra"
-                                                        value="noMail"></v-checkbox>
-                                            <v-checkbox :color="color" dark label="noFiles" v-model="system_extra"
-                                                        value="noFiles"></v-checkbox>
-                                            <v-checkbox :color="color" dark label="noTesterFiles" v-model="system_extra"
-                                                        value="noTesterFiles"></v-checkbox>
-                                            <v-checkbox :color="color" dark label="noStudentFiles"
-                                                        v-model="system_extra"
-                                                        value="noStudentFiles"></v-checkbox>
-                                            <v-checkbox :color="color" dark label="noStd" v-model="system_extra"
-                                                        value="noStd"></v-checkbox>
-                                            <v-checkbox :color="color" dark label="noFeedback" v-model="system_extra"
-                                                        value="noFeedback"></v-checkbox>
-                                            <v-checkbox :color="color" dark label="minimalFeedback"
-                                                        v-model="system_extra"
-                                                        value="minimalFeedback"></v-checkbox>
-                                        </v-layout>
-
-                                    </form>
-                                </v-flex>
-
+                                <v-checkbox :color="color" dark label="anonymous" v-model="system_extra"
+                                            value="anonymous"></v-checkbox>
+                                <v-checkbox :color="color" dark label="noOverride"
+                                            v-model="system_extra"
+                                            value="noOverride"></v-checkbox>
+                                <v-checkbox :color="color" dark label="noMail" v-model="system_extra"
+                                            value="noMail"></v-checkbox>
+                                <v-checkbox :color="color" dark label="noFiles" v-model="system_extra"
+                                            value="noFiles"></v-checkbox>
+                                <v-checkbox :color="color" dark label="noTesterFiles"
+                                            v-model="system_extra"
+                                            value="noTesterFiles"></v-checkbox>
+                                <v-checkbox :color="color" dark label="noStudentFiles"
+                                            v-model="system_extra"
+                                            value="noStudentFiles"></v-checkbox>
+                                <v-checkbox :color="color" dark label="noStd" v-model="system_extra"
+                                            value="noStd"></v-checkbox>
+                                <v-checkbox :color="color" dark label="noFeedback"
+                                            v-model="system_extra"
+                                            value="noFeedback"></v-checkbox>
+                                <v-checkbox :color="color" dark label="minimalFeedback"
+                                            v-model="system_extra"
+                                            value="minimalFeedback"></v-checkbox>
                             </v-layout>
-                            <v-btn :color="color"
-                                   @click="submitSubmission()"
-                                   class="mx-0"
-                                   outline>Submit
-                            </v-btn>
-
-                            <v-btn :color="color"
-                                   @click="clearSubmission()"
-                                   class="mx-0"
-                                   outline>clear
-                            </v-btn>
-                        </v-container>
-
-                        <form v-if="i===3">
-
-                            <pre style="color: black">{{ activeSubmissions || pretty }}</pre>
-
-                            <v-btn :color="color"
-                                   @click="getActiveSubmissions()"
-                                   class="mx-0"
-                                   outline>refresh
-                            </v-btn>
 
                         </form>
+                    </v-flex>
 
-                    </v-card-text>
-                    <v-snackbar
-                            :timeout="timeout"
-                            top
-                            v-model="snackbar"
-                    >
-                        {{ snackbar_text }}
-                        <v-btn
-                                :color="color"
-                                @click="snackbar = false"
-                                flat
-                        >
-                            Close
-                        </v-btn>
-                    </v-snackbar>
+                </v-layout>
+                <v-btn :color="color"
+                       @click="submitSubmission()"
+                       class="mx-0"
+                       outline>Submit
+                </v-btn>
 
-                </v-card>
-            </v-timeline-item>
-        </v-timeline>
+                <v-btn :color="color"
+                       @click="clearSubmission()"
+                       class="mx-0"
+                       outline>clear
+                </v-btn>
+            </v-container>
 
-        <v-card
+        </material-card>
+
+
+        <material-card
                 :color="color"
-                dark
+                :title="items[3].title"
         >
-            <material-card
-                    :color="color"
-                    text="Latest submissions"
-                    title="Submission Table"
-            >
-                <v-text-field
-                        append-icon="search"
-                        hide-details
-                        label="Search"
-                        single-line
-                        v-model="search"
-                ></v-text-field>
 
-            </material-card>
-        </v-card>
+            <v-card-text class="grey darken-3 text--primary">
+                <form>
 
-        <v-card
+                    <pre style="color: black">{{ activeSubmissions || pretty }}</pre>
+
+                    <v-btn :color="color"
+                           @click="getActiveSubmissions()"
+                           class="mx-0"
+                           outline>refresh
+                    </v-btn>
+
+                </form>
+            </v-card-text>
+        </material-card>
+
+
+        <material-card
                 :color="color"
-                dark
+                text="Latest submissions"
+                title="Submission Table"
         >
-            <v-data-table
-                    :headers="computedHeaders"
-                    :items="SubmissionList"
-                    :rows-per-page-items="rowsAmount"
-                    :search="search"
-                    class="elevation-1"
-                    id="submissionDataTable"
-                    style="table-layout:fixed; width: 100% !important;"
-                    v-bind:pagination.sync="pagination"
-            >
+            <v-text-field
+                    append-icon="search"
+                    hide-details
+                    label="Search"
+                    single-line
+                    v-model="search"
+            ></v-text-field>
 
-                <template
-                        slot="headerCell"
-                        slot-scope="{ header }"
-                >
+        </material-card>
+
+
+        <v-data-table
+                :headers="computedHeaders"
+                :items="SubmissionList"
+                :rows-per-page-items="rowsAmount"
+                :search="search"
+                class="elevation-1"
+                id="submissionDataTable"
+                style="table-layout:fixed; width: 100% !important;"
+                v-bind:pagination.sync="pagination"
+        >
+
+            <template
+                    slot="headerCell"
+                    slot-scope="{ header }"
+            >
                 <span
                         v-bind:class="'subheading font-weight-light text-' + color"
                         v-bind:style="{ 'color': color }"
                         v-text="header.text"
                 />
-                </template>
+            </template>
 
-                <template
-                        v-slot:items="props"
-                >
-                    <tr @click="props.expanded = !props.expanded, getSubmission(props.item.hash)">
-                        <td v-if="!isMobile && !isVerySmall">{{ props.item.id }}</td>
-                        <td v-if="!isMobile">{{ props.item.uniid }}</td>
-                        <td>{{ props.item.hash }}</td>
-                        <td v-if="!isMobile && !isVerySmall && !isSmall">{{ props.item.timestamp }}</td>
-                        <td v-if="!isMobile && !isVerySmall">{{ props.item.testingPlatform }}</td>
-                        <td v-if="!isMobile && !isVerySmall && !isSmall">{{ props.item.root }}</td>
-                    </tr>
-                </template>
+            <template
+                    v-slot:items="props"
+            >
+                <tr @click="props.expanded = !props.expanded, getSubmission(props.item.hash)">
+                    <td v-if="!isMobile && !isVerySmall">{{ props.item.id }}</td>
+                    <td v-if="!isMobile">{{ props.item.uniid }}</td>
+                    <td>{{ props.item.hash }}</td>
+                    <td v-if="!isMobile && !isVerySmall && !isSmall">{{ props.item.timestamp }}</td>
+                    <td v-if="!isMobile && !isVerySmall">{{ props.item.testingPlatform }}</td>
+                    <td v-if="!isMobile && !isVerySmall && !isSmall">{{ props.item.root }}</td>
+                </tr>
+            </template>
 
-                <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
 
-                <template v-slot:expand="props">
+            <template v-slot:expand="props">
 
-                    <v-container fluid ma-0 pa-4>
+                <v-container fluid ma-0 pa-4>
 
-                        <v-expansion-panel popout>
-                            <v-expansion-panel-content
-                                    v-for="job in fullSubmission"
-                            >
-                                <template v-slot:header>
-                                    <div>{{job.slug}}</div>
-                                </template>
+                    <v-expansion-panel popout>
+                        <v-expansion-panel-content
+                                v-for="job in fullSubmission"
+                        >
+                            <template v-slot:header>
+                                <div>{{job.slug}}</div>
+                            </template>
 
-                                <v-window>
+                            <v-window>
 
-                                    <v-tab-item
-                                            v-for="(job, index) in fullSubmission"
+                                <v-tab-item
+                                        v-for="(job, index) in fullSubmission"
+                                >
+
+                                    <v-tabs
+                                            :id="'submissionTab' + index"
+                                            :slider-color="color"
+                                            color="grey darken-4"
+                                            dark
+                                            vertical
                                     >
+                                        <v-tab ripple>
+                                            <v-icon left>mdi-account</v-icon>
+                                            Student Output
+                                        </v-tab>
 
-                                        <v-card
-                                                :elevation="24"
-                                        >
+                                        <v-tab ripple>
+                                            <v-icon left>mdi-lock</v-icon>
+                                            Console logs
+                                        </v-tab>
 
-                                            <v-tabs
-                                                    :id="'submissionTab' + index"
-                                                    :slider-color="color"
-                                                    color="grey darken-4"
-                                                    dark
-                                                    vertical
-                                            >
-                                                <v-tab ripple>
-                                                    <v-icon left>mdi-account</v-icon>
-                                                    Student Output
-                                                </v-tab>
+                                        <v-tab ripple v-if="!isMobile">
+                                            <v-icon left>mdi-archive</v-icon>
+                                            Content
+                                        </v-tab>
 
-                                                <v-tab ripple>
-                                                    <v-icon left>mdi-lock</v-icon>
-                                                    Console logs
-                                                </v-tab>
+                                        <v-tab-item>
+                                            <v-card flat>
+                                                <div class="consoleOutput scale-down"
+                                                     v-html="job.consoleOutput"></div>
+                                            </v-card>
+                                        </v-tab-item>
 
-                                                <v-tab ripple v-if="!isMobile">
-                                                    <v-icon left>mdi-archive</v-icon>
-                                                    Content
-                                                </v-tab>
+                                        <v-tab-item>
+                                            <v-card flat>
+                                                <div class="consoleOutput scale-down"
+                                                     v-html="createFileView(index)"></div>
+                                            </v-card>
+                                        </v-tab-item>
 
-                                                <v-tab-item>
-                                                    <v-card flat>
-                                                        <div class="consoleOutput scale-down"
-                                                             v-html="job.consoleOutput"></div>
-                                                    </v-card>
-                                                </v-tab-item>
+                                        <v-tab-item>
+                                            <v-card flat>
+                                                <div class="consoleOutput scale-down" v-html="job.output"></div>
+                                            </v-card>
+                                        </v-tab-item>
 
-                                                <v-tab-item>
-                                                    <v-card flat>
-                                                        <div class="consoleOutput scale-down"
-                                                             v-html="createFileView(index)"></div>
-                                                    </v-card>
-                                                </v-tab-item>
+                                        <v-spacer></v-spacer>
 
-                                                <v-tab-item>
-                                                    <v-card flat>
-                                                        <div class="consoleOutput scale-down" v-html="job.output"></div>
-                                                    </v-card>
-                                                </v-tab-item>
+                                    </v-tabs>
 
-                                                <v-spacer></v-spacer>
 
-                                            </v-tabs>
-                                        </v-card>
+                                </v-tab-item>
 
-                                    </v-tab-item>
+                            </v-window>
 
-                                </v-window>
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
 
-                            </v-expansion-panel-content>
-                        </v-expansion-panel>
+                </v-container>
 
-                    </v-container>
+            </template>
 
-                </template>
+        </v-data-table>
 
-            </v-data-table>
-        </v-card>
 
         <br><br><br><br>
     </v-container>
@@ -430,11 +454,14 @@
 
     // Utilities
     import {mapState} from 'vuex'
+    import ChartCard from "../material/ChartCard";
+    import StatsCard from "../material/StatsCard";
 
     export default {
         name: 'Dashboard',
-
+        components: {StatsCard, ChartCard},
         data: () => ({
+
             snackbar: false,
             timeout: 5000,
             snackbar_text: '',
@@ -543,16 +570,12 @@
             computedHeaders() {
 
                 if (this.isMobile) {
-                    console.log("mobile");
                     return this.headersMobile;
                 } else if (this.isVerySmall) {
-                    console.log("very small");
                     return this.headersVerySmall;
                 } else if (this.isSmall) {
-                    console.log("small");
                     return this.headersSmall;
                 } else {
-                    console.log("normal");
                     return this.headers;
                 }
             },

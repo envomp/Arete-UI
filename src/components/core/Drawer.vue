@@ -59,7 +59,7 @@
 
             <v-spacer></v-spacer>
 
-            <v-container grid-list-xl v-if="!small && !($route.path === '/dashboard')">
+            <v-container grid-list-xl v-if="!small">
                 <v-layout wrap>
                     <v-flex xs12>
                         <div class="text-xs-center body-2 text-uppercase ">Theme</div>
@@ -83,6 +83,7 @@
         </v-layout>
 
     </v-navigation-drawer>
+
 </template>
 
 <script>
@@ -107,7 +108,7 @@
 
             links: [
                 {
-                    to: '/',
+                    to: '/dashboard/#',
                     icon: 'mdi-view-dashboard',
                     text: 'Dashboard'
                 },
