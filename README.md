@@ -1,23 +1,40 @@
-# iti0209-2020
+# Arete admin panel
 
-Kasutajaliidesed
+On dashboard you can see the current state of backend and tester
 
-1. Teenuse eesmärk on visuaalne liides Aretele, millega saab Aretet hallata ja kasutada visuaalselt Arete endpointe. Lisaks saab seal näha logisi.
-2. Teenus on mõeldud Arete haldajatele ja Arete teenuse kasutajale (Igaüks ei saa registreerida. Piiratud õigusega saab ainult ligi).
-3. Näiteks mina, et näha viimaseid failinud teste, et alamtestereid parandada ja teha andmeanalüüsi tudengite andmetega.
-4. Võimaldab teenust müüa koolist välja. Müün koodi testimise teenust, kus raha läheb küll koolile... Reaalselt pole plaanis.
+![Dashboard](preview/dashboard.png)
 
-Defineeritud on järgmised kasutajad: Kasutaja, Administraator
+On submissions page you can:
+* Force tester to pull a new image from docker.io repository to run tests on.
+* Force tester to pull new tests from git repository to run tests with.
+* Create a submission to test whether tester is working or not.
+* See currently active submissions.
+* See last 500 submissions ran and their details on how the testing went and what were the results.
 
-5. Keskkond sisaldab järgmiseid funktsionaalseid nõudeid:
-    * Administraatoril on ligipääs Arete endpointidele ja saab requeste nupuvajutusega tekitada.
-    * Kasutaja saab moodustada statistikat talle lubatud andmetest ja administraator saab moodustada statistikat kõikidest andmetest.
-    * Administraatori ja Kasutaja autentimine.
-    * Kasutaja ja administarator saab näha talle lubatud andmeid ilusal kujul.
+![Submissions](preview/sybmissions.gif)
+
+On courses page you can:
+* See what course is currently active.
+* On what times it is currently active.
+* What errors are the most common.
+* How's the code style
+* Students taking the course and their:
+    * Student's activity regarding the course
+    * Student's diagnostic errors regarding the course
+    * Student's code errors regarding the course
+* Students compared to each other regarding the course
+
+![Submissions](preview/course.gif)
+
+Then there is also a exercise page, what is really similar to courses page, but replace every word 'course' with 'exercise'.
+
+And finally there is students page, what accounts every student activity and compares them.
 
 
-Workflow on saadav lehel (viimane element): https://xd.adobe.com/view/e9f19aac-b44f-4a2b-6444-cd167366b51c-9fc0/grid/
 
-Demo on saadav lehel: https://xd.adobe.com/view/e9f19aac-b44f-4a2b-6444-cd167366b51c-9fc0/?fullscreen
 
-Kahe tudengi tagasiside on saadav lehel, kus on ka vana wireframe, kus uus tehti antud soovituste põhjal: https://xd.adobe.com/view/7708ba44-696e-4617-7d76-f24ff837b634-0139/
+Workflow is available at (last element): https://xd.adobe.com/view/e9f19aac-b44f-4a2b-6444-cd167366b51c-9fc0/grid/
+
+Demo is available: https://xd.adobe.com/view/e9f19aac-b44f-4a2b-6444-cd167366b51c-9fc0/?fullscreen
+
+Feedback on the wireframe by 2 students whos opinnion was accounted for and new wireframe was made: https://xd.adobe.com/view/7708ba44-696e-4617-7d76-f24ff837b634-0139/
