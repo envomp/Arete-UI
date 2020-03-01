@@ -26,6 +26,8 @@ On courses page you can:
 
 ![Submissions](preview/course.gif)
 
+(Fun fact. Spike on the submission graph was from stress testing the system.)
+
 Then there is also a exercise page, what is really similar to courses page, but replace every word 'course' with 'exercise'.
 
 And finally there is students page, what accounts every student activity and compares them.
