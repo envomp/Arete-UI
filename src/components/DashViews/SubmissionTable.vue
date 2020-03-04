@@ -319,6 +319,7 @@
                 title="Submission Table"
         >
             <v-text-field
+                    :color="color"
                     append-icon="search"
                     hide-details
                     label="Search"
@@ -330,6 +331,7 @@
 
 
         <v-data-table
+                :color="color"
                 :headers="computedHeaders"
                 :items="SubmissionList"
                 :rows-per-page-items="rowsAmount"
@@ -481,6 +483,7 @@
                                                                                 title="All test ran regarding this test context">
 
                                                                             <v-text-field
+                                                                                    :color="color"
                                                                                     append-icon="search"
                                                                                     hide-details
                                                                                     label="Search"
@@ -491,6 +494,7 @@
 
                                                                         <v-data-table
 
+                                                                                :color="color"
                                                                                 :headers="unitTestHeaders"
                                                                                 :items="fullSubmission[index]['testSuites'][getExpandedJob()].unitTests"
                                                                                 :rows-per-page-items="rowsAmount"
@@ -536,6 +540,7 @@
 
                                                 </v-data-table>
                                                 <v-data-iterator
+                                                        :color="color"
                                                         :items="fullSubmission[index]['testSuites']"
                                                         :pagination.sync="pagination"
                                                         :rows-per-page-items="rowsPerPageItems"

@@ -10,6 +10,7 @@
                 title="Exercise Table"
         >
             <v-text-field
+                    :color="color"
                     append-icon="search"
                     hide-details
                     label="Search"
@@ -21,6 +22,7 @@
 
 
         <v-data-table
+                :color="color"
                 :headers="headers"
                 :items="exerciseList"
                 :rows-per-page-items="rowsAmount"
@@ -155,185 +157,194 @@
                                         text="Student data regarding the exercise only"
                                         title="Students who attempted the exercise">
                                     <v-text-field
+                                            :color="color"
                                             append-icon="search"
                                             hide-details
                                             label="Search"
                                             single-line
                                             v-model="subSearch"
-                                    ></v-text-field> </material-card>
-                                    <v-data-table
+                                    ></v-text-field>
+                                </material-card>
+                                <v-data-table
 
-                                            :headers="subHeaders"
-                                            :items="fullExercise.students"
-                                            :rows-per-page-items="rowsAmount"
-                                            :search="subSearch"
-                                            class="elevation-1">
+                                        :color="color"
+                                        :headers="subHeaders"
+                                        :items="fullExercise.students"
+                                        :rows-per-page-items="rowsAmount"
+                                        :search="subSearch"
+                                        class="elevation-1">
 
-                                        <template
-                                                slot="headerCell"
-                                                slot-scope="{ header }">
+                                    <template
+                                            slot="headerCell"
+                                            slot-scope="{ header }">
                                             <span
                                                     v-bind:class="'subheading font-weight-light text-' + color"
                                                     v-text="header.text"/>
-                                        </template>
+                                    </template>
 
-                                        <template
-                                                v-slot:items="props3">
-                                            <tr @click="() => {{!props3.expanded ? getStudent(props3.item) : null ; props3.expanded = !props3.expanded}}">
-                                                <td>{{ props3.item.id }}</td>
-                                                <td>{{ props3.item.uniid }}</td>
-                                                <td>{{ props3.item.latestSubmission }}</td>
-                                                <td>{{ props3.item.totalCommits }}</td>
-                                                <td>{{ props3.item.totalTestsRan }}</td>
-                                                <td>{{ props3.item.totalTestsPassed }}</td>
-                                                <td>{{ props3.item.totalDiagnosticErrors }}</td>
-                                                <td>{{ props3.item.highestPercent }}</td>
-                                                <td>{{ props3.item.commitsStyleOK }}</td>
-                                            </tr>
-                                        </template>
+                                    <template
+                                            v-slot:items="props3">
+                                        <tr @click="() => {{!props3.expanded ? getStudent(props3.item) : null ; props3.expanded = !props3.expanded}}">
+                                            <td>{{ props3.item.id }}</td>
+                                            <td>{{ props3.item.uniid }}</td>
+                                            <td>{{ props3.item.latestSubmission }}</td>
+                                            <td>{{ props3.item.totalCommits }}</td>
+                                            <td>{{ props3.item.totalTestsRan }}</td>
+                                            <td>{{ props3.item.totalTestsPassed }}</td>
+                                            <td>{{ props3.item.totalDiagnosticErrors }}</td>
+                                            <td>{{ props3.item.highestPercent }}</td>
+                                            <td>{{ props3.item.commitsStyleOK }}</td>
+                                        </tr>
+                                    </template>
 
-                                        <v-spacer></v-spacer>
+                                    <v-spacer></v-spacer>
 
-                                        <template v-scroll v-slot:expand="props4">
+                                    <template v-scroll v-slot:expand="props4">
 
-                                            <v-container fluid ma-0 pa-4>
+                                        <v-container fluid ma-0 pa-4>
 
-                                                <v-window
-                                                        class="elevation-1 "
-                                                        v-if="isTimelineComplete">
+                                            <v-window
+                                                    class="elevation-1 "
+                                                    v-if="isTimelineComplete">
 
-                                                    <v-layout wrap>
+                                                <v-layout wrap>
 
-                                                        <v-flex
-                                                                lg4
-                                                                md12
-                                                                sm12
-                                                                xs12>
-                                                            <material-card
-                                                                    :color="color"
-                                                                    title="Submission frequency"
-                                                                    v-if="isTimelineComplete"
-                                                            >
-                                                                <v-window type="chart">
-                                                                    <div class="chart-area">
-                                                                        <line-chart
-                                                                                :chart-data="studentTimestampsChart.chartData"
-                                                                                :chart-id="'studentTimestampsChart' + props4.id"
-                                                                                :extra-options="studentTimestampsChart.extraOptions"
-                                                                                :key="'studentTimestampsChart' + props4.id"
-                                                                                style="height: 400px">
-                                                                        </line-chart>
-                                                                    </div>
-                                                                </v-window>
-                                                            </material-card>
+                                                    <v-flex
+                                                            lg4
+                                                            md12
+                                                            sm12
+                                                            xs12>
+                                                        <material-card
+                                                                :color="color"
+                                                                title="Submission frequency"
+                                                                v-if="isTimelineComplete"
+                                                        >
+                                                            <v-window type="chart">
+                                                                <div class="chart-area">
+                                                                    <line-chart
+                                                                            :chart-data="studentTimestampsChart.chartData"
+                                                                            :chart-id="'studentTimestampsChart' + props4.id"
+                                                                            :extra-options="studentTimestampsChart.extraOptions"
+                                                                            :key="'studentTimestampsChart' + props4.id"
+                                                                            style="height: 400px">
+                                                                    </line-chart>
+                                                                </div>
+                                                            </v-window>
+                                                        </material-card>
 
-                                                            <v-progress-linear :color="color" :indeterminate="true" v-else></v-progress-linear>
+                                                        <v-progress-linear :color="color" :indeterminate="true"
+                                                                           v-else></v-progress-linear>
 
-                                                        </v-flex>
+                                                    </v-flex>
 
-                                                        <v-flex
-                                                                lg4
-                                                                md6
-                                                                sm6
-                                                                xs12>
-                                                            <material-card
-                                                                    :color="color"
-                                                                    title="Diagnostic errors"
-                                                                    v-if="isTimelineComplete"
-                                                            >
-                                                                <v-window type="chart">
-                                                                    <div class="chart-area">
-                                                                        <bar-chart :chart-data="studentDiagnosticErrorChart.chartData"
-                                                                                   :extra-options="studentDiagnosticErrorChart.extraOptions"
-                                                                                   :gradient-stops="studentDiagnosticErrorChart.gradientStops"
-                                                                                   :chart-id="'studentDiagnosticErrorChart' + props4.id"
-                                                                                   :key="'studentDiagnosticErrorChart' + props4.id"
-                                                                                   style="height: 100%">
-                                                                        </bar-chart>
-                                                                    </div>
-                                                                </v-window>
-                                                            </material-card>
+                                                    <v-flex
+                                                            lg4
+                                                            md6
+                                                            sm6
+                                                            xs12>
+                                                        <material-card
+                                                                :color="color"
+                                                                title="Diagnostic errors"
+                                                                v-if="isTimelineComplete"
+                                                        >
+                                                            <v-window type="chart">
+                                                                <div class="chart-area">
+                                                                    <bar-chart
+                                                                            :chart-data="studentDiagnosticErrorChart.chartData"
+                                                                            :chart-id="'studentDiagnosticErrorChart' + props4.id"
+                                                                            :extra-options="studentDiagnosticErrorChart.extraOptions"
+                                                                            :gradient-stops="studentDiagnosticErrorChart.gradientStops"
+                                                                            :key="'studentDiagnosticErrorChart' + props4.id"
+                                                                            style="height: 100%">
+                                                                    </bar-chart>
+                                                                </div>
+                                                            </v-window>
+                                                        </material-card>
 
-                                                            <v-progress-linear :color="color" :indeterminate="true" v-else></v-progress-linear>
+                                                        <v-progress-linear :color="color" :indeterminate="true"
+                                                                           v-else></v-progress-linear>
 
-                                                        </v-flex>
+                                                    </v-flex>
 
-                                                        <v-flex
-                                                                lg4
-                                                                md6
-                                                                sm6
-                                                                xs12>
-                                                            <material-card
-                                                                    :color="color"
-                                                                    title="Code errors"
-                                                                    v-if="isTimelineComplete"
-                                                            >
-                                                                <v-window type="chart">
-                                                                    <div class="chart-area">
-                                                                        <bar-chart :chart-data="studentCodeErrorChart.chartData"
-                                                                                   :extra-options="studentCodeErrorChart.extraOptions"
-                                                                                   :gradient-stops="studentCodeErrorChart.gradientStops"
-                                                                                   :chart-id="'studentCodeErrorChart' + props4.id"
-                                                                                   :key="'studentCodeErrorChart' + props4.id"
-                                                                                   style="height: 100%">
-                                                                        </bar-chart>
-                                                                    </div>
-                                                                </v-window>
-                                                            </material-card>
+                                                    <v-flex
+                                                            lg4
+                                                            md6
+                                                            sm6
+                                                            xs12>
+                                                        <material-card
+                                                                :color="color"
+                                                                title="Code errors"
+                                                                v-if="isTimelineComplete"
+                                                        >
+                                                            <v-window type="chart">
+                                                                <div class="chart-area">
+                                                                    <bar-chart
+                                                                            :chart-data="studentCodeErrorChart.chartData"
+                                                                            :chart-id="'studentCodeErrorChart' + props4.id"
+                                                                            :extra-options="studentCodeErrorChart.extraOptions"
+                                                                            :gradient-stops="studentCodeErrorChart.gradientStops"
+                                                                            :key="'studentCodeErrorChart' + props4.id"
+                                                                            style="height: 100%">
+                                                                    </bar-chart>
+                                                                </div>
+                                                            </v-window>
+                                                        </material-card>
 
-                                                            <v-progress-linear :color="color" :indeterminate="true" v-else></v-progress-linear>
+                                                        <v-progress-linear :color="color" :indeterminate="true"
+                                                                           v-else></v-progress-linear>
 
-                                                        </v-flex>
+                                                    </v-flex>
 
-                                                        <v-flex
-                                                                lg12
-                                                                md12
-                                                                sm12
-                                                                xs12>
+                                                    <v-flex
+                                                            lg12
+                                                            md12
+                                                            sm12
+                                                            xs12>
 
-                                                            <v-data-table
+                                                        <v-data-table
 
-                                                                    :headers="comparableHeaders"
-                                                                    :hide-actions="true"
-                                                                    :items="[studentData, averageData, medianData, overallStudentData]"
-                                                                    class="elevation-1">
-                                                                <template
-                                                                        slot="headerCell"
-                                                                        slot-scope="{ header }">
+                                                                :headers="comparableHeaders"
+                                                                :hide-actions="true"
+                                                                :items="[studentData, averageData, medianData, overallStudentData]"
+                                                                class="elevation-1">
+                                                            <template
+                                                                    slot="headerCell"
+                                                                    slot-scope="{ header }">
                                                                             <span
                                                                                     v-bind:class="'subheading font-weight-light text-' + color"
                                                                                     v-text="header.text"/>
-                                                                </template>
+                                                            </template>
 
-                                                                <template
-                                                                        v-slot:items="props5">
-                                                                    <tr>
-                                                                        <td>{{ props5.item[0] }}</td>
-                                                                        <td>{{ props5.item[1] }}</td>
-                                                                        <td>{{ props5.item[2] }}</td>
-                                                                        <td>{{ props5.item[3] }}</td>
-                                                                        <td>{{ props5.item[4] }}</td>
-                                                                        <td>{{ props5.item[5] }}</td>
-                                                                        <td>{{ props5.item[6] }}</td>
-                                                                        <td>{{ props5.item[7] }}</td>
-                                                                        <td>{{ props5.item[8] }}</td>
-                                                                    </tr>
-                                                                </template>
-                                                            </v-data-table>
+                                                            <template
+                                                                    v-slot:items="props5">
+                                                                <tr>
+                                                                    <td>{{ props5.item[0] }}</td>
+                                                                    <td>{{ props5.item[1] }}</td>
+                                                                    <td>{{ props5.item[2] }}</td>
+                                                                    <td>{{ props5.item[3] }}</td>
+                                                                    <td>{{ props5.item[4] }}</td>
+                                                                    <td>{{ props5.item[5] }}</td>
+                                                                    <td>{{ props5.item[6] }}</td>
+                                                                    <td>{{ props5.item[7] }}</td>
+                                                                    <td>{{ props5.item[8] }}</td>
+                                                                </tr>
+                                                            </template>
+                                                        </v-data-table>
 
-                                                        </v-flex>
+                                                    </v-flex>
 
-                                                    </v-layout>
+                                                </v-layout>
 
-                                                </v-window>
+                                            </v-window>
 
-                                                <v-progress-linear :color="color" :indeterminate="true" v-else></v-progress-linear>
+                                            <v-progress-linear :color="color" :indeterminate="true"
+                                                               v-else></v-progress-linear>
 
-                                            </v-container>
+                                        </v-container>
 
-                                        </template>
+                                    </template>
 
-                                    </v-data-table>
+                                </v-data-table>
 
                             </v-window>
 
@@ -350,6 +361,7 @@
         </v-data-table>
 
         <v-data-iterator
+                :color="color"
                 :items="exerciseList"
                 :pagination.sync="pagination"
                 :rows-per-page-items="rowsPerPageItems"

@@ -59,25 +59,35 @@
 
             <v-spacer></v-spacer>
 
-            <v-container grid-list-xl v-if="!small">
+            <v-container v-if="!small">
+
                 <v-layout wrap>
                     <v-flex xs12>
-                        <div class="text-xs-center body-2 text-uppercase ">Theme</div>
 
-                        <v-layout justify-center>
-                            <v-avatar
-                                    :color="c"
-                                    :key="c"
-                                    @click="setColor(c)"
-                                    pa-1
-                                    size="23"
-                                    tile
-                                    v-for="c in colors"
-                            />
-                        </v-layout>
-                        <v-divider class="mt-3"/>
+                            <v-container grid-list-xl>
+                                <v-layout wrap>
+                                    <v-flex xs12>
+                                        <div class="text-xs-center body-2 text-uppercase ">Theme</div>
+
+                                        <v-layout justify-center>
+                                            <v-avatar
+                                                    :color="c"
+                                                    :key="c"
+                                                    @click="setColor(c)"
+                                                    size="23"
+
+                                                    v-for="c in colors"
+                                            />
+                                        </v-layout>
+                                        <v-divider class="mt-3"/>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+
+
                     </v-flex>
                 </v-layout>
+
             </v-container>
 
         </v-layout>

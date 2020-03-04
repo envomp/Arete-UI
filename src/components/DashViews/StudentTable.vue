@@ -10,6 +10,7 @@
                 title="Student Table"
         >
             <v-text-field
+                    :color="color"
                     append-icon="search"
                     hide-details
                     label="Search"
@@ -21,6 +22,7 @@
 
 
         <v-data-table
+                :color="color"
                 :headers="headers"
                 :items="studentsList"
                 :rows-per-page-items="rowsAmount"
@@ -197,6 +199,7 @@
         </v-data-table>
 
         <v-data-iterator
+                :color="color"
                 :items="studentsList"
                 :pagination.sync="pagination"
                 :rows-per-page-items="rowsPerPageItems"

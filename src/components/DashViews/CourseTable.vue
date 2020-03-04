@@ -11,6 +11,7 @@
         >
 
             <v-text-field
+                    :color="color"
                     append-icon="search"
                     hide-details
                     label="Search"
@@ -21,12 +22,13 @@
         </material-card>
 
         <v-data-table
-                id="topCourseTable"
+                :color="color"
                 :headers="headers"
                 :items="courseList"
                 :rows-per-page-items="rowsAmount"
                 :search="search"
                 class="elevation-1"
+                id="topCourseTable"
                 v-if="!isMobile"
         >
 
@@ -167,6 +169,7 @@
                                         title="Students taking the course"
                                 >
                                     <v-text-field
+                                            :color="color"
                                             append-icon="search"
                                             hide-details
                                             label="Search"
@@ -177,6 +180,7 @@
 
                                 <v-data-table
 
+                                        :color="color"
                                         :headers="subHeaders"
                                         :items="fullCourse.students"
                                         :rows-per-page-items="rowsAmount"
@@ -378,6 +382,7 @@
         </v-data-table>
 
         <v-data-iterator
+                :color="color"
                 :items="courseList"
                 :pagination.sync="pagination"
                 :rows-per-page-items="rowsPerPageItems"

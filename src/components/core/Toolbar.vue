@@ -22,10 +22,10 @@
         </v-toolbar-title>
 
         <v-spacer/>
-        <v-toolbar-items>
+        <v-toolbar-items v-ripple="{ class: `${color}--text` }">
 
 
-            <v-flex xs12 sm4 align-center layout py-2 v-ripple="{ class: `${color}--text` }">
+            <v-flex xs12 sm4 align-center layout py-2>
 
                 <router-link
                         :key="color"
