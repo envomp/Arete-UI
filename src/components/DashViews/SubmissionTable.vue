@@ -21,12 +21,12 @@
         <v-layout wrap>
 
             <v-flex
+                    :color="color"
                     lg6
                     md6
                     sm12
-                    xs12
-                    :color="color"
                     style="padding-right: 8px"
+                    xs12
             >
                 <material-card
                         :color="color"
@@ -59,12 +59,12 @@
             </v-flex>
 
             <v-flex
+                    :color="color"
                     lg6
                     md6
                     sm12
-                    xs12
-                    :color="color"
                     style="padding-left: 8px"
+                    xs12
 
             >
                 <material-card
@@ -368,12 +368,13 @@
 
             <template v-slot:expand="props">
 
-                <v-container fluid ma-0 pa-4>
+                <v-container :class="!isMobile ? 'pa-4' : 'pa-0'" fluid ma-0>
 
                     <v-expansion-panel popout>
                         <v-expansion-panel-content
-                                v-for="job in fullSubmission"
-                        >
+                                v-bind:key="'upperTab' + index"
+                                v-for="(job, index) in fullSubmission">
+
                             <template v-slot:header>
                                 <div>{{job.slug}}</div>
                             </template>
@@ -381,8 +382,8 @@
                             <v-window>
 
                                 <v-tab-item
-                                        v-for="(job, index) in fullSubmission"
-                                >
+                                        v-bind:key="'lowerTab' + index"
+                                        v-for="(job, index) in fullSubmission">
 
                                     <v-tabs
                                             :id="'submissionTab' + index"
@@ -392,59 +393,236 @@
                                             vertical
                                     >
                                         <v-tab ripple>
-                                            <v-icon left>mdi-account</v-icon>
-                                            Student Output
+                                            <v-icon left>mdi-message-text-outline</v-icon>
+                                            Docker
+                                        </v-tab>
+
+                                        <v-tab ripple>
+                                            <v-icon left>mdi-comment-plus-outline</v-icon>
+                                            Extra
+                                        </v-tab>
+
+                                        <v-tab ripple v-if="!isMobile">
+                                            <v-icon left>mdi-lock-open</v-icon>
+                                            Out
                                         </v-tab>
 
                                         <v-tab ripple>
                                             <v-icon left>mdi-lock</v-icon>
-                                            Console logs
+                                            Full Out
                                         </v-tab>
 
-                                        <v-tab ripple v-if="!isMobile">
-                                            <v-icon left>mdi-archive</v-icon>
-                                            Content
-                                        </v-tab>
-
-                                        <v-tab-item>
+                                        <v-tab-item :key="'tab_item_1' + index">
                                             <v-card flat>
                                                 <div class="consoleOutput scale-down"
                                                      v-html="job.consoleOutput"></div>
                                             </v-card>
                                         </v-tab-item>
 
-                                        <v-tab-item>
+                                        <v-tab-item :key="'tab_item_2' + index">
                                             <v-card flat>
                                                 <div class="consoleOutput scale-down"
                                                      v-html="createFileView(index)"></div>
                                             </v-card>
                                         </v-tab-item>
 
-                                        <v-tab-item>
+                                        <v-tab-item :key="'tab_item_3' + index" v-if="!isMobile">
                                             <v-card flat>
                                                 <div class="consoleOutput scale-down" v-html="job.output"></div>
                                             </v-card>
                                         </v-tab-item>
 
+                                        <v-tab-item :key="'tab_item_4' + index">
+
+                                            <v-card flat>
+
+                                                <v-data-table
+                                                        :headers="testSuiteHeaders"
+                                                        :hide-actions="true"
+                                                        :items="fullSubmission[index]['testSuites']"
+                                                        class="elevation-1"
+                                                        v-if="!isMobile"
+                                                >
+                                                    <template
+                                                            slot="headerCell"
+                                                            slot-scope="{ header }">
+                                                        <span
+                                                                v-bind:class="'subheading font-weight-light text-' + color"
+                                                                v-text="header.text"/>
+                                                    </template>
+
+                                                    <template v-slot:items="propsSlugs">
+                                                        <tr @click="() => {{propsSlugs.expanded = !propsSlugs.expanded; setExpandedJob(index)}}">
+                                                            <td>{{ propsSlugs.item.id }}</td>
+                                                            <td>{{ propsSlugs.item.name }}</td>
+                                                            <td>{{ propsSlugs.item.file }}</td>
+                                                            <td>{{ propsSlugs.item.startDate }}</td>
+                                                            <td>{{ propsSlugs.item.endDate }}</td>
+                                                            <td>{{ propsSlugs.item.weight }}</td>
+                                                            <td>{{ propsSlugs.item.passedCount }}</td>
+                                                            <td>{{ propsSlugs.item.grade}}</td>
+                                                        </tr>
+                                                    </template>
+
+                                                    <v-spacer></v-spacer>
+
+                                                    <template v-if="!isMobile" v-slot:expand="propsJobs">
+
+                                                        <v-container fluid ma-0 pa-4>
+
+                                                            <v-window
+                                                                    class="elevation-1 ">
+                                                                <v-window-item>
+
+                                                                    <v-window class="elevation-1">
+                                                                        <material-card
+                                                                                :color="color"
+                                                                                text="Tests ran"
+                                                                                title="All test ran regarding this test context">
+
+                                                                            <v-text-field
+                                                                                    append-icon="search"
+                                                                                    hide-details
+                                                                                    label="Search"
+                                                                                    single-line
+                                                                                    v-model="subSearch"
+                                                                            ></v-text-field>
+                                                                        </material-card>
+
+                                                                        <v-data-table
+
+                                                                                :headers="unitTestHeaders"
+                                                                                :items="fullSubmission[index]['testSuites'][getExpandedJob()].unitTests"
+                                                                                :rows-per-page-items="rowsAmount"
+                                                                                :search="subSearch"
+                                                                                class="elevation-1">
+
+                                                                            <template
+                                                                                    slot="headerCell"
+                                                                                    slot-scope="{ header }">
+                                                                                <span
+                                                                                        v-bind:class="'subheading font-weight-light text-' + color"
+                                                                                        v-text="header.text"/>
+                                                                            </template>
+
+                                                                            <template
+                                                                                    v-slot:items="props3">
+                                                                                <tr>
+                                                                                    <td>{{props3.item.id}}</td>
+                                                                                    <td>{{props3.item.name}}</td>
+                                                                                    <td>{{props3.item.status}}</td>
+                                                                                    <td>{{props3.item.weight}}</td>
+                                                                                    <td>{{props3.item.exceptionClass}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{props3.item.exceptionMessage}}
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </template>
+
+                                                                            <v-spacer></v-spacer>
+
+                                                                        </v-data-table>
+
+                                                                    </v-window>
+
+                                                                </v-window-item>
+
+                                                            </v-window>
+
+                                                        </v-container>
+
+                                                    </template>
+
+                                                </v-data-table>
+                                                <v-data-iterator
+                                                        :items="fullSubmission[index]['testSuites']"
+                                                        :pagination.sync="pagination"
+                                                        :rows-per-page-items="rowsPerPageItems"
+                                                        :search="subSearch"
+                                                        item-key="name"
+                                                        row
+                                                        v-else
+                                                        wrap
+                                                >
+                                                    <template v-slot:item="props">
+                                                        <v-flex
+                                                                lg3
+                                                                md4
+                                                                sm6
+                                                                xs12
+                                                        >
+                                                            <v-card
+                                                                    @click="props.expanded = !props.expanded"
+                                                            >
+                                                                <v-card-title>
+                                                                    <h4>{{ props.item.name }}</h4>
+                                                                </v-card-title>
+                                                                <v-divider></v-divider>
+                                                                <v-list dense v-if="props.expanded">
+                                                                    <v-list-tile>
+                                                                        <v-list-tile-content>id:</v-list-tile-content>
+                                                                        <v-list-tile-content class="align-end">{{
+                                                                            props.item.id }}
+                                                                        </v-list-tile-content>
+                                                                    </v-list-tile>
+                                                                    <v-list-tile>
+                                                                        <v-list-tile-content>name:</v-list-tile-content>
+                                                                        <v-list-tile-content class="align-end">{{
+                                                                            props.item.name }}
+                                                                        </v-list-tile-content>
+                                                                    </v-list-tile>
+                                                                    <v-list-tile>
+                                                                        <v-list-tile-content>file:</v-list-tile-content>
+                                                                        <v-list-tile-content class="align-end">{{
+                                                                            props.item.file }}
+                                                                        </v-list-tile-content>
+                                                                    </v-list-tile>
+                                                                    <v-list-tile>
+                                                                        <v-list-tile-content>startDate:
+                                                                        </v-list-tile-content>
+                                                                        <v-list-tile-content class="align-end">{{
+                                                                            props.item.startDate }}
+                                                                        </v-list-tile-content>
+                                                                    </v-list-tile>
+                                                                    <v-list-tile>
+                                                                        <v-list-tile-content>weight:
+                                                                        </v-list-tile-content>
+                                                                        <v-list-tile-content class="align-end">{{
+                                                                            props.item.weight }}
+                                                                        </v-list-tile-content>
+                                                                    </v-list-tile>
+                                                                    <v-list-tile>
+                                                                        <v-list-tile-content>passedCount:
+                                                                        </v-list-tile-content>
+                                                                        <v-list-tile-content class="align-end">{{
+                                                                            props.item.passedCount }}
+                                                                        </v-list-tile-content>
+                                                                    </v-list-tile>
+                                                                    <v-list-tile>
+                                                                        <v-list-tile-content>grade (%):
+                                                                        </v-list-tile-content>
+                                                                        <v-list-tile-content class="align-end">{{
+                                                                            props.item.grade }}
+                                                                        </v-list-tile-content>
+                                                                    </v-list-tile>
+                                                                </v-list>
+                                                            </v-card>
+                                                        </v-flex>
+                                                    </template>
+                                                </v-data-iterator>
+
+                                            </v-card>
+                                        </v-tab-item>
                                         <v-spacer></v-spacer>
-
                                     </v-tabs>
-
-
                                 </v-tab-item>
-
                             </v-window>
-
                         </v-expansion-panel-content>
                     </v-expansion-panel>
-
                 </v-container>
-
             </template>
-
         </v-data-table>
-
-
         <br><br><br><br>
     </v-container>
 
@@ -464,10 +642,13 @@
 
             snackbar: false,
             timeout: 5000,
+            rowsPerPageItems: [4, 8, 12, 24],
             snackbar_text: '',
 
             image_name: '',
             tester_name: '',
+
+            subSearch: '',
 
             testing_modes: [
                 'Sync',
@@ -544,6 +725,26 @@
                 {text: 'hash', value: 'hash', sortable: false},
             ],
 
+            testSuiteHeaders: [
+                {text: 'id', align: 'left', value: 'id', sortable: true},
+                {text: 'name', align: 'left', value: 'name', sortable: true},
+                {text: 'file', value: 'file', sortable: true},
+                {text: 'startDate', value: 'startDate', sortable: true},
+                {text: 'endDate', value: 'endDate', sortable: true},
+                {text: 'weight', value: 'weight', sortable: true},
+                {text: 'passedCount', value: 'passedCount', sortable: true},
+                {text: 'grade (%)', value: 'grade', sortable: true},
+            ],
+
+            unitTestHeaders: [
+                {text: 'id', align: 'left', value: 'id', sortable: true},
+                {text: 'name', align: 'left', value: 'name', sortable: true},
+                {text: 'status', value: 'status', sortable: true},
+                {text: 'weight', value: 'weight', sortable: true},
+                {text: 'exceptionClass', value: 'exceptionClass', sortable: true},
+                {text: 'exceptionMessage', value: 'exceptionMessage', sortable: true},
+            ],
+
         }),
 
         computed: {
@@ -587,6 +788,14 @@
         },
 
         methods: {
+            setExpandedJob(index) {
+                this.expandedJob = index;
+            },
+
+            getExpandedJob() {
+                return this.expandedJob;
+            },
+
             getActiveSubmissions() {
                 this.$http.get('/submissions/active')
                     .then(response => {
@@ -757,6 +966,17 @@
                 this.$http.get('/submission/' + hash)
                     .then(response => {
                         this.fullSubmission = response.data;
+                        for (let i = 0; i < this.fullSubmission.length; i++) {
+                            for (let j = 0; j < this.fullSubmission[i].testSuites.length; i++) {
+
+                                this.fullSubmission[i].testSuites[j].id = j;
+
+                                for (let k = 0; k < this.fullSubmission[i].testSuites[j].unitTests.length; k++) {
+                                    this.fullSubmission[i].testSuites[j].unitTests[k].id = k;
+                                }
+
+                            }
+                        }
                     })
                     .catch(error => console.log(error))
             },
@@ -778,15 +998,13 @@
             createFileView(i) {
                 let message = "";
 
-                message += "Failed: " + this.fullSubmission[i]['failed'] + "<br><br>";
-                message += "Commit message: " + this.fullSubmission[i]['commitMessage'] + "<br><br>";
-                message += "Docker extra: " + this.fullSubmission[i]['dockerExtra'] + "<br><br>";
-                message += "System extra: " + this.fullSubmission[i]['systemExtra'] + "<br><br>";
-                message += "Priority: " + this.fullSubmission[i]['priority'] + "<br><br>";
-                message += "Git student repository: " + this.fullSubmission[i]['gitStudentRepo'] + "<br><br>";
-                message += "Git test repository: " + this.fullSubmission[i]['gitTestRepo'] + "<br><br>";
-                message += "Student files: " + this.fullSubmission[i]['source'] + "<br><br>";
-
+                message += "Failed: " + this.fullSubmission[i]['failed'] + "<br>";
+                message += "Commit message: " + this.fullSubmission[i]['commitMessage'] + "<br>";
+                message += "Docker extra: " + this.fullSubmission[i]['dockerExtra'] + "<br>";
+                message += "System extra: " + this.fullSubmission[i]['systemExtra'] + "<br>";
+                message += "Priority: " + this.fullSubmission[i]['priority'] + "<br>";
+                message += "Git student repository: " + this.fullSubmission[i]['gitStudentRepo'] + "<br>";
+                message += "Git test repository: " + this.fullSubmission[i]['gitTestRepo'] + "<br>";
                 return message;
             }
 
