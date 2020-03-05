@@ -36,8 +36,8 @@
 
             <v-flex
                     lg3
-                    md6
-                    sm6
+                    md12
+                    sm12
                     xs12
             >
                 <material-card
@@ -64,8 +64,8 @@
 
             <v-flex
                     lg3
-                    md6
-                    sm6
+                    md12
+                    sm12
                     xs12
             >
                 <material-card

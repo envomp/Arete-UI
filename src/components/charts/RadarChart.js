@@ -1,8 +1,8 @@
-import { Bar, mixins } from 'vue-chartjs';
+import {Radar, mixins} from 'vue-chartjs';
 
 export default {
-    name: 'bar-chart',
-    extends: Bar,
+    name: 'radar-chart',
+    extends: Radar,
     mixins: [mixins.reactiveProp],
     props: {
         extraOptions: Object,

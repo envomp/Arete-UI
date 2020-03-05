@@ -1,8 +1,8 @@
-import { Bar, mixins } from 'vue-chartjs';
+import {Pie, mixins} from 'vue-chartjs';
 
 export default {
-    name: 'bar-chart',
-    extends: Bar,
+    name: 'pie-chart',
+    extends: Pie,
     mixins: [mixins.reactiveProp],
     props: {
         extraOptions: Object,

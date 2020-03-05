@@ -6,6 +6,7 @@ export const basicOptions = {
     },
     responsive: true,
 };
+
 export let blueChartOptions = {
     ...basicOptions,
     tooltips: {
@@ -45,7 +46,7 @@ export let blueChartOptions = {
             }
         }]
     }
-}
+};
 
 export let purpleChartOptions = {
     ...basicOptions,
@@ -86,19 +87,20 @@ export let purpleChartOptions = {
             }
         }]
     }
-}
+};
 
 export let orangeChartOptions = {
-    ...basicOptions,
+    maintainAspectRatio: false,
+    legend: {
+        display: true
+    },
+    responsive: true,
     tooltips: {
         backgroundColor: '#f5f5f5',
         titleFontColor: '#333',
         bodyFontColor: '#666',
         bodySpacing: 4,
         xPadding: 12,
-        mode: "nearest",
-        intersect: 0,
-        position: "nearest"
     },
     scales: {
         yAxes: [{
@@ -110,7 +112,7 @@ export let orangeChartOptions = {
             },
             ticks: {
                 padding: 20,
-                fontColor: "#ff8a76"
+                fontColor: "#9a9a9a"
             }
         }],
 
@@ -118,12 +120,12 @@ export let orangeChartOptions = {
             barPercentage: 1.6,
             gridLines: {
                 drawBorder: false,
-                color: 'rgba(220,53,69,0.1)',
+                color: 'rgba(225,78,202,0.1)',
                 zeroLineColor: "transparent",
             },
             ticks: {
                 padding: 20,
-                fontColor: "#ff8a76"
+                fontColor: "#9a9a9a"
             }
         }]
     }
