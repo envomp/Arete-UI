@@ -6,11 +6,14 @@ ENV PATH /arete_ui/node_modules/.bin:$PATH
 
 COPY . .
 
-RUN yarn
+RUN yarn build
+RUN mv public public-vue
+RUN mv dist public
 
 EXPOSE 80
 # start app
-CMD ["yarn", "serve"]
+
+CMD ["npm", "run", "serve"]
 
 
 #FROM nginx as production-stage
