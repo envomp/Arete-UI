@@ -19,7 +19,6 @@ Vue.use(Router);
 
 // Create a new router
 const router = new Router({
-    base: '/services/arete',
     mode: 'history',
     routes: paths,
 
