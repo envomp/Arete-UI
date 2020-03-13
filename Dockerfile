@@ -5,11 +5,12 @@ WORKDIR /arete_ui
 ENV PATH /arete_ui/node_modules/.bin:$PATH
 
 COPY . .
-RUN npm install
+
+RUN yarn
 
 EXPOSE 80
 # start app
-CMD ["npm", "run", "serve"]
+CMD ["yarn", "serve"]
 
 
 #FROM nginx as production-stage
