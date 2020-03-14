@@ -414,6 +414,14 @@
                                             Full Out
                                         </v-tab>
 
+                                        <v-tab ripple>
+                                            <v-btn :color="color"
+                                                   @click="retestJob(job)"
+                                                   class="mx-0"
+                                                   outline>retest
+                                            </v-btn>
+                                        </v-tab>
+
                                         <v-tab-item :key="'tab_item_1' + index">
                                             <v-card flat>
                                                 <div class="consoleOutput scale-down"
@@ -619,6 +627,7 @@
 
                                             </v-card>
                                         </v-tab-item>
+
                                         <v-spacer></v-spacer>
                                     </v-tabs>
                                 </v-tab-item>
@@ -809,6 +818,38 @@
                     .catch(error => console.log(error))
             },
 
+            retestJob(job) {
+                const jsonData = {};
+                jsonData['returnUrl'] = "http://localhost:8001/job";
+                jsonData['testingPlatform'] = job.testingPlatform;
+                jsonData['gitStudentRepo'] = job.gitStudentRepo;
+                jsonData['gitTestSource'] = job.gitTestRepo;
+                jsonData['hash'] = job.hash;
+                jsonData['uniid'] = job.uniid;
+                jsonData['slugs'] = [job.slug];
+                jsonData['dockerTimeout'] = job.dockerTimeout;
+                jsonData['priority'] = job.priority;
+                jsonData['systemExtra'] = job.systemExtra;
+                jsonData['dockerExtra'] = job.dockerExtra;
+                jsonData['returnExtra'] = {};
+                this.snackbar_text = 'Submission successful';
+                this.snackbar = true;
+
+                this.$http.post('/:testSync', jsonData)
+                    .then(response => {
+                        this.snackbar_text = 'Job submitted successfully';
+                        this.snackbar = true;
+                        this.getSubmissions();
+                    })
+                    .catch(error => {
+                            this.snackbar_text = error;
+                            this.snackbar = true;
+                        }
+                    )
+
+
+            },
+
             updateImage() {
                 if (this.image_name === '') {
                     this.snackbar_text = "Image name is needed";
@@ -922,7 +963,7 @@
 
                     this.$http.post('/:testAsync', jsonData)
                         .then(response => {
-                            this.snackbar_text = 'Submission successful';
+                            this.snackbar_text = 'Job ran successfully';
                             this.snackbar = true;
                         })
                         .catch(error => {
@@ -989,13 +1030,13 @@
             getSubmissions() {
                 this.$http.get('/submissions')
                     .then(response => {
-                        response.data.reverse();
-                        this.SubmissionList = response.data.filter((thing, index, self) =>
+                        const data = response.data.filter((thing, index, self) =>
                             index === self.findIndex((t) => (
                                 t.hash === thing.hash && t.name === thing.name
                             ))
                         );
-
+                        data.reverse();
+                        this.SubmissionList = data;
                     })
                     .catch(error => console.log(error))
             },
