@@ -13,12 +13,12 @@ export default [
             requiresAuth: true
         },
         redirect: {
-            path: '/dashboard'
+            path: '/services/arete/dashboard'
         }
     },
     // This  allows you to have pages apart of the app but no rendered inside the dash
     {
-        path: '/',
+        path: '/services/arete/',
         meta: {
             name: '',
             requiresAuth: false
@@ -28,7 +28,7 @@ export default [
         // redirect if already signed in
         beforeEnter: (to, from, next) => {
             if (store.getters.authorized) {
-                next('/dashbaord')
+                next('/services/arete/dashbaord')
             } else {
                 next()
             }
@@ -42,7 +42,7 @@ export default [
     },
     // add any extra routes that you want rendered in the dashboard as a child below. Change toolbar names here
     {
-        path: '/dashboard',
+        path: '/services/arete/dashboard',
         meta: {
             name: 'Dashboard View',
             requiresAuth: true
@@ -58,7 +58,7 @@ export default [
                 component: () => import(`@/components/DashViews/Dashboard.vue`)
             },
             {
-                path: 'submissions',
+                path: '/services/arete/submissions',
                 meta: {
                     name: 'Submission Overview',
                     requiresAuth: true
@@ -66,7 +66,7 @@ export default [
                 component: () => import(`@/components/DashViews/SubmissionTable.vue`)
             },
             {
-                path: 'courses',
+                path: '/services/arete/courses',
                 meta: {
                     name: 'Course Overview',
                     requiresAuth: true
@@ -74,7 +74,7 @@ export default [
                 component: () => import(`@/components/DashViews/CourseTable.vue`)
             },
             {
-                path: 'exercises',
+                path: '/services/arete/exercises',
                 meta: {
                     name: 'Exercise Overview',
                     requiresAuth: true
@@ -82,7 +82,7 @@ export default [
                 component: () => import(`@/components/DashViews/ExerciseTable.vue`)
             },
             {
-                path: 'students',
+                path: '/services/arete/students',
                 meta: {
                     name: 'Student Overview',
                     requiresAuth: true

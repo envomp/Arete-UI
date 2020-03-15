@@ -118,27 +118,27 @@
 
             links: [
                 {
-                    to: '/dashboard/#',
+                    to: '/services/arete/dashboard/#',
                     icon: 'mdi-view-dashboard',
                     text: 'Dashboard'
                 },
                 {
-                    to: '/dashboard/submissions',
+                    to: '/services/arete/submissions',
                     icon: 'mdi-calendar-today',
                     text: 'Submissions',
                 },
                 {
-                    to: '/dashboard/courses',
+                    to: '/services/arete/courses',
                     icon: 'mdi-source-fork',
                     text: 'Courses'
                 },
                 {
-                    to: '/dashboard/exercises',
+                    to: '/services/arete/exercises',
                     icon: 'mdi-source-pull',
                     text: 'Exercises'
                 },
                 {
-                    to: '/dashboard/students',
+                    to: '/services/arete/students',
                     icon: 'mdi-code-braces',
                     text: 'Students'
                 }
