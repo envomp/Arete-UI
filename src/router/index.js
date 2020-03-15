@@ -41,7 +41,7 @@ router.beforeEach((to, from, next) => {
             next();
             return
         }
-        next('/')
+        next('/services/arete/')
     } else {
         next()
     }

@@ -30,7 +30,7 @@
                 <router-link
                         :key="color"
                         class="toolbar-items"
-                        to="/"
+                        to="/services/arete/"
                 >
                     <v-icon>mdi-home</v-icon>
                 </router-link>
@@ -75,7 +75,7 @@
 
             logout: function () {
                 this.$store.dispatch("logout").then(() => {
-                    location.reload();
+                    location.replace('https://cs.ttu.ee/services/arete/');
                 });
             },
 
