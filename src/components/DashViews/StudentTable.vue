@@ -50,6 +50,8 @@
                     <td>{{ props.item.differentSlugs }}</td>
                     <td>{{ props.item.differentCourses }}</td>
                     <td>{{ props.item.commitsStyleOK }}</td>
+                    <td>{{ props.item.averageGrade }}</td>
+                    <td>{{ props.item.medianGrade }}</td>
                 </tr>
             </template>
 
@@ -272,6 +274,16 @@
                                 <v-list-tile-content class="align-end">{{ props.item.commitsStyleOK }}
                                 </v-list-tile-content>
                             </v-list-tile>
+                            <v-list-tile>
+                                <v-list-tile-content>averageGrade:</v-list-tile-content>
+                                <v-list-tile-content class="align-end">{{ props.item.averageGrade }}
+                                </v-list-tile-content>
+                            </v-list-tile>
+                            <v-list-tile>
+                                <v-list-tile-content>medianGrade:</v-list-tile-content>
+                                <v-list-tile-content class="align-end">{{ props.item.medianGrade }}
+                                </v-list-tile-content>
+                            </v-list-tile>
                         </v-list>
                     </v-card>
                 </v-flex>
@@ -383,6 +395,8 @@
                 {text: 'differentSlugs', value: 'differentSlugs'},
                 {text: 'differentCourses', value: 'differentCourses'},
                 {text: 'commitsStyleOK', value: 'commitsStyleOK'},
+                {text: 'averageGrade', value: 'averageGrade'},
+                {text: 'medianGrade', value: 'medianGrade'},
             ],
 
             comparableHeaders: [
@@ -532,6 +546,7 @@
                     avgStyleOK += (this.studentsList[student].commitsStyleOK / this.studentsList[student].totalCommits);
                     count++;
                 }
+
                 this.averageData = [
                     "Average",
                     avgCommits / count,
