@@ -259,17 +259,17 @@
                                                             xs12>
                                                         <material-card
                                                                 :color="color"
-                                                                title="Diagnostic errors"
+                                                                title="Code errors"
                                                                 v-if="isTimelineComplete"
                                                         >
                                                             <v-window type="chart">
                                                                 <div class="chart-area">
                                                                     <bar-chart
-                                                                            :chart-data="studentDiagnosticErrorChart.chartData"
-                                                                            :chart-id="'studentDiagnosticErrorChart' + props.id"
-                                                                            :extra-options="studentDiagnosticErrorChart.extraOptions"
-                                                                            :gradient-stops="studentDiagnosticErrorChart.gradientStops"
-                                                                            :key="'studentDiagnosticErrorChart' + props.id"
+                                                                            :chart-data="studentCodeErrorChart.chartData"
+                                                                            :chart-id="'studentCodeErrorChart' + props.id"
+                                                                            :extra-options="studentCodeErrorChart.extraOptions"
+                                                                            :gradient-stops="studentCodeErrorChart.gradientStops"
+                                                                            :key="'studentCodeErrorChart' + props.id"
                                                                             style="height: 100%">
                                                                     </bar-chart>
                                                                 </div>
@@ -288,17 +288,17 @@
                                                             xs12>
                                                         <material-card
                                                                 :color="color"
-                                                                title="Code errors"
+                                                                title="Diagnostic errors"
                                                                 v-if="isTimelineComplete"
                                                         >
                                                             <v-window type="chart">
                                                                 <div class="chart-area">
                                                                     <bar-chart
-                                                                            :chart-data="studentCodeErrorChart.chartData"
-                                                                            :chart-id="'studentCodeErrorChart' + props.id"
-                                                                            :extra-options="studentCodeErrorChart.extraOptions"
-                                                                            :gradient-stops="studentCodeErrorChart.gradientStops"
-                                                                            :key="'studentCodeErrorChart' + props.id"
+                                                                            :chart-data="studentDiagnosticErrorChart.chartData"
+                                                                            :chart-id="'studentDiagnosticErrorChart' + props.id"
+                                                                            :extra-options="studentDiagnosticErrorChart.extraOptions"
+                                                                            :gradient-stops="studentDiagnosticErrorChart.gradientStops"
+                                                                            :key="'studentDiagnosticErrorChart' + props.id"
                                                                             style="height: 100%">
                                                                     </bar-chart>
                                                                 </div>
@@ -476,7 +476,7 @@
         data: () => ({
 
             studentTimestampsChart: {
-                extraOptions: chartConfigs.purpleChartOptions,
+                extraOptions: chartConfigs.lineChartOptions,
                 chartData: {
                     labels: ['0:00', '0:30', '1:00', '1:30', '2:00', '2:30', '3:00', '3:30', '4:00', '4:30', '5:00', '5:30', '6:00', '6:30', '7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'],
                     datasets: [{
@@ -609,7 +609,7 @@
             },
 
             testErrorsChart: {
-                extraOptions: chartConfigs.barChartOptions,
+                extraOptions: chartConfigs.invertedBarChartOptions,
                 chartData: {
                     labels: [],
                     datasets: [{
@@ -625,7 +625,7 @@
             },
 
             timestampsChart: {
-                extraOptions: chartConfigs.purpleChartOptions,
+                extraOptions: chartConfigs.lineChartOptions,
                 chartData: {
                     labels: ['0:00', '0:30', '1:00', '1:30', '2:00', '2:30', '3:00', '3:30', '4:00', '4:30', '5:00', '5:30', '6:00', '6:30', '7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'],
                     datasets: [{
