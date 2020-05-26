@@ -4,9 +4,6 @@ import axios from 'axios'
 // The login action passes vuex commit helper that we will use to trigger mutations.
 export default {
     login({commit}, userData) {
-        axios.defaults.baseURL = process.env.BACKEND; // Hacky way
-        console.log(axios.defaults.baseURL);
-        
         return new Promise((resolve, reject) => {
             commit('auth_request');
             axios.post('/auth', {username: userData.username, password: userData.password})
