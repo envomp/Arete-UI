@@ -21,7 +21,7 @@ build_front:
     - docker-compose -f docker-compose-build.yml up --no-start --build --force-recreate --no-deps
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - docker tag arete_ui $DOCKER_USER/arete_ui:latest
-#    - docker push $DOCKER_USER/arete_ui:latest
+    - docker push $DOCKER_USER/arete_ui:latest
   after_script:
     - docker-compose -f docker-compose-build.yml down --remove-orphans -v -f
     - docker container ls
@@ -44,7 +44,7 @@ deploy_front:
     - docker-compose -f docker-compose-deploy.yml down --remove-orphans -v -f || true
   script:
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-#    - docker pull automatedtestingservice/arete_ui:latest
+    - docker pull automatedtestingservice/arete_ui:latest
     - docker-compose -f docker-compose-deploy.yml up -d --force-recreate --no-deps
   after_script:
     - docker container ls
