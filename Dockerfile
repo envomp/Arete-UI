@@ -6,10 +6,8 @@ ENV PATH /arete_ui/node_modules/.bin:$PATH
 
 COPY . .
 
-RUN yarn
-RUN yarn build
-RUN mv dist services/arete/dist
-
+RUN npm run install
+#RUN npm run build
 # start app
 
-ENTRYPOINT ["sh", "-c", "serve -s dist"]
+ENTRYPOINT ["sh", "-c", "npm run serve"]
