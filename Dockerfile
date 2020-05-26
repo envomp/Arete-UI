@@ -6,8 +6,6 @@ ENV PATH /arete_ui/node_modules/.bin:$PATH
 
 COPY . .
 
-RUN npm run install
-#RUN npm run build
-# start app
+RUN npm install
 
 ENTRYPOINT ["sh", "-c", "npm run serve"]
