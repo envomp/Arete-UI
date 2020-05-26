@@ -9,7 +9,7 @@ COPY . .
 EXPOSE 80
 # start app
 
-CMD ["yarn", "&&", "yarn build", "&&", "mv public public-vue", "&&", "mv dist public", "&&", "npm run serve"]
+ENTRYPOINT ["sh", "-c", "yarn && yarn build && mv public public-vue && mv dist public && npm run serve"]
 
 
 #FROM nginx as production-stage
