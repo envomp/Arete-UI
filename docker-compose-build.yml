@@ -7,7 +7,5 @@ services:
     image: arete_ui:latest
     restart: unless-stopped
     build: .
-    environment:
-      BACKEND: "https://cs.ttu.ee/services/arete/api/admin/"
     ports:
       - "1080:8080"
