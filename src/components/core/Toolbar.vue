@@ -75,7 +75,7 @@
 
             logout: function () {
                 this.$store.dispatch("logout").then(() => {
-                    location.replace('https://cs.ttu.ee/services/arete/');
+                    location.reload();
                 });
             },
 
