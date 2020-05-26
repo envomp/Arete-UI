@@ -10,8 +10,6 @@ COPY . .
 
 RUN yarn
 RUN yarn build
-RUN mv public public-vue
-RUN mv dist public
 
 EXPOSE 80
 # start app
