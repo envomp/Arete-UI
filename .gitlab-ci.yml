@@ -44,7 +44,7 @@ deploy_front:
     - docker-compose -f docker-compose-deploy.yml down --remove-orphans -v -f || true
   script:
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-    - docker pull automatedtestingservice/arete_ui:latest
+#    - docker pull automatedtestingservice/arete_ui:latest
     - docker-compose -f docker-compose-deploy.yml up -d --force-recreate --no-deps
   after_script:
     - docker container ls
