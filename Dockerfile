@@ -8,10 +8,12 @@ ENV BACKEND ${BACKEND}
 
 COPY . .
 
-RUN npm ci
-RUN npm run build
+RUN yarn
+RUN yarn build
+RUN mv public public-vue
+RUN mv dist public
 
 EXPOSE 80
 # start app
 
-CMD ["npm", "run", "start"]
+ENTRYPOINT ["sh", "-c", "serve -s dist"]
