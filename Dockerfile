@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:12-alpine
 MAINTAINER enrico.vompa@gmail.com
 WORKDIR /arete_ui
 
@@ -11,7 +11,6 @@ COPY . .
 RUN yarn
 RUN yarn build
 
-EXPOSE 80
 # start app
 
 ENTRYPOINT ["sh", "-c", "serve -s dist"]
