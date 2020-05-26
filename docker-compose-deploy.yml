@@ -9,4 +9,4 @@ services:
     environment:
       BACKEND: "https://cs.ttu.ee/services/arete/api/admin/"
     ports:
-      - "1080:5000"
+      - "1080:8080"

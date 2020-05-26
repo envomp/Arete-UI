@@ -8,4 +8,4 @@ COPY . .
 
 RUN npm install
 
-ENTRYPOINT ["sh", "-c", "npm run serve"]
+ENTRYPOINT ["sh", "-c", "npm start"]
