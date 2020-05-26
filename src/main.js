@@ -22,7 +22,8 @@ import vuetify from './plugins/vuetify';
 Vue.prototype.$http = axios;
 // Sets the default url used by all of this axios instance's requests
 axios.defaults.headers.get['Accept'] = 'application/json';
-axios.defaults.baseURL = process.env.BACKEND || "https://localhost:8001/services/arete/api/admin/";
+axios.defaults.baseURL = process.env.BACKEND || "http://localhost:8001/services/arete/api/admin/";
+
 console.log(axios.defaults.baseURL);
 console.log(JSON.stringify(process.env, null, 2));
 

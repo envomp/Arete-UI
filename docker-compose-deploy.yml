@@ -7,6 +7,6 @@ services:
     image: automatedtestingservice/arete_ui:latest
     restart: unless-stopped
     environment:
-      BACKEND: "https://cs.ttu.ee/services/arete/api/admin/"
+      BACKEND: "http://cs.ttu.ee/services/arete/api/admin/"
     ports:
       - "1080:8080"
