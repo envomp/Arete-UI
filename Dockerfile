@@ -14,7 +14,7 @@ RUN mv dist public
 EXPOSE 80
 # start app
 
-ENTRYPOINT [ "sh", "-c", "export", "BACKEND=$BACKEND", "&&", "npm", "run", "serve"]
+CMD ["npm", "run", "serve"]
 
 
 #FROM nginx as production-stage
