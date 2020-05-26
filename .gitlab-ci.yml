@@ -2,11 +2,11 @@ variables:
   DOCKER_DRIVER: overlay
 
 stages:
-  - build
-  - deploy
+  - build_front
+  - deploy_front
 
 
-build:
+build_front:
   tags:
     - dev
     - master
@@ -30,7 +30,7 @@ build:
     - dev
     - master
 
-deploy:
+deploy_front:
   tags:
     - dev
     - master
