@@ -9,6 +9,7 @@
     "dev": "npm run serve"
   },
   "dependencies": {
+    "serve": "^11.3.1",
     "babel-eslint": "^10.0.3",
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
