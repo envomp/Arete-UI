@@ -8,4 +8,4 @@ COPY . .
 
 RUN npm install
 
-ENTRYPOINT ["sh", "-c", "npm config set BACKEND $BACKEND && npm start"]
+ENTRYPOINT ["sh", "-c", "echo 'VUE_APP_BACKEND=$BACKEND' >> .env && npm start"]
