@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM node:lts-alpine
 MAINTAINER enrico.vompa@gmail.com
 WORKDIR /arete_ui
 
@@ -8,4 +8,4 @@ COPY . .
 
 RUN npm install
 
-ENTRYPOINT ["sh", "-c", "npm start"]
+ENTRYPOINT ["sh", "-c", "npm config set BACKEND $BACKEND && npm start"]
