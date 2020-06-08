@@ -835,9 +835,9 @@
                 this.snackbar_text = 'Submission successful';
                 this.snackbar = true;
 
-                this.$http.post('/submission/:testAsync', jsonData)
+                this.$http.post('/submission/:testSync', jsonData)
                     .then(response => {
-                        this.snackbar_text = 'Job submitted successfully';
+                        this.snackbar_text = 'Job tested successfully';
                         this.snackbar = true;
                         this.getSubmissions();
                     })
@@ -891,7 +891,7 @@
 
                 const regex = /\.[a-zA-Z]+\//gm;
                 const namespace = this.tester_name.replace(".git", "").split(regex);
-                this.$http.put('/test:update', {
+                this.$http.put('/exercise/', {
                     "project": {
                         "url": this.tester_name,
                         "path_with_namespace": namespace[namespace.length - 1]
