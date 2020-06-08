@@ -704,7 +704,7 @@
             getStudent(student) {
                 this.isTimelineComplete = false;
 
-                this.$http.get('/slug/student/' + student.id)
+                this.$http.get('/student/exercise/' + student.id)
                     .then(response => {
                         this.student = response.data;
                         this.studentData = [
@@ -801,7 +801,7 @@
 
             getExercise(id) {
                 this.isGraphLoading = true;
-                this.$http.get('/slug/' + id)
+                this.$http.get('/exercise/' + id)
                     .then(response => {
                         this.fullExercise = response.data;
 
@@ -817,7 +817,7 @@
             },
 
             getExercises() {
-                this.$http.get('/slugs')
+                this.$http.get('/exercise/all')
                     .then(response => {
                         this.exerciseList = response.data
                     })

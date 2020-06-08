@@ -321,7 +321,7 @@
         methods: {
 
             getSubmissions() {
-                this.$http.get('/submissions')
+                this.$http.get('/submission/all')
                     .then(response => {
                         response.data.reverse();
                         this.SubmissionList = response.data.filter((thing, index, self) =>
@@ -409,7 +409,7 @@
             },
 
             getLogs() {
-                this.$http.get('/logs')
+                this.$http.get('/state/logs')
                     .then(response => {
                         this.logs = response.data;
                     })
@@ -417,7 +417,7 @@
             },
 
             getTesterLogs() {
-                this.$http.get('/logs/tester')
+                this.$http.get('/state/logs/tester')
                     .then(response => {
                         this.testerLogs = response.data;
                     })

@@ -811,7 +811,7 @@
             },
 
             getActiveSubmissions() {
-                this.$http.get('/submissions/active')
+                this.$http.get('/submission/active')
                     .then(response => {
                         this.activeSubmissions = response.data;
                     })
@@ -820,7 +820,7 @@
 
             retestJob(job) {
                 const jsonData = {};
-                jsonData['returnUrl'] = "http://localhost:8001/job";
+                jsonData['returnUrl'] = "https://www.neti.ee";
                 jsonData['testingPlatform'] = job.testingPlatform;
                 jsonData['gitStudentRepo'] = job.gitStudentRepo;
                 jsonData['gitTestSource'] = job.gitTestRepo;
@@ -835,7 +835,7 @@
                 this.snackbar_text = 'Submission successful';
                 this.snackbar = true;
 
-                this.$http.post('/:testSync', jsonData)
+                this.$http.post('/submission/:testSync', jsonData)
                     .then(response => {
                         this.snackbar_text = 'Job submitted successfully';
                         this.snackbar = true;
@@ -866,7 +866,7 @@
                 this.snackbar_text = "Updating image";
                 this.snackbar = true;
 
-                this.$http.put('/image:update/' + this.image_name)
+                this.$http.put('/course/' + this.image_name)
                     .then(response => {
                         this.snackbar_text = "New image has been pulled";
                         this.snackbar = true;
@@ -961,7 +961,7 @@
                     this.snackbar_text = 'Submission successful';
                     this.snackbar = true;
 
-                    this.$http.post('/:testAsync', jsonData)
+                    this.$http.post('/submission/:testAsync', jsonData)
                         .then(response => {
                             this.snackbar_text = 'Job ran successfully';
                             this.snackbar = true;
@@ -976,7 +976,7 @@
                     this.snackbar_text = 'Submission sent';
                     this.snackbar = true;
 
-                    this.$http.post('/:testSync', jsonData)
+                    this.$http.post('/submission/:testSync', jsonData)
                         .then(response => {
                             this.snackbar_text = 'Check submissions table';
                             this.snackbar = true;
@@ -1028,7 +1028,7 @@
             },
 
             getSubmissions() {
-                this.$http.get('/submissions')
+                this.$http.get('/submission/all')
                     .then(response => {
                         const data = response.data.filter((thing, index, self) =>
                             index === self.findIndex((t) => (

@@ -717,7 +717,7 @@
             getStudent(student) {
                 this.isTimelineComplete = false;
 
-                this.$http.get('/course/student/' + student.id)
+                this.$http.get('/student/course/' + student.id)
                     .then(response => {
                         this.student = response.data;
                         this.studentData = [
@@ -832,7 +832,7 @@
             },
 
             getCourses() {
-                this.$http.get('/courses')
+                this.$http.get('/course/all')
                     .then(response => {
                         this.courseList = response.data
                     })

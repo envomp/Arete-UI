@@ -6,7 +6,7 @@ export default {
     login({commit}, userData) {
         return new Promise((resolve, reject) => {
             commit('auth_request');
-            axios.post('/auth', {username: userData.username, password: userData.password})
+            axios.post('/user/auth', {username: userData.username, password: userData.password})
                 .then(response => {
                     const token = response.data.token;
                     const user = response.data.username;
@@ -34,7 +34,7 @@ export default {
         })
     },
     refreshtoken({commit}) {
-        axios.get('/refresh')
+        axios.get('/user/refresh')
             .then(response => {
                 const token = response.data.access_token;
                 localStorage.setItem('token', token);

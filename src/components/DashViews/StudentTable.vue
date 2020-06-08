@@ -515,7 +515,7 @@
             },
 
             getStudents() {
-                this.$http.get('/students')
+                this.$http.get('/student/all')
                     .then(response => {
                         this.studentsList = response.data;
                         this.studentsList.map(x => x.averageGrade = Math.round(x.averageGrade * 100) / 100);
