@@ -177,7 +177,7 @@
                                     :color="color"
                                     clearable
                                     dark
-                                    hint="You can predefine target git hash."
+                                    hint="You can predefine target git hash"
                                     label="Hash"
                                     primary
                                     v-model="git_hash"
@@ -214,7 +214,7 @@
                                     :color="color"
                                     clearable
                                     dark
-                                    hint="You can predefine docker timeout in seconds."
+                                    hint="You can predefine docker timeout in seconds"
                                     label="Docker Timeout"
                                     primary
                                     v-model="docker_timeout"
@@ -226,7 +226,7 @@
                                     :color="color"
                                     clearable
                                     dark
-                                    hint="You can predefine target priority (1 - 10)."
+                                    hint="You can predefine target priority (1 - 10)"
                                     label="Priority"
                                     primary
                                     v-model="priority"
@@ -835,7 +835,7 @@
                 this.snackbar_text = 'Submission successful';
                 this.snackbar = true;
 
-                this.$http.post('/submission/:testSync', jsonData)
+                this.$http.post('/submission/:testAsync', jsonData)
                     .then(response => {
                         this.snackbar_text = 'Job submitted successfully';
                         this.snackbar = true;
@@ -939,7 +939,7 @@
                     jsonData['gitTestSource'] = this.tester_repository;
                 }
                 if (this.slug !== '') {
-                    jsonData['gitStudentRepo'] = [this.slug];
+                    jsonData['slugs'] = [this.slug];
                 }
                 if (this.git_hash !== '') {
                     jsonData['hash'] = this.git_hash;

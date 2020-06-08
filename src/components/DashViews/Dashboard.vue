@@ -425,7 +425,7 @@
             },
 
             getState() {
-                this.$http.get('/state')
+                this.$http.get('/state/')
                     .then(response => {
                         this.state = response.data;
                     })
