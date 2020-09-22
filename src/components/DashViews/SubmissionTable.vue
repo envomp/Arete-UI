@@ -335,7 +335,7 @@
 			:headers="computedHeaders"
 			:items="SubmissionList"
 			:rows-per-page-items="rowsAmount"
-			:search="search"
+			:search="search.length < 3 ? '': search"
 			class="elevation-1"
 			id="submissionDataTable"
 			style="table-layout:fixed; width: 100% !important;"
