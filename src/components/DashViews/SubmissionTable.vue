@@ -432,7 +432,7 @@
 
 										<v-tab-item :key="'tab_item_2' + index">
 											<v-card class="mx-auto consoleOutput" max-height="500" max-width="80vw" outlined raised>
-												<pre style="max-height: 500px;overflow: auto">{{ this.fullSubmission[index] || pretty }}</pre>
+												<pre style="max-height: 500px;overflow: auto">{{ fullSubmission[index] || pretty }}</pre>
 											</v-card>
 										</v-tab-item>
 
