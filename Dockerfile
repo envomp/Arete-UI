@@ -1,8 +1,8 @@
 FROM node:lts-alpine
 MAINTAINER enrico.vompa@gmail.com
-WORKDIR /arete_ui
+WORKDIR /monitoring_service
 
-ENV PATH /arete_ui/node_modules/.bin:$PATH
+ENV PATH /monitoring_service/node_modules/.bin:$PATH
 
 COPY . .
 
