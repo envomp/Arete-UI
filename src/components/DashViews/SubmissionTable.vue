@@ -4,15 +4,15 @@
 		grid-list-xl
 	>
 		<v-snackbar
+			v-model="snackbar"
 			:timeout="timeout"
 			top
-			v-model="snackbar"
 		>
 			{{ snackbar_text }}
 			<v-btn
 				:color="color"
-				@click="snackbar = false"
 				flat
+				@click="snackbar = false"
 			>
 				Close
 			</v-btn>
@@ -37,20 +37,20 @@
 						<form>
 							<v-text-field
 
+								v-model="image_name"
 								:color="color"
 								clearable
 								dark
 								hint="Make sure it ends with '-tester'"
 								label="Image name"
 								primary
-								v-model="image_name"
 
 							></v-text-field>
 
 							<v-btn :color="color"
-							       @click="updateImage()"
 							       class="mx-0"
-							       outline>Submit
+							       outline
+							       @click="updateImage()">Submit
 							</v-btn>
 						</form>
 					</v-card-text>
@@ -73,10 +73,20 @@
 				>
 
 					<v-card-text class="grey darken-3 text--primary">
-						<form>
+						<v-footer class="pa-3">
+							<v-spacer></v-spacer>
+							<div>
+								docs:
+								<a href="https://ained.pages.taltech.ee/it-doc/arete/index.html">gitlab pages</a>
+							</div>
+						</v-footer>
 
+						<v-spacer></v-spacer>
+
+						<form>
 							<v-text-field
 
+								v-model="tester_name"
 								:color="color"
 								clearable
 								dark
@@ -84,16 +94,14 @@
 								hint="Make sure git repository is provided"
 								label="Tester repository"
 								primary
-								v-model="tester_name"
 
 							></v-text-field>
 
 							<v-btn :color="color"
-							       @click="updateTester()"
 							       class="mx-0"
-							       outline>update
+							       outline
+							       @click="updateTester()">update
 							</v-btn>
-
 						</form>
 					</v-card-text>
 				</material-card>
@@ -123,6 +131,7 @@
 
 							<v-text-field
 
+								v-model="programming_language"
 								:color="color"
 								:rules="rules"
 								clearable
@@ -130,12 +139,12 @@
 								hint="java, python, prolog..."
 								label="Testing language"
 								primary
-								v-model="programming_language"
 
 							></v-text-field>
 
 							<v-text-field
 
+								v-model="student_repository"
 								:color="color"
 								:rules="rules"
 								clearable
@@ -143,12 +152,12 @@
 								hint="gitlab or github url"
 								label="Student repository"
 								primary
-								v-model="student_repository"
 
 							></v-text-field>
 
 							<v-text-field
 
+								v-model="tester_repository"
 								:color="color"
 								:rules="rules"
 								clearable
@@ -156,43 +165,42 @@
 								hint="gitlab or github url"
 								label="Tester repository"
 								primary
-								v-model="tester_repository"
 
 							></v-text-field>
 
 							<v-text-field
 
+								v-model="slug"
 								:color="color"
 								clearable
 								dark
 								hint="You can predefine target exercise. EX01_IdCode for example"
 								label="Exercise"
 								primary
-								v-model="slug"
 
 							></v-text-field>
 
 							<v-text-field
 
+								v-model="git_hash"
 								:color="color"
 								clearable
 								dark
 								hint="You can predefine target git hash"
 								label="Hash"
 								primary
-								v-model="git_hash"
 
 							></v-text-field>
 
 							<v-text-field
 
+								v-model="uniid"
 								:color="color"
 								clearable
 								dark
 								hint="You can prefine target uniid. envomp for example"
 								label="UNI-ID"
 								primary
-								v-model="uniid"
 
 							></v-text-field>
 						</form>
@@ -211,81 +219,68 @@
 
 							<v-text-field
 
+								v-model="docker_timeout"
 								:color="color"
 								clearable
 								dark
 								hint="You can predefine docker timeout in seconds"
 								label="Docker Timeout"
 								primary
-								v-model="docker_timeout"
 
 							></v-text-field>
 
 							<v-text-field
 
+								v-model="priority"
 								:color="color"
 								clearable
 								dark
 								hint="You can predefine target priority (1 - 10)"
 								label="Priority"
 								primary
-								v-model="priority"
 
 							></v-text-field>
 
 							<v-select
+								v-model="testing_mode"
 								:color="color"
 								:items="testing_modes"
 								dark
 								label="Testing mode"
 								outline
-								v-model="testing_mode"
 							></v-select>
 
-							<v-layout
-								pa-5
-								wrap
-							>
+							<v-select
+								v-model="system_extra"
+								:color="color"
+								:items="testing_modes"
+								dark
+								label="Comma separated system extra"
+								outline
+							></v-select>
 
-								<v-checkbox :color="color" dark label="anonymous" v-model="system_extra"
-								            value="anonymous"></v-checkbox>
-								<v-checkbox :color="color" dark label="noOverride"
-								            v-model="system_extra"
-								            value="noOverride"></v-checkbox>
-								<v-checkbox :color="color" dark label="noMail" v-model="system_extra"
-								            value="noMail"></v-checkbox>
-								<v-checkbox :color="color" dark label="noFiles" v-model="system_extra"
-								            value="noFiles"></v-checkbox>
-								<v-checkbox :color="color" dark label="noTesterFiles"
-								            v-model="system_extra"
-								            value="noTesterFiles"></v-checkbox>
-								<v-checkbox :color="color" dark label="noStudentFiles"
-								            v-model="system_extra"
-								            value="noStudentFiles"></v-checkbox>
-								<v-checkbox :color="color" dark label="noStd" v-model="system_extra"
-								            value="noStd"></v-checkbox>
-								<v-checkbox :color="color" dark label="noFeedback"
-								            v-model="system_extra"
-								            value="noFeedback"></v-checkbox>
-								<v-checkbox :color="color" dark label="minimalFeedback"
-								            v-model="system_extra"
-								            value="minimalFeedback"></v-checkbox>
-							</v-layout>
+							<v-select
+								v-model="system_extra"
+								:items="system_extra_options"
+								chips
+								label="System extra"
+								multiple
+							></v-select>
 
 						</form>
 					</v-flex>
 
 				</v-layout>
 				<v-btn :color="color"
-				       @click="submitSubmission()"
 				       class="mx-0"
-				       outline>Submit
+				       outline
+				       @click="submitSubmission()">Submit
 				</v-btn>
 
 				<v-btn :color="color"
-				       @click="clearSubmission()"
 				       class="mx-0"
-				       outline>clear
+				       outline
+				       @click="clearSubmission()">clear
 				</v-btn>
 			</v-container>
 
@@ -303,9 +298,9 @@
 						<pre style="max-height: 900px;overflow: auto">{{ activeSubmissions || pretty }}</pre>
 					</v-card>
 					<v-btn :color="color"
-					       @click="getActiveSubmissions()"
 					       class="mx-0"
-					       outline>refresh
+					       outline
+					       @click="getActiveSubmissions()">refresh
 					</v-btn>
 
 				</form>
@@ -319,25 +314,25 @@
 			title="Submission Table"
 		>
 			<v-text-field
+				v-model="search"
 				:color="color"
 				append-icon="search"
 				hide-details
 				label="Search"
 				single-line
-				v-model="search"
 			></v-text-field>
 
 		</material-card>
 
 
 		<v-data-table
+			id="submissionDataTable"
 			:color="color"
 			:headers="computedHeaders"
 			:items="SubmissionList"
 			:rows-per-page-items="rowsAmount"
 			:search="search.length < 3 ? '': search"
 			class="elevation-1"
-			id="submissionDataTable"
 			style="table-layout:fixed; width: 100% !important;"
 			v-bind:pagination.sync="pagination"
 		>
@@ -375,8 +370,8 @@
 
 					<v-expansion-panel popout>
 						<v-expansion-panel-content
-							v-bind:key="'upperTab' + index"
-							v-for="(job, index) in fullSubmission">
+							v-for="(job, index) in fullSubmission"
+							v-bind:key="'upperTab' + index">
 
 							<template v-slot:header>
 								<div>{{ job.slug }}</div>
@@ -385,8 +380,8 @@
 							<v-window>
 
 								<v-tab-item
-									v-bind:key="'lowerTab' + index"
-									v-for="(job, index) in fullSubmission">
+									v-for="(job, index) in fullSubmission"
+									v-bind:key="'lowerTab' + index">
 
 									<v-tabs
 										:id="'submissionTab' + index"
@@ -405,7 +400,7 @@
 											Extra
 										</v-tab>
 
-										<v-tab ripple v-if="!isMobile">
+										<v-tab v-if="!isMobile" ripple>
 											<v-icon left>mdi-lock-open</v-icon>
 											Out
 										</v-tab>
@@ -417,9 +412,9 @@
 
 										<v-tab ripple>
 											<v-btn :color="color"
-											       @click="retestJob(job)"
 											       class="mx-0"
-											       outline>retest
+											       outline
+											       @click="retestJob(job)">retest
 											</v-btn>
 										</v-tab>
 
@@ -431,12 +426,15 @@
 										</v-tab-item>
 
 										<v-tab-item :key="'tab_item_2' + index">
-											<v-card class="mx-auto consoleOutput" max-height="500" max-width="80vw" outlined raised>
-												<pre style="max-height: 500px;overflow: auto">{{ fullSubmission[index] || pretty }}</pre>
+											<v-card class="mx-auto consoleOutput" max-height="500" max-width="80vw"
+											        outlined raised>
+												<pre style="max-height: 500px;overflow: auto">{{
+														fullSubmission[index] || pretty
+													}}</pre>
 											</v-card>
 										</v-tab-item>
 
-										<v-tab-item :key="'tab_item_3' + index" v-if="!isMobile">
+										<v-tab-item v-if="!isMobile" :key="'tab_item_3' + index">
 											<v-card flat>
 												<div class="consoleOutput scale-down" v-html="job.output"></div>
 											</v-card>
@@ -447,11 +445,11 @@
 											<v-card flat>
 
 												<v-data-table
+													v-if="!isMobile"
 													:headers="testSuiteHeaders"
 													:hide-actions="true"
 													:items="fullSubmission[index]['testSuites']"
 													class="elevation-1"
-													v-if="!isMobile"
 												>
 													<template
 														slot="headerCell"
@@ -491,12 +489,12 @@
 																			title="All test ran regarding this test context">
 
 																			<v-text-field
+																				v-model="subSearch"
 																				:color="color"
 																				append-icon="search"
 																				hide-details
 																				label="Search"
 																				single-line
-																				v-model="subSearch"
 																			></v-text-field>
 																		</material-card>
 
@@ -550,6 +548,7 @@
 
 												</v-data-table>
 												<v-data-iterator
+													v-else
 													:color="color"
 													:items="fullSubmission[index]['testSuites']"
 													:pagination.sync="pagination"
@@ -557,7 +556,6 @@
 													:search="subSearch"
 													item-key="name"
 													row
-													v-else
 													wrap
 												>
 													<template v-slot:item="props">
@@ -574,7 +572,7 @@
 																	<h4>{{ props.item.name }}</h4>
 																</v-card-title>
 																<v-divider></v-divider>
-																<v-list dense v-if="props.expanded">
+																<v-list v-if="props.expanded" dense>
 																	<v-list-tile>
 																		<v-list-tile-content>id:</v-list-tile-content>
 																		<v-list-tile-content class="align-end">{{
@@ -676,6 +674,13 @@ export default {
 		testing_modes: [
 			'Sync',
 			'Async'
+		],
+
+		system_extra_options: [
+			'anonymous', 'allowAppending', 'giveTestRunnerControl', 'overrideContentRoot', 'overrideTestRoot',
+			'overrideExtra', 'overrideTestingPlatform', 'noOverall', 'skipCopyingTests', 'skipCopyingStudent',
+			'skipCopying', 'noMail', 'noFiles', 'noTesterFiles', 'noStudentFiles', 'noStd', 'noStyle',
+			'allowExternalMail', 'noOverride', 'noFeedback', 'minimalFeedback'
 		],
 
 		testing_mode: null,
@@ -836,7 +841,7 @@ export default {
 			jsonData['returnUrl'] = "https://www.neti.ee";
 			jsonData['testingPlatform'] = job.testingPlatform;
 			jsonData['gitStudentRepo'] = job.gitStudentRepo;
-			jsonData['gitTestSource'] = job.gitTestRepo;
+			jsonData['gitTestRepo'] = job.gitTestRepo;
 			jsonData['hash'] = job.hash;
 			jsonData['uniid'] = job.uniid;
 			jsonData['slugs'] = [job.slug];
