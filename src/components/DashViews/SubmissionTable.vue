@@ -124,6 +124,15 @@
 			:color="color"
 			:title="items[2].title"
 		>
+			<v-footer class="pa-3">
+				<v-spacer></v-spacer>
+				<div>
+					docs:
+					<a :class="color + '--text footer-links'" href="https://ained.pages.taltech.ee/it-doc/arete/index.html">gitlab pages</a>
+				</div>
+			</v-footer>
+
+			<v-spacer></v-spacer>
 
 			<v-container fluid grid-list-md>
 				<v-layout
@@ -137,12 +146,6 @@
 						style="padding-right: 8px"
 						xs12
 					>
-						<div>
-							docs:
-							<a :class="color + '--text footer-links'" href="https://ained.pages.taltech.ee/it-doc/arete/index.html">gitlab pages</a>
-						</div>
-
-						<v-spacer></v-spacer>
 
 						<form ref="form">
 
