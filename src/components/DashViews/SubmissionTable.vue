@@ -38,7 +38,7 @@
 							<v-spacer></v-spacer>
 							<div>
 								images:
-								<a href="https://hub.docker.com/repositories/">docker hub</a>
+								<a :class="color + '--text footer-links'" href="https://hub.docker.com/repositories/">docker hub</a>
 							</div>
 						</v-footer>
 
@@ -87,7 +87,7 @@
 							<v-spacer></v-spacer>
 							<div>
 								tests:
-								<a href="https://gitlab.cs.ttu.ee/">gitlab</a>
+								<a :class="color + '--text footer-links'" href="https://gitlab.cs.ttu.ee/">gitlab</a>
 							</div>
 						</v-footer>
 
@@ -139,7 +139,7 @@
 					>
 						<div>
 							docs:
-							<a href="https://ained.pages.taltech.ee/it-doc/arete/index.html">gitlab pages</a>
+							<a :class="color + '--text footer-links'" href="https://ained.pages.taltech.ee/it-doc/arete/index.html">gitlab pages</a>
 						</div>
 
 						<v-spacer></v-spacer>
