@@ -11,6 +11,15 @@
                     </v-toolbar>
                     <v-card-text>
                         <v-form>
+	                        <v-footer class="pa-3">
+		                        <v-spacer></v-spacer>
+		                        <div>
+			                        For access contact a teacher of a programming subject
+		                        </div>
+	                        </v-footer>
+
+	                        <v-divider></v-divider>
+
                             <v-text-field
                                     :rules="[() => !!username || 'This field is required']"
                                     label="Login"

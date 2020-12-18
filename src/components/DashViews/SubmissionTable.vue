@@ -34,6 +34,16 @@
 				>
 
 					<v-card-text class="grey darken-3 text--primary">
+						<v-footer class="pa-3">
+							<v-spacer></v-spacer>
+							<div>
+								images:
+								<a href="https://hub.docker.com/repositories/">docker hub</a>
+							</div>
+						</v-footer>
+
+						<v-spacer></v-spacer>
+
 						<form>
 							<v-text-field
 
@@ -76,8 +86,8 @@
 						<v-footer class="pa-3">
 							<v-spacer></v-spacer>
 							<div>
-								docs:
-								<a href="https://ained.pages.taltech.ee/it-doc/arete/index.html">gitlab pages</a>
+								tests:
+								<a href="https://gitlab.cs.ttu.ee/">gitlab</a>
 							</div>
 						</v-footer>
 
@@ -127,6 +137,13 @@
 						style="padding-right: 8px"
 						xs12
 					>
+						<div>
+							docs:
+							<a href="https://ained.pages.taltech.ee/it-doc/arete/index.html">gitlab pages</a>
+						</div>
+
+						<v-spacer></v-spacer>
+
 						<form ref="form">
 
 							<v-text-field
@@ -247,15 +264,6 @@
 								:items="testing_modes"
 								dark
 								label="Testing mode"
-								outline
-							></v-select>
-
-							<v-select
-								v-model="system_extra"
-								:color="color"
-								:items="testing_modes"
-								dark
-								label="Comma separated system extra"
 								outline
 							></v-select>
 
@@ -848,7 +856,7 @@ export default {
 			jsonData['dockerTimeout'] = job.dockerTimeout;
 			jsonData['priority'] = job.priority;
 			jsonData['systemExtra'] = job.systemExtra;
-			jsonData['dockerExtra'] = job.dockerExtra;
+			jsonData['dockerExtra'] = job.dockerExtra.join();
 			jsonData['returnExtra'] = {};
 			this.snackbar_text = 'Submission successful';
 			this.snackbar = true;
