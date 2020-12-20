@@ -1,905 +1,202 @@
 <template>
-    <v-container
-            fluid
-            grid-list-xl
-    >
+	<v-container
+		fluid
+		grid-list-xl
+	>
 
-        <material-card
-                :color="color"
-                text="Exercise overview"
-                title="Exercise Table"
-        >
-            <v-text-field
-                    :color="color"
-                    append-icon="search"
-                    hide-details
-                    label="Search"
-                    single-line
-                    v-model="search"
-            ></v-text-field>
+		<material-card
+			:color="color"
+			text="Exercise overview"
+			title="Exercise Table"
+		>
+			<v-text-field
+				v-model="search"
+				:color="color"
+				append-icon="search"
+				hide-details
+				label="Search"
+				single-line
+			></v-text-field>
 
-        </material-card>
+		</material-card>
 
 
-        <v-data-table
-                :color="color"
-                :headers="headers"
-                :items="exerciseList"
-                :rows-per-page-items="rowsAmount"
-                :search="search"
-                class="elevation-1"
-                v-if="!isMobile">
+		<v-data-table
+			v-if="!isMobile"
+			:color="color"
+			:headers="headers"
+			:items="exerciseList"
+			:rows-per-page-items="rowsAmount"
+			:search="search"
+			class="elevation-1">
 
-            <template
-                    slot="headerCell"
-                    slot-scope="{ header }">
+			<template
+				slot="headerCell"
+				slot-scope="{ header }">
                 <span
-                        v-bind:class="'subheading font-weight-light text-' + color"
-                        v-text="header.text"/>
-            </template>
+	                v-bind:class="'subheading font-weight-light text-' + color"
+	                v-text="header.text"/>
+			</template>
 
-            <template v-slot:items="props">
-                <tr @click="() => {{!props.expanded ? getExercise(props.item.id) : null ; props.expanded = !props.expanded}}">
-                    <td>{{ props.item.id }}</td>
-                    <td>{{ props.item.name }}</td>
-                    <td>{{ props.item.courseUrl }}</td>
-                    <td>{{ props.item.totalCommits }}</td>
-                    <td>{{ props.item.totalTestsRan }}</td>
-                    <td>{{ props.item.totalTestsPassed }}</td>
-                    <td>{{ props.item.totalDiagnosticErrors }}</td>
-                    <td>{{ props.item.differentStudents }}</td>
-                    <td>{{ props.item.commitsStyleOK }}</td>
-                </tr>
-            </template>
+			<template v-slot:items="props">
+				<tr>
+					<td>{{ props.item.id }}</td>
+					<td>{{ props.item.name }}</td>
+					<td>{{ props.item.courseUrl }}</td>
+					<td>{{ props.item.totalCommits }}</td>
+					<td>{{ props.item.totalTestsRan }}</td>
+					<td>{{ props.item.totalTestsPassed }}</td>
+					<td>{{ props.item.totalDiagnosticErrors }}</td>
+					<td>{{ props.item.differentStudents }}</td>
+					<td>{{ props.item.commitsStyleOK }}</td>
+				</tr>
+			</template>
 
-            <v-spacer></v-spacer>
+		</v-data-table>
 
-            <template v-if="!isMobile" v-slot:expand="props2">
-
-                <v-container fluid ma-0 pa-4>
-
-                    <v-window
-                            class="elevation-1 "
-                            v-if="!isGraphLoading">
-                        <v-window-item>
-
-                            <v-tabs
-                                    :slider-color="color"
-                                    color="grey darken-4">
-
-                                <v-tab :key="'timestampChartTab' + props2.item.id"
-                                       ripple>
-                                    <v-icon left>mdi-chart-line</v-icon>
-                                    Timestamps chart
-                                </v-tab>
-
-                                <v-tab :key="'testErrorsChartTab' + props2.item.id"
-                                       ripple>
-                                    <v-icon left>mdi-chart-bar</v-icon>
-                                    Test errors chart
-                                </v-tab>
-
-                                <v-tab :key="'diagnosticErrorsChartTab' + props2.item.id"
-                                       ripple>
-                                    <v-icon left>mdi-chart-histogram</v-icon>
-                                    Diagnostic errors chart
-                                </v-tab>
-
-                                <v-tab-item>
-                                    <v-card flat>
-                                        <v-flex>
-                                            <v-window type="chart">
-
-                                                <div class="chart-area">
-                                                    <line-chart
-                                                            :chart-data="timestampsChart.chartData"
-                                                            :chart-id="'timestamp-bar-chart' + props2.item.id"
-                                                            :extra-options="timestampsChart.extraOptions"
-                                                            :key="'timestampsChart' + props2.item.id"
-                                                            style="height: 400px">
-                                                    </line-chart>
-                                                </div>
-
-                                            </v-window>
-                                        </v-flex>
-                                    </v-card>
-                                </v-tab-item>
-
-                                <v-tab-item>
-
-                                    <v-card flat>
-                                        <v-flex>
-                                            <v-window type="chart">
-
-                                                <div class="chart-area">
-                                                    <bar-chart
-                                                            :chart-data="testErrorsChart.chartData"
-                                                            :chart-id="'test-bar-chart' + props2.item.id"
-                                                            :extra-options="testErrorsChart.extraOptions"
-                                                            :key="'testErrorsChart' + props2.item.id"
-                                                            style="height: 400px">
-                                                    </bar-chart>
-                                                </div>
-
-                                            </v-window>
-                                        </v-flex>
-                                    </v-card>
-
-                                </v-tab-item>
-
-                                <v-tab-item>
-                                    <v-card flat>
-                                        <v-flex>
-                                            <v-window type="chart">
-
-                                                <div class="chart-area">
-                                                    <bar-chart
-                                                            :chart-data="diagnosticErrorsChart.chartData"
-                                                            :chart-id="'diagnostic-bar-chart' + props2.item.id"
-                                                            :extra-options="diagnosticErrorsChart.extraOptions"
-                                                            :key="'diagnosticErrorsChart' + props2.item.id"
-                                                            style="height: 400px">
-                                                    </bar-chart>
-                                                </div>
-
-                                            </v-window>
-                                        </v-flex>
-                                    </v-card>
-                                </v-tab-item>
-
-                                <v-spacer></v-spacer>
-
-                            </v-tabs>
-
-                            <v-window class="elevation-1">
-                                <material-card
-                                        :color="color"
-                                        text="Student data regarding the exercise only"
-                                        title="Students who attempted the exercise">
-                                    <v-text-field
-                                            :color="color"
-                                            append-icon="search"
-                                            hide-details
-                                            label="Search"
-                                            single-line
-                                            v-model="subSearch"
-                                    ></v-text-field>
-                                </material-card>
-                                <v-data-table
-
-                                        :color="color"
-                                        :headers="subHeaders"
-                                        :items="fullExercise.students"
-                                        :rows-per-page-items="rowsAmount"
-                                        :search="subSearch"
-                                        class="elevation-1">
-
-                                    <template
-                                            slot="headerCell"
-                                            slot-scope="{ header }">
-                                            <span
-                                                    v-bind:class="'subheading font-weight-light text-' + color"
-                                                    v-text="header.text"/>
-                                    </template>
-
-                                    <template
-                                            v-slot:items="props3">
-                                        <tr @click="() => {{!props3.expanded ? getStudent(props3.item) : null ; props3.expanded = !props3.expanded}}">
-                                            <td>{{ props3.item.id }}</td>
-                                            <td>{{ props3.item.uniid }}</td>
-                                            <td>{{ props3.item.latestSubmission }}</td>
-                                            <td>{{ props3.item.totalCommits }}</td>
-                                            <td>{{ props3.item.totalTestsRan }}</td>
-                                            <td>{{ props3.item.totalTestsPassed }}</td>
-                                            <td>{{ props3.item.totalDiagnosticErrors }}</td>
-                                            <td>{{ props3.item.highestPercent }}</td>
-                                            <td>{{ props3.item.commitsStyleOK }}</td>
-                                        </tr>
-                                    </template>
-
-                                    <v-spacer></v-spacer>
-
-                                    <template v-scroll v-slot:expand="props4">
-
-                                        <v-container fluid ma-0 pa-4>
-
-                                            <v-window
-                                                    class="elevation-1 "
-                                                    v-if="isTimelineComplete">
-
-                                                <v-layout wrap>
-
-                                                    <v-flex
-                                                            lg4
-                                                            md12
-                                                            sm12
-                                                            xs12>
-                                                        <material-card
-                                                                :color="color"
-                                                                title="Submission frequency"
-                                                                v-if="isTimelineComplete"
-                                                        >
-                                                            <v-window type="chart">
-                                                                <div class="chart-area">
-                                                                    <line-chart
-                                                                            :chart-data="studentTimestampsChart.chartData"
-                                                                            :chart-id="'studentTimestampsChart' + props4.id"
-                                                                            :extra-options="studentTimestampsChart.extraOptions"
-                                                                            :key="'studentTimestampsChart' + props4.id"
-                                                                            style="height: 400px">
-                                                                    </line-chart>
-                                                                </div>
-                                                            </v-window>
-                                                        </material-card>
-
-                                                        <v-progress-linear :color="color" :indeterminate="true"
-                                                                           v-else></v-progress-linear>
-
-                                                    </v-flex>
-
-                                                    <v-flex
-                                                            lg4
-                                                            md6
-                                                            sm6
-                                                            xs12>
-                                                        <material-card
-                                                                :color="color"
-                                                                title="Diagnostic errors"
-                                                                v-if="isTimelineComplete"
-                                                        >
-                                                            <v-window type="chart">
-                                                                <div class="chart-area">
-                                                                    <bar-chart
-                                                                            :chart-data="studentDiagnosticErrorChart.chartData"
-                                                                            :chart-id="'studentDiagnosticErrorChart' + props4.id"
-                                                                            :extra-options="studentDiagnosticErrorChart.extraOptions"
-                                                                            :gradient-stops="studentDiagnosticErrorChart.gradientStops"
-                                                                            :key="'studentDiagnosticErrorChart' + props4.id"
-                                                                            style="height: 100%">
-                                                                    </bar-chart>
-                                                                </div>
-                                                            </v-window>
-                                                        </material-card>
-
-                                                        <v-progress-linear :color="color" :indeterminate="true"
-                                                                           v-else></v-progress-linear>
-
-                                                    </v-flex>
-
-                                                    <v-flex
-                                                            lg4
-                                                            md6
-                                                            sm6
-                                                            xs12>
-                                                        <material-card
-                                                                :color="color"
-                                                                title="Code errors"
-                                                                v-if="isTimelineComplete"
-                                                        >
-                                                            <v-window type="chart">
-                                                                <div class="chart-area">
-                                                                    <bar-chart
-                                                                            :chart-data="studentCodeErrorChart.chartData"
-                                                                            :chart-id="'studentCodeErrorChart' + props4.id"
-                                                                            :extra-options="studentCodeErrorChart.extraOptions"
-                                                                            :gradient-stops="studentCodeErrorChart.gradientStops"
-                                                                            :key="'studentCodeErrorChart' + props4.id"
-                                                                            style="height: 100%">
-                                                                    </bar-chart>
-                                                                </div>
-                                                            </v-window>
-                                                        </material-card>
-
-                                                        <v-progress-linear :color="color" :indeterminate="true"
-                                                                           v-else></v-progress-linear>
-
-                                                    </v-flex>
-
-                                                    <v-flex
-                                                            lg12
-                                                            md12
-                                                            sm12
-                                                            xs12>
-
-                                                        <v-data-table
-
-                                                                :headers="comparableHeaders"
-                                                                :hide-actions="true"
-                                                                :items="[studentData, averageData, medianData, overallStudentData]"
-                                                                class="elevation-1">
-                                                            <template
-                                                                    slot="headerCell"
-                                                                    slot-scope="{ header }">
-                                                                            <span
-                                                                                    v-bind:class="'subheading font-weight-light text-' + color"
-                                                                                    v-text="header.text"/>
-                                                            </template>
-
-                                                            <template
-                                                                    v-slot:items="props5">
-                                                                <tr>
-                                                                    <td>{{ props5.item[0] }}</td>
-                                                                    <td>{{ props5.item[1] }}</td>
-                                                                    <td>{{ props5.item[2] }}</td>
-                                                                    <td>{{ props5.item[3] }}</td>
-                                                                    <td>{{ props5.item[4] }}</td>
-                                                                    <td>{{ props5.item[5] }}</td>
-                                                                    <td>{{ props5.item[6] }}</td>
-                                                                    <td>{{ props5.item[7] }}</td>
-                                                                    <td>{{ props5.item[8] }}</td>
-                                                                </tr>
-                                                            </template>
-                                                        </v-data-table>
-
-                                                    </v-flex>
-
-                                                </v-layout>
-
-                                            </v-window>
-
-                                            <v-progress-linear :color="color" :indeterminate="true"
-                                                               v-else></v-progress-linear>
-
-                                        </v-container>
-
-                                    </template>
-
-                                </v-data-table>
-
-                            </v-window>
-
-                        </v-window-item>
-
-                    </v-window>
-
-                    <v-progress-linear :color="color" :indeterminate="true" v-else></v-progress-linear>
-
-                </v-container>
-
-            </template>
-
-        </v-data-table>
-
-        <v-data-iterator
-                :color="color"
-                :items="exerciseList"
-                :pagination.sync="pagination"
-                :rows-per-page-items="rowsPerPageItems"
-                :search="search"
-                item-key="name"
-                row
-                v-else
-                wrap
-        >
-            <template v-slot:item="props">
-                <v-flex
-                        lg3
-                        md4
-                        sm6
-                        xs12
-                >
-                    <v-card
-                            @click="props.expanded = !props.expanded"
-                    >
-                        <v-card-title>
-                            <h4>{{ props.item.name }}</h4>
-                        </v-card-title>
-                        <v-divider></v-divider>
-                        <v-list dense v-if="props.expanded">
-                            <v-list-tile>
-                                <v-list-tile-content>id:</v-list-tile-content>
-                                <v-list-tile-content class="align-end">{{ props.item.id }}</v-list-tile-content>
-                            </v-list-tile>
-                            <v-list-tile>
-                                <v-list-tile-content>name:</v-list-tile-content>
-                                <v-list-tile-content class="align-end">{{ props.item.name }}</v-list-tile-content>
-                            </v-list-tile>
-                            <v-list-tile>
-                                <v-list-tile-content>courseUrl:</v-list-tile-content>
-                                <v-list-tile-content class="align-end">{{ props.item.courseUrl }}
-                                </v-list-tile-content>
-                            </v-list-tile>
-                            <v-list-tile>
-                                <v-list-tile-content>totalCommits:</v-list-tile-content>
-                                <v-list-tile-content class="align-end">{{ props.item.totalCommits }}
-                                </v-list-tile-content>
-                            </v-list-tile>
-                            <v-list-tile>
-                                <v-list-tile-content>totalTestsRan:</v-list-tile-content>
-                                <v-list-tile-content class="align-end">{{ props.item.totalTestsRan }}
-                                </v-list-tile-content>
-                            </v-list-tile>
-                            <v-list-tile>
-                                <v-list-tile-content>totalTestsPassed:</v-list-tile-content>
-                                <v-list-tile-content class="align-end">{{ props.item.totalTestsPassed }}
-                                </v-list-tile-content>
-                            </v-list-tile>
-                            <v-list-tile>
-                                <v-list-tile-content>totalDiagnosticErrors:</v-list-tile-content>
-                                <v-list-tile-content class="align-end">{{ props.item.totalDiagnosticErrors }}
-                                </v-list-tile-content>
-                            </v-list-tile>
-                            <v-list-tile>
-                                <v-list-tile-content>differentStudents:</v-list-tile-content>
-                                <v-list-tile-content class="align-end">{{ props.item.differentStudents }}
-                                </v-list-tile-content>
-                            </v-list-tile>
-                            <v-list-tile>
-                                <v-list-tile-content>commitsStyleOK:</v-list-tile-content>
-                                <v-list-tile-content class="align-end">{{ props.item.commitsStyleOK }}
-                                </v-list-tile-content>
-                            </v-list-tile>
-                        </v-list>
-                    </v-card>
-                </v-flex>
-            </template>
-        </v-data-iterator>
+		<v-data-iterator
+			v-else
+			:color="color"
+			:items="exerciseList"
+			:pagination.sync="pagination"
+			:rows-per-page-items="rowsPerPageItems"
+			:search="search"
+			item-key="name"
+			row
+			wrap
+		>
+			<template v-slot:item="props">
+				<v-flex
+					lg3
+					md4
+					sm6
+					xs12
+				>
+					<v-card
+						@click="props.expanded = !props.expanded"
+					>
+						<v-card-title>
+							<h4>{{ props.item.name }}</h4>
+						</v-card-title>
+						<v-divider></v-divider>
+						<v-list v-if="props.expanded" dense>
+							<v-list-tile>
+								<v-list-tile-content>id:</v-list-tile-content>
+								<v-list-tile-content class="align-end">{{ props.item.id }}</v-list-tile-content>
+							</v-list-tile>
+							<v-list-tile>
+								<v-list-tile-content>name:</v-list-tile-content>
+								<v-list-tile-content class="align-end">{{ props.item.name }}</v-list-tile-content>
+							</v-list-tile>
+							<v-list-tile>
+								<v-list-tile-content>courseUrl:</v-list-tile-content>
+								<v-list-tile-content class="align-end">{{ props.item.courseUrl }}
+								</v-list-tile-content>
+							</v-list-tile>
+							<v-list-tile>
+								<v-list-tile-content>totalCommits:</v-list-tile-content>
+								<v-list-tile-content class="align-end">{{ props.item.totalCommits }}
+								</v-list-tile-content>
+							</v-list-tile>
+							<v-list-tile>
+								<v-list-tile-content>totalTestsRan:</v-list-tile-content>
+								<v-list-tile-content class="align-end">{{ props.item.totalTestsRan }}
+								</v-list-tile-content>
+							</v-list-tile>
+							<v-list-tile>
+								<v-list-tile-content>totalTestsPassed:</v-list-tile-content>
+								<v-list-tile-content class="align-end">{{ props.item.totalTestsPassed }}
+								</v-list-tile-content>
+							</v-list-tile>
+							<v-list-tile>
+								<v-list-tile-content>totalDiagnosticErrors:</v-list-tile-content>
+								<v-list-tile-content class="align-end">{{ props.item.totalDiagnosticErrors }}
+								</v-list-tile-content>
+							</v-list-tile>
+							<v-list-tile>
+								<v-list-tile-content>differentStudents:</v-list-tile-content>
+								<v-list-tile-content class="align-end">{{ props.item.differentStudents }}
+								</v-list-tile-content>
+							</v-list-tile>
+							<v-list-tile>
+								<v-list-tile-content>commitsStyleOK:</v-list-tile-content>
+								<v-list-tile-content class="align-end">{{ props.item.commitsStyleOK }}
+								</v-list-tile-content>
+							</v-list-tile>
+						</v-list>
+					</v-card>
+				</v-flex>
+			</template>
+		</v-data-iterator>
 
 
-        <!--        Footer hides otherwise-->
-        <br><br><br><br>
-    </v-container>
+		<!--        Footer hides otherwise-->
+		<br><br><br><br>
+	</v-container>
 
 
 </template>
 
 <script>
-    import {mapState} from "vuex";
-    import GraphStyle from '@/components/charts/ChartStyle'
-    import LineChart from '@/components/charts/LineChart';
-    import BarChart from '@/components/charts/BarChart';
-    import * as chartConfigs from '@/components/charts/config';
-    import {codeToHEX} from '@/utils/colorUtils'
-
-    export default {
-
-        components: {
-            LineChart,
-            BarChart,
-            GraphStyle
-        },
-
-        data: () => ({
-
-            studentTimestampsChart: {
-                extraOptions: chartConfigs.lineChartOptions,
-                chartData: {
-                    labels: ['0:00', '0:30', '1:00', '1:30', '2:00', '2:30', '3:00', '3:30', '4:00', '4:30', '5:00', '5:30', '6:00', '6:30', '7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'],
-                    datasets: [{
-                        label: "Time",
-                        fill: true,
-                        borderColor: codeToHEX(),
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        pointBackgroundColor: codeToHEX(),
-                        pointBorderColor: 'rgba(255,255,255,0)',
-                        pointHoverBackgroundColor: codeToHEX(),
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
-                        data: [1, 1, 1, 1, 1],
-                    }]
-                },
-                gradientColors: GraphStyle.primaryGradient,
-                gradientStops: [1, 0.2, 0],
-            },
-
-            studentCodeErrorChart: {
-                extraOptions: chartConfigs.invertedBarChartOptions,
-                chartData: {
-                    labels: [],
-                    datasets: [{
-                        label: "amount",
-                        fill: true,
-                        borderColor: codeToHEX(),
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        data: [],
-                    }]
-                },
-                gradientColors: GraphStyle.primaryGradient,
-                gradientStops: [1, 0.4, 0],
-            },
-
-            studentDiagnosticErrorChart: {
-                extraOptions: chartConfigs.barChartOptions,
-                chartData: {
-                    labels: [],
-                    datasets: [{
-                        label: "amount",
-                        fill: true,
-                        borderColor: codeToHEX(),
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        data: [],
-                    }]
-                },
-                gradientColors: GraphStyle.primaryGradient,
-                gradientStops: [1, 0.4, 0],
-            },
-
-            isTimelineComplete: false,
-
-            // Charon like
-            exerciseList: [],
-            fullExercise: [],
-            student: [],
-
-            isGraphLoading: true,
-
-            rowsPerPageItems: [4, 8, 12, 24],
-            pagination: {
-                rowsPerPage: 8
-            },
-
-            rowsAmount: [15, 20, 25, {"text": "$vuetify.dataIterator.rowsPerPageAll", "value": -1}],
-            search: '',
-            subSearch: '',
-            headers: [
-                {text: 'id', align: 'left', value: 'id'},
-                {text: 'name', value: 'name'},
-                {text: 'courseUrl', value: 'courseUrl'},
-                {text: 'totalCommits', value: 'totalCommits'},
-                {text: 'totalTestsRan', value: 'totalTestsRan'},
-                {text: 'totalTestsPassed', value: 'totalDiagnosticErrors'},
-                {text: 'totalDiagnosticErrors', value: 'totalDiagnosticErrors'},
-                {text: 'differentStudents', value: 'differentStudents'},
-                {text: 'commitsStyleOK', value: 'commitsStyleOK'},
-            ],
-            subHeaders: [
-                {text: 'id', align: 'left', value: 'id'},
-                {text: 'uniid', value: 'uniid'},
-                {text: 'latestSubmission', value: 'latestSubmission'},
-                {text: 'totalCommits', value: 'totalCommits'},
-                {text: 'totalTestsRan', value: 'totalTestsRan'},
-                {text: 'totalTestsPassed', value: 'totalTestsPassed'},
-                {text: 'totalDiagnosticErrors', value: 'totalDiagnosticErrors'},
-                {text: 'highestPercent (%)', value: 'highestPercent'},
-                {text: 'commitsStyleOK', value: 'commitsStyleOK'},
-            ],
-
-            comparableHeaders: [
-                {text: 'student', align: 'left', value: 'student', sortable: false},
-                {text: 'totalCommits', value: 'totalCommits', sortable: false},
-                {text: 'totalTestsRan', value: 'totalTestsRan', sortable: false},
-                {text: 'totalTestsPassed', value: 'totalTestsPassed', sortable: false},
-                {text: 'totalDiagnosticErrors', value: 'totalDiagnosticErrors', sortable: false},
-                {text: 'highestPercent (%)', value: 'highestPercent', sortable: false},
-                {text: 'styleOkPerCommit (%)', value: 'commitsStyleOK', sortable: false},
-            ],
-
-            studentData: [],
-
-            averageData: [],
-
-            medianData: [],
-
-            overallStudentData: [],
-
-            diagnosticErrorsChart: {
-                extraOptions: chartConfigs.barChartOptions,
-                chartData: {
-                    labels: [],
-                    datasets: [{
-                        label: "Repetitions",
-                        fill: true,
-                        borderColor: codeToHEX(),
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        data: [],
-                    }]
-                },
-            },
-
-            testErrorsChart: {
-                extraOptions: chartConfigs.invertedBarChartOptions,
-                chartData: {
-                    labels: [],
-                    datasets: [{
-                        label: "Repetitions",
-                        fill: true,
-                        borderColor: codeToHEX(),
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        data: [],
-                    }]
-                },
-            },
-
-            timestampsChart: {
-                extraOptions: chartConfigs.lineChartOptions,
-                chartData: {
-                    labels: ['0:00', '0:30', '1:00', '1:30', '2:00', '2:30', '3:00', '3:30', '4:00', '4:30', '5:00', '5:30', '6:00', '6:30', '7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'],
-                    datasets: [{
-                        label: "Time",
-                        fill: true,
-                        borderColor: codeToHEX(),
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        pointBackgroundColor: codeToHEX(),
-                        pointBorderColor: 'rgba(255,255,255,0)',
-                        pointHoverBackgroundColor: codeToHEX(),
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
-                        data: [1, 1, 1, 1, 1],
-                    }]
-                },
-                gradientColors: GraphStyle.primaryGradient,
-                gradientStops: [1, 0.2, 0],
-            },
-
-        }),
-
-        computed: {
-            ...mapState('app', ['color', 'isMobile']),
-        },
-
-        // called when page is created before dom
-        created() {
-            this.getExercises();
-        },
-
-        methods: {
-
-            generateStudentDiagnosticErrorChart() {
-                let diagnosticHeaders = [];
-                let diagnosticList = [];
-
-                for (let i = 0; i < this.student.diagnosticCodeErrors.length; i++) {
-                    diagnosticHeaders.push(this.student.diagnosticCodeErrors[i].errorType);
-                    diagnosticList.push(this.student.diagnosticCodeErrors[i].repetitions);
-                }
-
-                this.studentDiagnosticErrorChart.chartData.labels = diagnosticHeaders;
-                this.studentDiagnosticErrorChart.chartData.datasets[0].data = diagnosticList;
-            },
-
-            generateStudentErrorChart() {
-                let testCodeHeaders = [];
-                let testCodeList = [];
-
-                for (let i = 0; i < this.student.testCodeErrors.length; i++) {
-                    testCodeHeaders.push(this.student.testCodeErrors[i].errorType);
-                    testCodeList.push(this.student.testCodeErrors[i].repetitions);
-                }
-
-                this.studentCodeErrorChart.chartData.labels = testCodeHeaders;
-                this.studentCodeErrorChart.chartData.datasets[0].data = testCodeList;
-            },
-
-            generateStudentTimestampChartData() {
-                let timestamps = {};
-                let timestampList = [];
-
-                for (let i = 0; i < this.student.timestamps.length; i++) {
-
-                    const timeString = this.convert(this.student.timestamps[i]);
-                    if (timestamps[timeString]) {
-                        timestamps[timeString] += 1;
-                    } else {
-                        timestamps[timeString] = 1;
-                    }
-                }
-
-                for (let i = 0; i < this.studentTimestampsChart.chartData.labels.length; i++) {
-                    if (timestamps[this.studentTimestampsChart.chartData.labels[i]]) {
-                        timestampList.push(timestamps[this.studentTimestampsChart.chartData.labels[i]]);
-                    } else {
-                        timestampList.push(0);
-                    }
-
-                }
-                this.studentTimestampsChart.chartData.datasets[0].data = timestampList;
-            },
-
-            getStudent(student) {
-                this.isTimelineComplete = false;
-
-                this.$http.get('/student/exercise/' + student.id)
-                    .then(response => {
-                        this.student = response.data;
-                        this.studentData = [
-                            "Selected",
-                            student.totalCommits,
-                            student.totalTestsRan,
-                            student.totalTestsPassed,
-                            student.totalDiagnosticErrors,
-                            student.highestPercent,
-                            (student.commitsStyleOK / student.totalCommits) * 100
-                        ];
-                        this.overallStudentData = [
-                            "Selected Overall",
-                            this.student.totalCommits,
-                            this.student.totalTestsRan,
-                            this.student.totalTestsPassed,
-                            this.student.totalDiagnosticErrors,
-                            "...",
-                            (this.student.commitsStyleOK / this.student.totalCommits) * 100
-                        ];
-
-                        this.generateStudentDiagnosticErrorChart();
-                        this.generateStudentErrorChart();
-                        this.generateStudentTimestampChartData();
-
-                        this.isTimelineComplete = true;
-                    })
-                    .catch(error => console.log(error))
-            },
-
-            convert(t) {
-                const dt = new Date(t);
-                const hr = dt.getUTCHours();
-                const m = dt.getUTCMinutes() > 30 ? '30' : '00';
-
-                return hr + ':' + m.substr(-2)
-            },
-
-            generateDiagnosticChartData() {
-                let diagnosticErrorMessages = [];
-                let diagnosticErrorRepetitions = [];
-
-                for (let i = 0; i < this.fullExercise.diagnosticCodeErrors.length; i++) {
-                    diagnosticErrorMessages.push(this.fullExercise.diagnosticCodeErrors[i].errorType);
-                    diagnosticErrorRepetitions.push(this.fullExercise.diagnosticCodeErrors[i].repetitions);
-                }
-
-                this.diagnosticErrorsChart.chartData.labels = diagnosticErrorMessages;
-                this.diagnosticErrorsChart.chartData.datasets[0].data = diagnosticErrorRepetitions;
-            },
-
-            generateErrorChartData: function () {
-                let testErrorMessages = [];
-                let testErrorRepetitions = [];
-
-                for (let i = 0; i < this.fullExercise.testCodeErrors.length; i++) {
-                    testErrorMessages.push(this.fullExercise.testCodeErrors[i].errorType);
-                    testErrorRepetitions.push(this.fullExercise.testCodeErrors[i].repetitions);
-                }
-
-                this.testErrorsChart.chartData.labels = testErrorMessages;
-                this.testErrorsChart.chartData.datasets[0].data = testErrorRepetitions;
-            },
-
-            generateTimestampChartData() {
-                let timestamps = {};
-                let timestampList = [];
-
-                for (let i = 0; i < this.fullExercise.students.length; i++) {
-                    for (let j = 0; j < this.fullExercise.students[i].timestamps.length; j++) {
-
-                        const timeString = this.convert(this.fullExercise.students[i].timestamps[j]);
-
-                        if (timestamps[timeString]) {
-                            timestamps[timeString] += 1;
-                        } else {
-                            timestamps[timeString] = 1;
-                        }
-
-                    }
-                }
-
-                for (let i = 0; i < this.timestampsChart.chartData.labels.length; i++) {
-                    const label = timestamps[this.timestampsChart.chartData.labels[i]];
-                    if (label) {
-                        timestampList.push(label);
-                    } else {
-                        timestampList.push(0);
-                    }
-                }
-
-                this.timestampsChart.chartData.datasets[0].data = timestampList;
-            },
-
-            getExercise(id) {
-                this.isGraphLoading = true;
-                this.$http.get('/exercise/' + id)
-                    .then(response => {
-                        this.fullExercise = response.data;
-
-                        this.generateDiagnosticChartData();
-                        this.generateErrorChartData();
-                        this.generateTimestampChartData();
-
-                        this.calculateAverage();
-                        this.calculateMedian();
-                        this.isGraphLoading = false;
-                    })
-                    .catch(error => console.log(error))
-            },
-
-            getExercises() {
-                this.$http.get('/exercise/all')
-                    .then(response => {
-                        this.exerciseList = response.data
-                    })
-                    .catch(error => console.log(error))
-            },
-
-            calculateAverage() {
-                let avgCommits = 0;
-                let avgTestsRan = 0;
-                let avgTestsPassed = 0;
-                let avgDiagnosticErrors = 0;
-                let avgPercent = 0;
-                let avgStyleOK = 0;
-                let count = 0;
-
-                for (var student in this.fullExercise.students) {
-                    avgCommits += this.fullExercise.students[student].totalCommits;
-                    avgTestsRan += this.fullExercise.students[student].totalTestsRan;
-                    avgTestsPassed += this.fullExercise.students[student].totalTestsPassed;
-                    avgDiagnosticErrors += this.fullExercise.students[student].totalDiagnosticErrors;
-                    avgPercent += this.fullExercise.students[student].highestPercent;
-                    avgStyleOK += this.fullExercise.students[student].commitsStyleOK / this.fullExercise.students[student].totalCommits;
-                    count++;
-                }
-                this.averageData = [
-                    "Average",
-                    avgCommits / count,
-                    avgTestsRan / count,
-                    avgTestsPassed / count,
-                    avgDiagnosticErrors / count,
-                    avgPercent / count,
-                    (avgStyleOK / count) * 100
-                ];
-
-            },
-
-            median(values) {
-                if (values.length === 0) return 0;
-
-                values.sort(function (a, b) {
-                    return a - b;
-                });
-
-                var half = Math.floor(values.length / 2);
-
-                if (values.length % 2)
-                    return values[half];
-
-                return (values[half - 1] + values[half]) / 2.0;
-            },
-
-            calculateMedian() {
-                let avgCommits = [];
-                let avgTestsRan = [];
-                let avgTestsPassed = [];
-                let avgDiagnosticErrors = [];
-                let avgSlugs = [];
-                let avgStyleOK = [];
-
-                for (var student in this.fullExercise.students) {
-                    avgCommits.push(this.fullExercise.students[student].totalCommits);
-                    avgTestsRan.push(this.fullExercise.students[student].totalTestsRan);
-                    avgTestsPassed.push(this.fullExercise.students[student].totalTestsPassed);
-                    avgDiagnosticErrors.push(this.fullExercise.students[student].totalDiagnosticErrors);
-                    avgSlugs.push(this.fullExercise.students[student].highestPercent);
-                    avgStyleOK.push(this.fullExercise.students[student].commitsStyleOK / this.fullExercise.students[student].totalCommits);
-                }
-
-                this.medianData = [
-                    "Median",
-                    this.median(avgCommits),
-                    this.median(avgTestsRan),
-                    this.median(avgTestsPassed),
-                    this.median(avgDiagnosticErrors),
-                    this.median(avgSlugs),
-                    this.median(avgStyleOK) * 100
-                ];
-
-            }
-
-        }
-    }
+import {mapState} from "vuex";
+
+export default {
+
+	data: () => ({
+
+		exerciseList: [],
+
+		rowsPerPageItems: [4, 8, 12, 24],
+		pagination: {
+			rowsPerPage: 8
+		},
+
+		rowsAmount: [15, 20, 25, {"text": "$vuetify.dataIterator.rowsPerPageAll", "value": -1}],
+		search: '',
+
+		headers: [
+			{text: 'id', align: 'left', value: 'id'},
+			{text: 'name', value: 'name'},
+			{text: 'courseUrl', value: 'courseUrl'},
+			{text: 'totalCommits', value: 'totalCommits'},
+			{text: 'totalTestsRan', value: 'totalTestsRan'},
+			{text: 'totalTestsPassed', value: 'totalDiagnosticErrors'},
+			{text: 'totalDiagnosticErrors', value: 'totalDiagnosticErrors'},
+			{text: 'differentStudents', value: 'differentStudents'},
+			{text: 'commitsStyleOK', value: 'commitsStyleOK'},
+		],
+
+	}),
+
+	computed: {
+		...mapState('app', ['color', 'isMobile']),
+	},
+
+	// called when page is created before dom
+	created() {
+		this.getExercises();
+	},
+
+	methods: {
+
+		convert(t) {
+			const dt = new Date(t);
+			const hr = dt.getUTCHours();
+			const m = dt.getUTCMinutes() > 30 ? '30' : '00';
+
+			return hr + ':' + m.substr(-2)
+		},
+
+		getExercises() {
+			this.$http.get('/exercise/all')
+				.then(response => {
+					this.exerciseList = response.data
+				})
+				.catch(error => console.log(error))
+		},
+
+	}
+}
 </script>
 
 <style scoped>

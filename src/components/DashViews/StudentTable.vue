@@ -49,8 +49,6 @@
                     <td>{{ props.item.differentSlugs }}</td>
                     <td>{{ props.item.differentCourses }}</td>
                     <td>{{ props.item.commitsStyleOK }}</td>
-                    <td>{{ props.item.averageGrade }}</td>
-                    <td>{{ props.item.medianGrade }}</td>
                 </tr>
             </template>
 
@@ -67,7 +65,7 @@
                         <v-layout wrap>
 
                             <v-flex
-                                    lg4
+                                    lg12
                                     md12
                                     sm12
                                     xs12>
@@ -85,58 +83,6 @@
                                                     :key="'timestampsChartDashboard'"
                                                     style="height: 400px">
                                             </line-chart>
-                                        </div>
-                                    </v-window>
-                                </material-card>
-
-                                <v-progress-linear :color="color" :indeterminate="true" v-else></v-progress-linear>
-
-                            </v-flex>
-
-                            <v-flex
-                                    lg4
-                                    md6
-                                    sm6
-                                    xs12>
-                                <material-card
-                                        :color="color"
-                                        title="Diagnostic errors"
-                                        v-if="isTimelineComplete"
-                                >
-                                    <v-window type="chart">
-                                        <div class="chart-area">
-                                            <bar-chart :chart-data="diagnosticErrorChart.chartData"
-                                                       :extra-options="diagnosticErrorChart.extraOptions"
-                                                       :gradient-stops="diagnosticErrorChart.gradientStops"
-                                                       chart-id="blue-bar-chart"
-                                                       style="height: 100%">
-                                            </bar-chart>
-                                        </div>
-                                    </v-window>
-                                </material-card>
-
-                                <v-progress-linear :color="color" :indeterminate="true" v-else></v-progress-linear>
-
-                            </v-flex>
-
-                            <v-flex
-                                    lg4
-                                    md6
-                                    sm6
-                                    xs12>
-                                <material-card
-                                        :color="color"
-                                        title="Code errors"
-                                        v-if="isTimelineComplete"
-                                >
-                                    <v-window type="chart">
-                                        <div class="chart-area">
-                                            <bar-chart :chart-data="codeErrorChart.chartData"
-                                                       :extra-options="codeErrorChart.extraOptions"
-                                                       :gradient-stops="codeErrorChart.gradientStops"
-                                                       chart-id="blue-bar-chart"
-                                                       style="height: 100%">
-                                            </bar-chart>
                                         </div>
                                     </v-window>
                                 </material-card>
@@ -273,16 +219,6 @@
                                 <v-list-tile-content class="align-end">{{ props.item.commitsStyleOK }}
                                 </v-list-tile-content>
                             </v-list-tile>
-                            <v-list-tile>
-                                <v-list-tile-content>averageGrade:</v-list-tile-content>
-                                <v-list-tile-content class="align-end">{{ props.item.averageGrade }}
-                                </v-list-tile-content>
-                            </v-list-tile>
-                            <v-list-tile>
-                                <v-list-tile-content>medianGrade:</v-list-tile-content>
-                                <v-list-tile-content class="align-end">{{ props.item.medianGrade }}
-                                </v-list-tile-content>
-                            </v-list-tile>
                         </v-list>
                     </v-card>
                 </v-flex>
@@ -335,42 +271,6 @@
                 gradientStops: [1, 0.2, 0],
             },
 
-            codeErrorChart: {
-                extraOptions: chartConfigs.invertedBarChartOptions,
-                chartData: {
-                    labels: [],
-                    datasets: [{
-                        label: "amount",
-                        fill: true,
-                        borderColor: codeToHEX(),
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        data: [],
-                    }]
-                },
-                gradientColors: GraphStyle.primaryGradient,
-                gradientStops: [1, 0.4, 0],
-            },
-
-            diagnosticErrorChart: {
-                extraOptions: chartConfigs.barChartOptions,
-                chartData: {
-                    labels: [],
-                    datasets: [{
-                        label: "amount",
-                        fill: true,
-                        borderColor: codeToHEX(),
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        data: [],
-                    }]
-                },
-                gradientColors: GraphStyle.primaryGradient,
-                gradientStops: [1, 0.4, 0],
-            },
-
             isTimelineComplete: false,
 
             studentsList: [],
@@ -393,8 +293,6 @@
                 {text: 'differentSlugs', value: 'differentSlugs'},
                 {text: 'differentCourses', value: 'differentCourses'},
                 {text: 'commitsStyleOK', value: 'commitsStyleOK'},
-                {text: 'averageGrade', value: 'averageGrade'},
-                {text: 'medianGrade', value: 'medianGrade'},
             ],
 
             comparableHeaders: [
@@ -432,36 +330,6 @@
                 const m = dt.getUTCMinutes() > 30 ? '30' : '00';
 
                 return hr + ':' + m.substr(-2)
-            },
-
-            generateDiagnosticErrorChart() {
-                let diagnosticHeaders = [];
-                let diagnosticList = [];
-
-                for (let i = 0; i < this.fullStudent.diagnosticCodeErrors.length; i++) {
-
-                    diagnosticHeaders.push(this.fullStudent.diagnosticCodeErrors[i].errorType);
-                    diagnosticList.push(this.fullStudent.diagnosticCodeErrors[i].repetitions);
-
-                }
-
-                this.diagnosticErrorChart.chartData.labels = diagnosticHeaders;
-                this.diagnosticErrorChart.chartData.datasets[0].data = diagnosticList;
-            },
-
-            generateErrorChart() {
-                let testCodeHeaders = [];
-                let testCodeList = [];
-
-                for (let i = 0; i < this.fullStudent.testCodeErrors.length; i++) {
-
-                    testCodeHeaders.push(this.fullStudent.testCodeErrors[i].errorType);
-                    testCodeList.push(this.fullStudent.testCodeErrors[i].repetitions);
-
-                }
-
-                this.codeErrorChart.chartData.labels = testCodeHeaders;
-                this.codeErrorChart.chartData.datasets[0].data = testCodeList;
             },
 
             generateTimestampChartData() {
@@ -506,8 +374,6 @@
                         ];
 
                         this.generateTimestampChartData();
-                        this.generateDiagnosticErrorChart();
-                        this.generateErrorChart();
 
                         this.isTimelineComplete = true;
                     })

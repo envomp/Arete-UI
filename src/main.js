@@ -21,7 +21,7 @@ import vuetify from './plugins/vuetify';
 Vue.prototype.$http = axios;
 // Sets the default url used by all of this axios instance's requests
 axios.defaults.headers.get['Accept'] = 'application/json';
-axios.defaults.baseURL = process.env.VUE_APP_BACKEND || "http://localhost:8001/services/arete/api/v2/";
+axios.defaults.baseURL = process.env.VUE_APP_BACKEND || "https://cs.ttu.ee/services/arete/api/v2/";
 
 const token = localStorage.getItem('token');
 if (token) {

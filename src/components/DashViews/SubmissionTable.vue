@@ -38,7 +38,8 @@
 							<v-spacer></v-spacer>
 							<div>
 								images:
-								<a :class="color + '--text footer-links'" href="https://hub.docker.com/repositories/">docker hub</a>
+								<a :class="color + '--text footer-links'" href="https://hub.docker.com/repositories/">docker
+									hub</a>
 							</div>
 						</v-footer>
 
@@ -128,7 +129,8 @@
 				<v-spacer></v-spacer>
 				<div>
 					docs:
-					<a :class="color + '--text footer-links'" href="https://ained.pages.taltech.ee/it-doc/arete/index.html">gitlab pages</a>
+					<a :class="color + '--text footer-links'"
+					   href="https://ained.pages.taltech.ee/it-doc/arete/index.html">gitlab pages</a>
 				</div>
 			</v-footer>
 
@@ -236,7 +238,6 @@
 					>
 						<form>
 
-
 							<v-text-field
 
 								v-model="docker_timeout"
@@ -300,27 +301,6 @@
 
 		<material-card
 			:color="color"
-			:title="items[3].title"
-		>
-
-			<v-card-text class="grey darken-3 text--primary">
-				<form>
-					<v-card class="mx-auto" max-height="900" max-width="80vw" outlined raised>
-						<pre style="max-height: 900px;overflow: auto">{{ activeSubmissions || pretty }}</pre>
-					</v-card>
-					<v-btn :color="color"
-					       class="mx-0"
-					       outline
-					       @click="getActiveSubmissions()">refresh
-					</v-btn>
-
-				</form>
-			</v-card-text>
-		</material-card>
-
-
-		<material-card
-			:color="color"
 			text="Latest submissions"
 			title="Submission Table"
 		>
@@ -362,9 +342,10 @@
 			<template
 				v-slot:items="props"
 			>
-				<tr @click="props.expanded = !props.expanded, getSubmission(props.item.hash)">
+				<tr @click="props.expanded = !props.expanded, getSubmission(props.item.hash, props.item.timestamp)">
 					<td v-if="!isMobile && !isVerySmall">{{ props.item.id }}</td>
 					<td>{{ props.item.uniid }}</td>
+					<td v-if="!isMobile">{{ props.item.slug }}</td>
 					<td v-if="!isMobile">{{ props.item.hash }}</td>
 					<td v-if="!isMobile && !isVerySmall && !isSmall">{{ props.item.timestamp }}</td>
 					<td v-if="!isMobile && !isVerySmall">{{ props.item.testingPlatform }}</td>
@@ -376,282 +357,66 @@
 			<v-spacer></v-spacer>
 
 			<template v-slot:expand="props">
-
 				<v-container :class="!isMobile ? 'pa-4' : 'pa-0'" fluid ma-0>
+					<v-progress-linear :color="color" :indeterminate="true" v-if="submissionLoading">
+					</v-progress-linear>
 
-					<v-expansion-panel popout>
-						<v-expansion-panel-content
-							v-for="(job, index) in fullSubmission"
-							v-bind:key="'upperTab' + index">
+					<v-window v-else style="background: rgba(0,0,0,0.3)">
+						<v-tabs
+							:id="'submissionTab'"
+							:slider-color="color"
+							color="grey darken-4"
+							dark
+							vertical
+						>
+							<v-tab ripple>
+								<v-icon left>mdi-message-text-outline</v-icon>
+								Docker
+							</v-tab>
 
-							<template v-slot:header>
-								<div>{{ job.slug }}</div>
-							</template>
+							<v-tab ripple>
+								<v-icon left>mdi-comment-plus-outline</v-icon>
+								Extra
+							</v-tab>
 
-							<v-window>
+							<v-tab v-if="!isMobile" ripple>
+								<v-icon left>mdi-lock-open</v-icon>
+								Out
+							</v-tab>
 
-								<v-tab-item
-									v-for="(job, index) in fullSubmission"
-									v-bind:key="'lowerTab' + index">
+							<v-tab ripple>
+								<v-btn :color="color"
+								       class="mx-0"
+								       outline
+								       @click="retestJob(fullSubmission)">retest
+								</v-btn>
+							</v-tab>
 
-									<v-tabs
-										:id="'submissionTab' + index"
-										:slider-color="color"
-										color="grey darken-4"
-										dark
-										vertical
-									>
-										<v-tab ripple>
-											<v-icon left>mdi-message-text-outline</v-icon>
-											Docker
-										</v-tab>
+							<v-tab-item :key="'tab_item_1'">
+								<v-card flat>
+									<div class="consoleOutput scale-down"
+									     v-html="fullSubmission.consoleOutput"></div>
+								</v-card>
+							</v-tab-item>
 
-										<v-tab ripple>
-											<v-icon left>mdi-comment-plus-outline</v-icon>
-											Extra
-										</v-tab>
-
-										<v-tab v-if="!isMobile" ripple>
-											<v-icon left>mdi-lock-open</v-icon>
-											Out
-										</v-tab>
-
-										<v-tab ripple>
-											<v-icon left>mdi-lock</v-icon>
-											Full Out
-										</v-tab>
-
-										<v-tab ripple>
-											<v-btn :color="color"
-											       class="mx-0"
-											       outline
-											       @click="retestJob(job)">retest
-											</v-btn>
-										</v-tab>
-
-										<v-tab-item :key="'tab_item_1' + index">
-											<v-card flat>
-												<div class="consoleOutput scale-down"
-												     v-html="job.consoleOutput"></div>
-											</v-card>
-										</v-tab-item>
-
-										<v-tab-item :key="'tab_item_2' + index">
-											<v-card class="mx-auto consoleOutput" max-height="500" max-width="80vw"
-											        outlined raised>
+							<v-tab-item :key="'tab_item_2'">
+								<v-card class="mx-auto consoleOutput" max-height="500" max-width="80vw"
+								        outlined raised>
 												<pre style="max-height: 500px;overflow: auto">{{
-														fullSubmission[index] || pretty
+														fullSubmission || pretty
 													}}</pre>
-											</v-card>
-										</v-tab-item>
+								</v-card>
+							</v-tab-item>
 
-										<v-tab-item v-if="!isMobile" :key="'tab_item_3' + index">
-											<v-card flat>
-												<div class="consoleOutput scale-down" v-html="job.output"></div>
-											</v-card>
-										</v-tab-item>
+							<v-tab-item v-if="!isMobile" :key="'tab_item_3'">
+								<v-card flat>
+									<div class="consoleOutput scale-down" v-html="fullSubmission.output"></div>
+								</v-card>
+							</v-tab-item>
 
-										<v-tab-item :key="'tab_item_4' + index">
-
-											<v-card flat>
-
-												<v-data-table
-													v-if="!isMobile"
-													:headers="testSuiteHeaders"
-													:hide-actions="true"
-													:items="fullSubmission[index]['testSuites']"
-													class="elevation-1"
-												>
-													<template
-														slot="headerCell"
-														slot-scope="{ header }">
-                                                        <span
-	                                                        v-bind:class="'subheading font-weight-light text-' + color"
-	                                                        v-text="header.text"/>
-													</template>
-
-													<template v-slot:items="propsSlugs">
-														<tr @click="() => {{propsSlugs.expanded = !propsSlugs.expanded; setExpandedJob(index)}}">
-															<td>{{ propsSlugs.item.id }}</td>
-															<td>{{ propsSlugs.item.name }}</td>
-															<td>{{ propsSlugs.item.file }}</td>
-															<td>{{ propsSlugs.item.startDate }}</td>
-															<td>{{ propsSlugs.item.endDate }}</td>
-															<td>{{ propsSlugs.item.weight }}</td>
-															<td>{{ propsSlugs.item.passedCount }}</td>
-															<td>{{ propsSlugs.item.grade }}</td>
-														</tr>
-													</template>
-
-													<v-spacer></v-spacer>
-
-													<template v-if="!isMobile" v-slot:expand="propsJobs">
-
-														<v-container fluid ma-0 pa-4>
-
-															<v-window
-																class="elevation-1 ">
-																<v-window-item>
-
-																	<v-window class="elevation-1">
-																		<material-card
-																			:color="color"
-																			text="Tests ran"
-																			title="All test ran regarding this test context">
-
-																			<v-text-field
-																				v-model="subSearch"
-																				:color="color"
-																				append-icon="search"
-																				hide-details
-																				label="Search"
-																				single-line
-																			></v-text-field>
-																		</material-card>
-
-																		<v-data-table
-
-																			:color="color"
-																			:headers="unitTestHeaders"
-																			:items="fullSubmission[index]['testSuites'][getExpandedJob()].unitTests"
-																			:rows-per-page-items="rowsAmount"
-																			:search="subSearch"
-																			class="elevation-1">
-
-																			<template
-																				slot="headerCell"
-																				slot-scope="{ header }">
-                                                                                <span
-	                                                                                v-bind:class="'subheading font-weight-light text-' + color"
-	                                                                                v-text="header.text"/>
-																			</template>
-
-																			<template
-																				v-slot:items="props3">
-																				<tr>
-																					<td>{{ props3.item.id }}</td>
-																					<td>{{ props3.item.name }}</td>
-																					<td>{{ props3.item.status }}</td>
-																					<td>{{ props3.item.weight }}</td>
-																					<td>{{ props3.item.exceptionClass }}
-																					</td>
-																					<td>
-																						{{
-																							props3.item.exceptionMessage
-																						}}
-																					</td>
-																				</tr>
-																			</template>
-
-																			<v-spacer></v-spacer>
-
-																		</v-data-table>
-
-																	</v-window>
-
-																</v-window-item>
-
-															</v-window>
-
-														</v-container>
-
-													</template>
-
-												</v-data-table>
-												<v-data-iterator
-													v-else
-													:color="color"
-													:items="fullSubmission[index]['testSuites']"
-													:pagination.sync="pagination"
-													:rows-per-page-items="rowsPerPageItems"
-													:search="subSearch"
-													item-key="name"
-													row
-													wrap
-												>
-													<template v-slot:item="props">
-														<v-flex
-															lg3
-															md4
-															sm6
-															xs12
-														>
-															<v-card
-																@click="props.expanded = !props.expanded"
-															>
-																<v-card-title>
-																	<h4>{{ props.item.name }}</h4>
-																</v-card-title>
-																<v-divider></v-divider>
-																<v-list v-if="props.expanded" dense>
-																	<v-list-tile>
-																		<v-list-tile-content>id:</v-list-tile-content>
-																		<v-list-tile-content class="align-end">{{
-																				props.item.id
-																			}}
-																		</v-list-tile-content>
-																	</v-list-tile>
-																	<v-list-tile>
-																		<v-list-tile-content>name:</v-list-tile-content>
-																		<v-list-tile-content class="align-end">{{
-																				props.item.name
-																			}}
-																		</v-list-tile-content>
-																	</v-list-tile>
-																	<v-list-tile>
-																		<v-list-tile-content>file:</v-list-tile-content>
-																		<v-list-tile-content class="align-end">{{
-																				props.item.file
-																			}}
-																		</v-list-tile-content>
-																	</v-list-tile>
-																	<v-list-tile>
-																		<v-list-tile-content>startDate:
-																		</v-list-tile-content>
-																		<v-list-tile-content class="align-end">{{
-																				props.item.startDate
-																			}}
-																		</v-list-tile-content>
-																	</v-list-tile>
-																	<v-list-tile>
-																		<v-list-tile-content>weight:
-																		</v-list-tile-content>
-																		<v-list-tile-content class="align-end">{{
-																				props.item.weight
-																			}}
-																		</v-list-tile-content>
-																	</v-list-tile>
-																	<v-list-tile>
-																		<v-list-tile-content>passedCount:
-																		</v-list-tile-content>
-																		<v-list-tile-content class="align-end">{{
-																				props.item.passedCount
-																			}}
-																		</v-list-tile-content>
-																	</v-list-tile>
-																	<v-list-tile>
-																		<v-list-tile-content>grade (%):
-																		</v-list-tile-content>
-																		<v-list-tile-content class="align-end">{{
-																				props.item.grade
-																			}}
-																		</v-list-tile-content>
-																	</v-list-tile>
-																</v-list>
-															</v-card>
-														</v-flex>
-													</template>
-												</v-data-iterator>
-
-											</v-card>
-										</v-tab-item>
-
-										<v-spacer></v-spacer>
-									</v-tabs>
-								</v-tab-item>
-							</v-window>
-						</v-expansion-panel-content>
-					</v-expansion-panel>
+							<v-spacer></v-spacer>
+						</v-tabs>
+					</v-window>
 				</v-container>
 			</template>
 		</v-data-table>
@@ -717,17 +482,13 @@ export default {
 			{
 				title: 'Create submission',
 				icon: 'mdi-share',
-			},
-			{
-				title: 'Currently active submissions',
-				icon: 'mdi-run',
 			}
 		],
 
 		// Charon like
 		SubmissionList: [],
-		fullSubmission: [],
-		activeSubmissions: [],
+		fullSubmission: null,
+		submissionLoading: true,
 
 		filters: {
 			pretty: function (value) {
@@ -742,6 +503,7 @@ export default {
 		headers: [
 			{text: 'id', align: 'left', value: 'id'},
 			{text: 'uniid', value: 'uniid'},
+			{text: 'slug', value: 'slug'},
 			{text: 'hash', value: 'hash', sortable: false},
 			{text: 'timestamp', value: 'timestamp'},
 			{text: 'testingPlatform', value: 'testingPlatform'},
@@ -752,6 +514,7 @@ export default {
 		headersSmall: [
 			{text: 'id', align: 'left', value: 'id'},
 			{text: 'uniid', value: 'uniid'},
+			{text: 'slug', value: 'slug'},
 			{text: 'hash', value: 'hash', sortable: false},
 			{text: 'testingPlatform', value: 'testingPlatform'},
 			{text: 'failed', value: 'failed'}
@@ -831,21 +594,6 @@ export default {
 	},
 
 	methods: {
-		setExpandedJob(index) {
-			this.expandedJob = index;
-		},
-
-		getExpandedJob() {
-			return this.expandedJob;
-		},
-
-		getActiveSubmissions() {
-			this.$http.get('/submission/active')
-				.then(response => {
-					this.activeSubmissions = response.data;
-				})
-				.catch(error => console.log(error))
-		},
 
 		retestJob(job) {
 			const jsonData = {};
@@ -1037,21 +785,14 @@ export default {
 			this.system_extra = ['noFiles'];
 		},
 
-		getSubmission(hash) {
-			this.$http.get('/submission/' + hash)
+		getSubmission(hash, timestamp) {
+			this.submissionLoading = true
+
+			this.$http.get('/submission/' + hash + "/" + timestamp)
 				.then(response => {
+					console.log(response.data)
 					this.fullSubmission = response.data;
-					for (let i = 0; i < this.fullSubmission.length; i++) {
-						for (let j = 0; j < this.fullSubmission[i].testSuites.length; i++) {
-
-							this.fullSubmission[i].testSuites[j].id = j;
-
-							for (let k = 0; k < this.fullSubmission[i].testSuites[j].unitTests.length; k++) {
-								this.fullSubmission[i].testSuites[j].unitTests[k].id = k;
-							}
-
-						}
-					}
+					this.submissionLoading = false;
 				})
 				.catch(error => console.log(error))
 		},
@@ -1059,11 +800,7 @@ export default {
 		getSubmissions() {
 			this.$http.get('/submission/all')
 				.then(response => {
-					const data = response.data.filter((thing, index, self) =>
-						index === self.findIndex((t) => (
-							t.hash === thing.hash && t.name === thing.name
-						))
-					);
+					const data = response.data;
 					data.reverse();
 					this.SubmissionList = data;
 				})
