@@ -713,7 +713,7 @@ export default {
 				jsonData['gitStudentRepo'] = this.student_repository;
 			}
 			if (this.tester_repository !== '') {
-				jsonData['gitTestSource'] = this.tester_repository;
+				jsonData['gitTestRepo'] = this.tester_repository;
 			}
 			if (this.slug !== '') {
 				jsonData['slugs'] = [this.slug];
