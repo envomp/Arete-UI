@@ -88,6 +88,14 @@ export default [
                     requiresAuth: true
                 },
                 component: () => import(`@/components/DashViews/StudentTable.vue`)
+            },
+            {
+                path: '/services/arete/admin',
+                meta: {
+                    name: 'Admin Page',
+                    requiresAuth: true
+                },
+                component: () => import(`@/components/DashViews/AdminView.vue`)
             }
         ]
     }

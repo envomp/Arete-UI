@@ -438,9 +438,9 @@ export default {
 	data: () => ({
 
 		snackbar: false,
+		snackbar_text: '',
 		timeout: 5000,
 		rowsPerPageItems: [4, 8, 12, 24],
-		snackbar_text: '',
 
 		image_name: '',
 		tester_name: '',

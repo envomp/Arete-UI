@@ -141,7 +141,12 @@
                     to: '/services/arete/students',
                     icon: 'mdi-code-braces',
                     text: 'Students'
-                }
+                },
+	            {
+		            to: '/services/arete/admin',
+		            icon: 'mdi-account-settings',
+		            text: 'Admin'
+	            }
             ],
         }),
 
