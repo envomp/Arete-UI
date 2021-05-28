@@ -13,7 +13,7 @@
             >
                 <material-card
                         :color="color"
-                        title="Submission activity (last 500 jobs)"
+                        title="Submission activity (last 10000 jobs)"
                         v-if="isTimelineComplete"
                 >
                     <v-window type="chart">
@@ -42,7 +42,7 @@
             >
                 <material-card
                         :color="color"
-                        title="Course activity (last 500 jobs)"
+                        title="Course activity (last 10000 jobs)"
                         v-if="isTimelineComplete"
                 >
                     <v-window type="chart">
@@ -70,7 +70,7 @@
             >
                 <material-card
                         :color="color"
-                        title="Exercise activity (last 500 jobs)"
+                        title="Exercise activity (last 10000 jobs)"
                         v-if="isTimelineComplete"
                 >
                     <v-window type="chart">
