@@ -47,7 +47,6 @@
 					<td>{{ props.item.totalTestsRan }}</td>
 					<td>{{ props.item.totalTestsPassed }}</td>
 					<td>{{ props.item.totalDiagnosticErrors }}</td>
-					<td>{{ props.item.differentStudents }}</td>
 					<td>{{ props.item.commitsStyleOK }}</td>
 				</tr>
 			</template>
@@ -114,11 +113,6 @@
 								</v-list-tile-content>
 							</v-list-tile>
 							<v-list-tile>
-								<v-list-tile-content>differentStudents:</v-list-tile-content>
-								<v-list-tile-content class="align-end">{{ props.item.differentStudents }}
-								</v-list-tile-content>
-							</v-list-tile>
-							<v-list-tile>
 								<v-list-tile-content>commitsStyleOK:</v-list-tile-content>
 								<v-list-tile-content class="align-end">{{ props.item.commitsStyleOK }}
 								</v-list-tile-content>
@@ -162,7 +156,6 @@ export default {
 			{text: 'totalTestsRan', value: 'totalTestsRan'},
 			{text: 'totalTestsPassed', value: 'totalDiagnosticErrors'},
 			{text: 'totalDiagnosticErrors', value: 'totalDiagnosticErrors'},
-			{text: 'differentStudents', value: 'differentStudents'},
 			{text: 'commitsStyleOK', value: 'commitsStyleOK'},
 		],
 
