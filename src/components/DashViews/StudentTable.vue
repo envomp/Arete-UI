@@ -384,10 +384,7 @@
                 this.$http.get('/student/all')
                     .then(response => {
                         this.studentsList = response.data;
-                        this.studentsList
-	                        .map(x => x.averageGrade = Math.round(x.averageGrade * 100) / 100)
-                            .map(x => x.differentCourses = x.courses.length)
-	                        .map(x => x.differentSlugs = x.slugs.length);
+                        this.studentsList.map(x => x.averageGrade = Math.round(x.averageGrade * 100) / 100);
                         this.calculateAverage();
                         this.calculateMedian();
                     })
