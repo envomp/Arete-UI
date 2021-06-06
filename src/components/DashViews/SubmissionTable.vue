@@ -394,13 +394,13 @@
 
 							<v-tab-item :key="'tab_item_1'">
 								<v-card flat>
-									<div class="consoleOutput scale-down"
-									     v-html="fullSubmission.consoleOutput"></div>
+									<div class="consoleOutputs scale-down"
+									     v-html="fullSubmission.consoleOutputs"></div>
 								</v-card>
 							</v-tab-item>
 
 							<v-tab-item :key="'tab_item_2'">
-								<v-card class="mx-auto consoleOutput" max-height="500" max-width="80vw"
+								<v-card class="mx-auto consoleOutputs" max-height="500" max-width="80vw"
 								        outlined raised>
 												<pre style="max-height: 500px;overflow: auto">{{
 														fullSubmission || pretty
@@ -410,7 +410,7 @@
 
 							<v-tab-item v-if="!isMobile" :key="'tab_item_3'">
 								<v-card flat>
-									<div class="consoleOutput scale-down" v-html="fullSubmission.output"></div>
+									<div class="consoleOutputs scale-down" v-html="fullSubmission.output"></div>
 								</v-card>
 							</v-tab-item>
 
