@@ -607,7 +607,7 @@ export default {
 			jsonData['dockerTimeout'] = job.dockerTimeout;
 			jsonData['priority'] = job.priority;
 			jsonData['systemExtra'] = job.systemExtra;
-			jsonData['dockerExtra'] = job.dockerExtra.join();
+			jsonData['dockerExtra'] = job.dockerExtra;
 			jsonData['returnExtra'] = {};
 			this.snackbar_text = 'Submission successful';
 			this.snackbar = true;
